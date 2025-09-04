@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+    <!--script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script-->
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script-->
+    <script src="/aframe-troika-text.js"></script>
+    <script src="shadowjs"></script>
+    <link rel="stylesheet" href="style-disney.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+    <!--button
+      onclick="pause()"
+      style="
+        z-index: 10000000;
+        position: fixed;
+        margin-top: 50px;
+        cursor: pointer;
+             margin-left: 200px;
+      "
+    >
+      Pause
+    </button>
+    <button
+      onclick="play()"
+      style="
+        z-index: 10000000;
+        position: fixed;
+        margin-top: 50px;
+        cursor: pointer;
+        margin-left: 300px;
+      "
+    >
+      play
+    </button-->
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      light="defaultLightsEnabled: false"
+    >
+      <a-assets>
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/haro_gundam_00%20(1).glb?v=1667880181763"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/jangjs-girl.mp3?v=1676365363565"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+      </a-assets>
+            <a-light type="ambient" intensity="0.9" castshadow="false"></a-light>
+      <a-shadow-light
+        type="spot"
+        far="18"
+        target="0 0 -5"
+        mapsize="4096 4096"
+        position="0 16 -5"
+      >
+      </a-shadow-light>
+      <a-shadow-plane dimensions="10 10" position="0 0 -5"> </a-shadow-plane>
+      <!--a-plane
+        id="balloon"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/art-the-starry-night.gif?v=1668048665997); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        id="PlayBtn"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/bottom.gif?v=1668382321333); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -10"
+        color="white"
+        scale="6 3 3"
+        visible="true"
+        animation="property: position; to: 0 0 -6; dur: 20000; easing: linear; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      ></a-plane>
+      <a-plane
+        id="balloon1"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/14b613e03bb58576a74f85f62776e07c.gif?v=1668049602868); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane-->
+      <a-troika-text
+        scale="0.2 0.2 0.2"
+        position="0 0.2 -1"
+        max-width="5"
+        curve-radius="10"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+        color="##FFDFBA"
+        value="
+설명을 들으려면 
+소리버튼을 클릭하세요"
+        align="center"
+        animation="property: scale; to: 0 0 0; delay: 1000; dur: 3000; easing: linear; loop: false"
+      ></a-troika-text>
+        <a-troika-text
+          id="output"
+          position="0.05 -0.4 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.09 0.09 0.09"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+          value="        
+              장주가 꿈에 나비가 되었다가
+나비가 다시 장자가 되니
+                     
+무엇이 거짓이며
+무엇이 진짜인지 분변하지 못했다. 
+                     
+성진과 소유가
+누가 꿈이며 누가 꿈이 아니뇨?"
+          align="center"
+          animation="property: position; to: 0.05 0.08 -0.8; dur: 7000; easing: linear; loop: false"
+          animation__1="property: scale; to: 0 0 0; delay: 22000; dur: 500; easing: linear; loop: false"
+        >
+        </a-troika-text>
+        <!--a-plane
+              position="-0.007 -0.21 -0.9"
+              color="#fff"
+              width="1.2"
+              height="1.25"
+              segments-width="24"
+	            segments-height="64"
+              curve-radius="40"
+              material="opacity: 0.3; transparent: true"
+              scale="0 0 0"
+              animation="property: scale; to: 0.3 0.3 0.3; delay: 1000; dur: 1100; easing: linear; loop: false"
+
+                     ></a-plane-->
+
+
+      <!--a-entity
+        scale="0 0 0"
+        position="0.04 -0.12 -0.5"
+        rotation="0 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/purple-flowers-ani.glb?v=1669241435836"
+        shadow="receive: true"
+        animation-mixer
+        animation="property: scale; to: 0.2 0.2 0.2; dur: 8000; easing: linear; loop: false"
+      >
+      </a-entity-->
+
+      <a-entity
+                id="balloon"
+        scale="0 0 0"
+        position="0.05 -0.12 -5"
+        rotation="0 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/Talking-discord.glb?v=1676876011498"
+        shadow="receive: false"
+        animation-mixer="loop: false; timeScale: 0; crossFadeDuration: 1"
+        animation="property: scale; to: 1.5 1.5 1.5; dur: 2000; easing: linear; loop: false"
+        animation__2="property: position; to: -1.9 -1.3 -8; dur: 2000; easing: linear; loop: false"
+      >
+      </a-entity>
+      <!--a-entity
+        scale="0 0 0"
+        position="0.1 -1.25 -3.8"
+        rotation="0 90 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/fiirework-big.glb?v=1669250448987"
+        shadow="receive: true"
+        animation-mixer
+        animation="property: scale; to: 1 1 1; dur: 8000; easing: linear; loop: true"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity-->
+      <!--a-entity
+        scale="1 1 1"
+        position="-2 0 -3"
+        rotation="0 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/butterfly-ani10.glb?v=1676368595863"
+        shadow="receive: true"
+        animation-mixer="clip: Take 001; loop: false; timeScale: 0; crossFadeDuration: 1"
+        animation="property: position; to: 2 1 -4; dur: 20000; easing: linear; loop: false"
+        animation__1="property: rotaion; to: 0 360 0; dur: 20000; easing: linear; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity-->
+      <!--a-entity
+        scale="0.2 0.2 0.2"
+        position="-1 0 -3.5"
+        rotation="-45 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        shadow="receive: false"
+        animation-mixer
+        animation="property: rotation; to: 0 360 0; dur: 90000; delay: 500; loop: true"
+        animation__2="property: scale; to: 0.5 0.5 0.5; dur: 30000; delay: 500000; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity-->
+      <!--a-entity
+        scale="0.2 0.2 0.2"
+        position="1 -0.5 -3.5"
+        rotation="45 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        shadow="receive: false"
+        animation-mixer
+        animation="property: rotation; to: 0 360 0; dur: 40000; delay: 500; loop: true"
+        animation__2="property: scale; to: 1 1 1; dur: 30000; delay: 500000; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity-->
+
+      <a-sound src="#aud"></a-sound>
+
+      <a-entity light="type: ambient; intensity: 1.9;"></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true; shadowCameraAutomatic:#object;"
+        intensity="0.9"
+        id="real-light"
+        target="selector"
+        position="-5 3.6 10"
+      >
+      </a-light>
+
+      <!--a-entity
+        camera
+        position="0 0 0"
+        look-controls="enabled: true"
+      ></a-entity-->
+      <a-entity
+        id="camera"
+        camera="fov: 80; zoom: 1;"
+        position="0 0 0"
+        orbit-controls="autoRotate: true; target: #target; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.25; minDistance:3; maxDistance:100;"
+        mouse-cursor=""
+        look-controls="enabled: true"
+      ></a-entity>
+      <a-light type="ambient" intensity="0.9"></a-light>
+      <!--a-sky color="#0abab5" src=""></a-sky-->
+      <a-sky src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/tf-back5.jpg?v=1676879226610"></a-sky>
+    </a-scene>
+  </body>
+  <!--script>
+    function pause() {
+      document.querySelector("a-entity").setAttribute("animation-mixer", {
+        timeScale: 0,
+      });
+    }
+
+    function play() {
+      document.querySelector("a-entity").setAttribute("animation-mixer", {
+        timeScale: 1,
+      });
+    }
+  </script-->
+  <script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+      document.querySelector("a-entity").setAttribute("animation-mixer", {
+        timeScale: 0,
+      });
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+      document.querySelector("a-entity").setAttribute("animation-mixer", {
+        timeScale: 1,
+      });
+    }
+  </script>
+      <script>
+      window.addEventListener("load", function () {
+        // you can access the THREE.Light object from the shadow-light element
+        var lightEl = document.querySelector("a-shadow-light");
+        console.log(lightEl.shadowLight);
+      });
+    </script>
+</html>

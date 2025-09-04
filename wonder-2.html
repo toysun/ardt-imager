@@ -1,0 +1,449 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-face-aframe.prod.js"></script>
+    
+    <script src="/aframe-troika-text.js"></script>
+    
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+           
+    <script src="https://rawgit.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-click-events/events.js"></script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "pb",
+          "yc",
+          "ww",
+          "sn"
+        ];
+        const visibles = [false, false, false, false];
+        var DisplayingIndex = "999";
+
+        
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        
+
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            if(DisplayingIndex != "999") {
+              list.forEach((item, DisplayingIndex) => {
+                const Oldbutton = document.querySelector("#" + item);
+                const Oldentities = document.querySelectorAll("." + item + "-entity");
+                  
+                Oldbutton.classList.remove("selected");
+                Oldentities.forEach((entity) => {
+                  entity.setAttribute("visible", false);
+                });
+     
+              });
+              visibles[DisplayingIndex] = !visibles[DisplayingIndex]; 
+            } 
+            
+            DisplayingIndex = index;
+            
+           
+            visibles[index] = !visibles[index];            
+            setVisible(button, entities, visibles[index]);
+          });  
+  
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sceneEl = document.querySelector("a-scene");
+        const arSystem = sceneEl.systems["mindar-face-system"];
+
+
+        const switchCameraButton = document.querySelector(
+          "#flip-btn"
+        );
+
+        // arReady event triggered when ready
+        sceneEl.addEventListener("arReady", (event) => {
+          console.log("ar ready");
+        });
+
+        // detect target found
+        sceneEl.addEventListener("targetFound", (event) => {
+          console.log("target found");
+        });
+
+        // detect target lost
+        sceneEl.addEventListener("targetLost", (event) => {
+          console.log("target lost");
+        });
+
+        // arError event triggered when something went wrong. Mostly browser compatbility issue
+        sceneEl.addEventListener("arError", (event) => {
+          console.log("ar error");
+        });
+
+
+        switchCameraButton.addEventListener("click", function () {
+          arSystem.switchCamera();
+        });
+      });
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+    
+    <link rel="stylesheet" href="style-capture.css" />
+    
+    
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        position: fixed;
+        left: 10%;
+        top: 90%;
+        width: 5%;
+        height: 3%;
+      }
+    </style>
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    
+  </head>
+
+  <body>
+    
+    <button class="ChangeButton" id="flip-btn">Camera Change</button>
+    
+    <div id="wrapper">
+    
+    <div class="example-container">
+       
+          <div class="options-panel">
+                      <img id="pb" src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/pb-c.png?v=1661949065254" />
+                      <img id="yc" src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/yc-c.png?v=1661949423775" />
+                      <img id="ww" src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/ww-c.png?v=1661949423560" />
+                      <img id="sn" src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sn-c.png?v=1661949423380" />
+          </div>
+            
+      <!--/div-->
+
+      <a-scene
+        mindar-face
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+
+        <a-assets>
+          <a-asset-item
+            id="headModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/sparkar/headOccluder.glb"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="pbModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/goggle.glb?v=1661394414512"
+          ></a-asset-item>
+          <a-asset-item
+            id="pbModel1"
+            src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/chinese_hand_fan.glb?v=1661764285696"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="ycModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/hammer-sledge.glb?v=1661399410519"
+          ></a-asset-item>
+          <a-asset-item
+            id="ycModel1"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/mustache.glb?v=1661477120901"
+          ></a-asset-item>
+          <a-asset-item
+            id="ycModel2"
+            src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/gearanimated.glb?v=1661787449428"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="wwModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/rain.glb?v=1661396891522"
+          ></a-asset-item>
+          <a-asset-item
+            id="wwModel1"
+            src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/conical_asian_hat.glb?v=1661829035614"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="snModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/big-tree.glb?v=1661399881813"
+          ></a-asset-item>
+          <a-asset-item
+            id="snModel1"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/chaos_flame_time_arch_glyph.glb?v=1661419048308"
+          ></a-asset-item>
+          <a-asset-item
+            id="snModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/steam-train.glb?v=1661394866981"
+          ></a-asset-item>
+
+         <!--video
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/Tree%203d%20Animation%20Grow%20Blue%20Screen.mp4?v=1661737887791"
+          type="video/mp4"
+          preload="auto"
+          id="vid"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video-->
+        </a-assets>
+
+        <a-camera active="false" position="0 0 0"></a-camera>
+
+        <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            mindar-face-occluder
+            position="0 -0.4 0.15"
+            rotation="0 0 0"
+            scale="0.065 0.065 0.065"
+            src="#headModel"
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 9">
+          <a-troika-text
+              position="-0.6 1.2 -1.5"
+              class="pb-entity"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/wt028.ttf?v=1661410962739"
+              color="#3F66DA"
+              scale="5 5 5"
+              value="風伯"
+              visible="false"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+             ></a-troika-text>
+            </a-entity>
+         <a-entity mindar-face-target="anchorIndex: 168">
+            <a-gltf-model
+              rotation="0 0 0"
+              position="0 -0.15 -0.15"
+              scale="0.0008 0.0008 0.0008"
+              src="#pbModel"
+              class="pb-entity"
+              visible="false"
+            ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 90 90"
+            position="-1 -0.5 -3"
+            scale="0.2 0.2 0.2"
+            src="#pbModel1"
+            class="pb-entity"
+            visible="false"
+            animation="property: rotation; to: 360 360 360; loop: true; dur: 10000"
+          ></a-gltf-model>
+        </a-entity>
+
+            
+        <a-entity mindar-face-target="anchorIndex: 9">
+          <a-troika-text
+              position="-0.6 1.2 -1.5"
+              class="ww-entity"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/wt028.ttf?v=1661410962739"
+              color="#3F66DA"
+              scale="5 5 5"
+              value="雨士 雲士"
+              visible="false"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+          ></a-troika-text>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 9">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-3 -9.53 -10.3"
+            scale="0.028 0.028 0.028"
+            src="#wwModel"
+            class="ww-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 180 0"
+            position="0 0 -0.5"
+            scale="0.01 0.01 0.01"
+            src="#wwModel1"
+            class="ww-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 9">
+          <a-troika-text
+              position="-0.6 1.2 -1.5"
+              class="yc-entity"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/wt028.ttf?v=1661410962739"
+              color="#3F66DA"
+              scale="5 5 5"
+              value="冶鐵"
+              visible="false"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+          ></a-troika-text>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="180 0 -180"
+            position="-4 -3.5 -5"
+            scale="0.038 0.038 0.038"
+            src="#ycModel"
+            class="yc-entity"
+            visible="false"
+            animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000"
+          ></a-gltf-model>
+       </a-entity>
+       <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="180 0 -180"
+            position="0 -0.5 0"
+            scale="0.4 0.4 0.4"
+            src="#ycModel1"
+            class="yc-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="90 0 0"
+            position="0 0.5 0"
+            scale="0.4 0.4 0.4"
+            src="#ycModel2"
+            class="yc-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 9">
+            <a-troika-text
+              position="-0.6 1.2 -1.5"
+              class="sn-entity"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/wt028.ttf?v=1661410962739"
+              color="#3F66DA"
+              scale="5 5 5"
+              value="守木"
+              visible="false"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+            ></a-troika-text>
+          </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-7 -10 -10"
+            scale="0.1 0.1 0.1"
+            src="#snModel"
+            class="sn-entity"
+            visible="false"
+            animation ="property: scale; to: 5.5 5.5 5.5; dur: 30000;"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 127">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-4 -3.5 -30"
+            scale="2 2 2"
+            src="#snModel1"
+            class="sn-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.2 -0.5"
+            scale="0.008 0.008 0.008"
+            src="#snModel2"
+            class="sn-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+        
+        <button class="button" id="mybutton"></button> 
+      </a-scene>
+    
+      <button class="capturebtn" id="capture" style="vertical-align:middle"></button>
+      <button class="savebtn" id="save" style="vertical-align:middle"></button>
+       <!-- The Modal -->
+      <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span
+          class="closebtn">
+          <img
+            src="https://cdn.glitch.global/be340911-435f-4b68-b71f-00337c3212ac/close-white.png?v=1661493491151"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+        
+    </div>
+    </div>
+
+    </div>  
+    </div>
+    
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+   
+  </body>
+</html>

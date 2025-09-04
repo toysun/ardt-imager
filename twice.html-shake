@@ -1,0 +1,169 @@
+<script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+<!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+<script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+<script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+<script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+<script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+<script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+<script>
+  AFRAME.registerComponent("videohandler", {
+    init: function() {
+      var marker = this.el;
+
+      this.vid = document.querySelector("#vid");
+      this.vidnew = document.querySelector("#vidnew");
+
+      marker.addEventListener(
+        "markerFound",
+        function() {
+          this.vid.play();
+          this.vidnew.play();
+        }.bind(this)
+      );
+
+      marker.addEventListener(
+        "markerLost",
+        function() {
+          this.vid.pause();
+          this.vid.currentTime = 0;
+          this.vidnew.pause();
+          this.vidnew.currentTime = 0;
+        }.bind(this)
+      );
+    }
+  });
+</script>
+
+<style>
+  .arjs-loader {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
+<body style="margin : 0px; overflow: hidden;">
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="antialias: true; alpha: true; precision: mediump;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    id="scene"
+    gesture-detector
+  >
+    <a-assets>
+      <video
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FTwice%20More%20n%20More.mp4?v=1619509337834"
+        preload="auto"
+        id="vid"
+        response-type="arraybuffer"
+        loop
+        crossorigin="anonymous"
+        webkit-playsinline
+        autoplay
+        playsinline
+      ></video>
+      <!--video src="https://cdn.glitch.com/6578d377-25ff-42f3-bee7-b9326b505aed%2Fgiraffe.mp4?v=1602679332016"
+                preload="auto" id="vidnew" response-type="arraybuffer" loop
+                crossorigin="anonymous" webkit-playsinline autoplay playsinline>
+            </video-->
+      <video
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fraptor-walk-sq-sound.mp4?v=1619501291551"
+        preload="auto"
+        id="vvid"
+        response-type="arraybuffer"
+        loop
+        crossorigin="anonymous"
+        webkit-playsinline
+        autoplay
+        playsinline
+      ></video>
+    </a-assets>
+      <a-text
+        value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        scale="1 1 1"
+        position="-2.5 -3.8 -12"
+        audiohandler
+      ></a-text>
+      <a-entity
+        position="0 -7 -15"
+        particle-system="preset: star; accelerationValue:0,-50,0; texture: https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Ftwice-logo-remove.png?v=1619581794090; size: 5; particleCount:100; color: #FFFFFF; direction:-2; rotationAxis:z; rotation: -90 0 0"
+      ></a-entity>
+    <a-nft
+      videohandler
+      type="nft"
+      url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/twice-image"
+      smooth="true"
+      smoothcount="10"
+      moothtolerance="0.01"
+      smooththreshold="5"
+    >
+
+      <!--a-video
+                src="#vid"
+                position="50 150 -100"
+                width="300"
+                height="175"               
+                >
+            </a-video-->
+      <!--a-entity
+          geometry="primitive: plane; height: 0.6; width: 1"
+          material="shader: chromakey; color: 0.1 0.9 0.2; transparent:true;opacity: 0.9;src:#vid"
+          vidhandler
+          position="0 0 -20"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+        >
+      </a-entity-->
+      <a-video
+        material="shader: chromakey; src: #vid; color: 0.1 0.9 0.2"
+        width="300"
+        height="300"
+        position="30 -700 -70"
+        rotation="-90 0 0"
+        class="clickable"
+        gesture-handler
+      >
+      </a-video>
+      <!--a-video
+                  material="shader: chromakey; src: #vid; color: 0.1 0.9 0.2"
+                  width="300" height="175" position="100 0 -220" rotation="-90 0 0" class="clickable" gesture-handler
+                  scale="0 0 0"
+                         animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeOutQuad; to: 1.2 1 1.2"
+              ></a-video-->
+      <!--a-video
+                  material="shader: chromakey; src: #vidnew; color: 0.1 0.9 0.2"
+                  width="300" height="175" position="200 0 -250" rotation="-90 0 0" class="clickable" gesture-handler
+              ></a-video-->
+      <!--a-video
+                material="shader: chromakey; src: #vvid; color: 0.1 0.9 0.2"
+                  width="300" height="300" position="100 0 -300" rotation="-90 0 0" class="clickable" gesture-handler
+              ></a-video-->
+    </a-nft>
+    <a-entity camera></a-entity>
+  </a-scene>
+</body>

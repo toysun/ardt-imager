@@ -1,0 +1,316 @@
+<html>
+  <head>
+    <title>ICT 이노베이션스퀘어 AR지도</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+
+    <script src="./js/navigate-on-click.js"></script>
+
+    <script src="./js/components.js"></script>
+    <script src="./js/cursor_m.js" defer></script>
+
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+    <script>
+      var mobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(
+        navigator.userAgent.toLowerCase()
+      );
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var Browser = navigator.userAgent.toLowerCase();
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 124) {
+            if (Browser.indexOf("naver") !== -1) {
+              location.href =
+                "https://www.ardocent.com/ardocent/not-allowed-nipa/";
+            }
+            if (self.name != "reload") {
+              self.name = "reload";
+              self.location.reload(true);
+            } else self.name = "";
+          } else {
+            location.href =
+              "https://www.ardocent.com/ardocent/not-allowed-nipa/";
+          }
+        } else if (Browser.indexOf("chrome") < 90) {
+          if (self.name != "reload") {
+            self.name = "reload";
+            self.location.reload(true);
+          } else self.name = "";
+        } else {
+          location.href =
+            "intent://ardocent.com/aframe/nipa/nipamap.html#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      } else
+        window.location.replace(
+          "https://www.ardocent.com/ardocent/not-allowed-nipa/"
+        );
+    </script>
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FScanner_mini_white.png?v=1617591526789"
+      />
+    </div>
+
+    <div class="arjs-loader">
+      <div>
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-text
+        value="해당지역의 지도와 글씨를
+                  카메라로 비추세요"
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1 1 1"
+        position="-1.2 0 -12"
+      ></a-text>
+      <a-assets>
+        <!--img id="back"
+        src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Flog-out.png?v=1639062702102"/>
+        <img
+          id="home"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fhome-blue.png?v=1639062141994"/>
+        <img id="video"
+        src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fplay-blue1.png?v=1639062141801"/-->
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/nipa-map-final"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="ICT 이노베이션스퀘어 AR"
+          color="#ffffff"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5.5 5.5 5.5"
+          position="-6.5 13 -35"
+        ></a-text>
+        <a-text
+          value="권역을 터치해서 ICTIS 현황을 확인할 수 있습니다."
+          color="#ffffff"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="3 3 3"
+          position="-7 -11 -35"
+        ></a-text>
+
+        <a-entity
+          id="map1"
+          scale="0.03 0.03 0.03"
+          position="-2 1.7 -40"
+          rotation="0 0 0"
+          gltf-model="./image/seoul-color.glb"
+          shadow="receive: true"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          navigate-on-click="url: https://ardocent.com/aframe/nipa/ns.html"
+        >
+        </a-entity>
+        <a-text
+          value="서울"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5 5 5"
+          position="-7 5.5 -35"
+        >
+        </a-text>
+
+        <a-entity
+          id="map2"
+          class="clickable"
+          scale="0.03 0.03 0.03"
+          position="0 -6 -35"
+          rotation="0 0 0"
+          gltf-model="./image/db-color.glb"
+          shadow="receive: true"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          navigate-on-click="url: https://ardocent.com/aframe/nipa/ndb.html"
+        >
+        </a-entity>
+        <a-text
+          value="동북권"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5 5 5"
+          position="3.5 5.5 -35"
+        >
+        </a-text>
+
+        <a-entity
+          id="map3"
+          class="clickable"
+          scale="0.03 0.03 0.03"
+          position="-2.5 -2.8 -45"
+          rotation="0 0 0"
+          gltf-model="./image/cc-color.glb"
+          shadow="receive: true"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          navigate-on-click="url: https://ardocent.com/aframe/nipa/ncc.html"
+        >
+        </a-entity>
+        <a-text
+          value="충청권"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5 5 5"
+          position="-7 1.5 -35"
+        >
+        </a-text>
+
+        <a-entity
+          id="map4"
+          class="clickable"
+          scale="0.03 0.03 0.03"
+          position="-3 -9 -35"
+          rotation="0 0 0"
+          gltf-model="./image/hn-color.glb"
+          shadow="receive: true"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          navigate-on-click="url: https://ardocent.com/aframe/nipa/nhn.html"
+        >
+        </a-entity>
+        <a-text
+          value="호남권"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5 5 5"
+          position="-7 -3.2 -35"
+        >
+        </a-text>
+
+        <a-entity
+          id="map5"
+          class="clickable"
+          scale="0.03 0.03 0.03"
+          position="2 -7 -35"
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fdn-color.glb?v=1639319800258"
+          shadow="receive: true"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          navigate-on-click="url: https://ardocent.com/aframe/nipa/ndn.html"
+        >
+        </a-entity>
+        <a-text
+          value="동남권"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+          scale="5 5 5"
+          position="2.7 -3.5 -35"
+        >
+        </a-text>
+
+        <a-entity camera></a-entity>
+      </a-nft>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="5 5 1"
+      >
+      </a-light>
+      <a-light type="ambient" intensity="1.8"></a-light>
+    </a-scene>
+  </body>
+</html>

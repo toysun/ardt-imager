@@ -1,0 +1,312 @@
+<html>
+  <head>
+    <title>거북선 외경</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!--meta name="viewport" content="width=device-width, user-scalable=no" /-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="./js/aframe-ar-nft-3.js"></script-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <!--script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script-->
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+   
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+    
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+     <script src="navigate-on-click.js"></script>
+    
+    <script src="components.js"></script>
+    <script src="cursor_m.js" defer></script>
+    <script src="vidhandler.js"></script>  
+   
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    
+    <script src="aframe-troika-text.js"></script>
+
+    <link rel="stylesheet" href="style-t.css" />
+    
+ </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+   
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/turtleship-scanner.png?v=1689583774591"
+      />
+    </div>
+
+    <div class="arjs-loader">
+      <div>
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+    <a-text
+        id="sc_text"
+        value="카메라를 거북선선체의 
+        측변에 맞춰 주세요."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1.15 1.15 1.15"
+        position="-1 -1.5 -12"
+        text-align: center;
+      ></a-text>      
+
+    <a-assets>
+       
+        <!--img id="playbtn"
+          src="./image/play-button-white-hollow.png"/-->
+
+
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.me/84219226-bfa8-4881-9a68-88e43606a2ce/turtle-ship.glb?v=1689583523897"
+        ></a-asset-item>
+
+
+        <video
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/sea-battle-s.mp4?v=1689583706674"
+          type="video/mp4"
+          id="vid"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline         
+          playsinline
+        ></video>     
+       
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url="https://raw.githubusercontent.com/toysun/sg/master/imarker/turtle-ship-outer-o"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+     
+      <!--a-entity
+          geometry="primitive: circle; radius: 10"
+          material="side: double; color: #FFFFFF; transparent: true; opacity: 0.1"
+          ioshandler
+          scale="0.2 0.2 0.2"
+          position="0 -1 -4.2"
+          rotation="180 0 0"
+          id="VPlayBtn"
+          class="clickable"
+          visible="false" 
+          animation-mixer
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity-->
+      <a-entity
+          geometry="primitive: circle; radius: 10"
+          material="side: double; color: #FFFFFF; transparent: true; opacity: 0.1"
+          ioshandler
+          position="0 -1 -4.2"
+          rotation="180 0 0"
+          id="VPlayBtn"
+          class="clickable"
+          visible="false" 
+          animation-mixer
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity>
+
+        <!--a-entity
+          scale="0.008 0.008 0.008"
+          position="0 -1 -20"
+          rotation="20 20 0"
+          id="whlogo"
+          visible="true"
+          gltf-model="#playbtn" 
+          shadow="receive: true"
+          gesture-handler
+          animation-mixer
+        >
+        </a-entity-->
+        <a-entity
+          scale="0.7 0.7 0.7"
+          position="0 -2 -20"
+          rotation="20 20 0"
+          id="whlogo"
+          visible="true"
+          gltf-model="#playbtn" 
+          shadow="receive: true"
+          gesture-handler
+          animation-mixer
+          animation="property: rotation; to: 0 -360 0; loop: true; dur: 20000"
+        >
+        </a-entity>
+        
+        <a-entity
+          id="VideoModel"
+          geometry="primitive: plane; height: 3.5; width: 3.5"
+          material="shader: chromakey; color: 0.1 0.9 0.2; transparent:true;opacity: 0.1;src:#vid"
+          animation="property: rotation; dur: 300; delay: 200; loop: false"
+          vidhandler
+          position="-0.03 0 -4.2"
+          rotation="0 360 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          visible="false"
+        >
+        </a-entity>
+
+       <a-text
+          id="NFtext"
+          value="거북선 출전"
+          color="#FFFFFF"
+          shader="msdf"    
+          scale="0.75 0.75 0.75"
+          position="-0.3 -0.55 -4.2"
+        ></a-text>
+
+      <a-entity
+        light="color: #FFF; intensity: 0.5"
+        animation="property: position; from: -1 0 1; to: 1 0 1; loop: true; dir: alternate; dur: 200; easing: easeInOutQuad;"
+      ></a-entity>
+      <a-troika-text
+        position="0 0.5 -2"
+        scale="0.5 0.5 0.5"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+        color="#008080"
+        value="임진강 거북선"
+        material="shader: standard; metalness: 0.8; roughness: 0.6;"
+      ></a-troika-text>
+  
+              <a-entity
+        id="scene2"
+        scale="3 3 3"
+        position="0 -0.5 -1"
+        rotation="0 10 0"
+        gltf-model="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/seagulls.glb?v=1662081935010"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+      >
+      </a-entity>
+      <!--a-entity
+        id="scene1"
+        scale="1 1 1"
+        position="0 0.5 -4.1"
+        rotation="180 0 0"
+        gltf-model="./image/water_waves.glb"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+      >
+      </a-entity-->
+              <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/KI1aOUxiTgLFuYt7er/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane-->
+       <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="whlogo"
+        position="0 0 160"
+      >
+      </a-light>
+
+       <a-entity camera position="0 0 0" look-controls="enabled: false"></a-entity>
+       <a-light type="ambient" intensity="0.2"></a-light>
+      </a-nft>
+    </a-scene>
+  </body> 
+   <script>
+    document.getElementById("VPlayBtn").addEventListener("click", function() {
+      var VideoPlayBtn = document.getElementById("VPlayBtn");
+      var VideoModel = document.getElementById("VideoModel");
+      var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+      this.vid = document.querySelector("#vid");
+
+      VideoPlayBtn.setAttribute("visible", false); 
+      VideoPlayBtn.style.display = "none";
+      whlogo.setAttribute("visible", false); 
+      whlogo.style.display = "none";
+      NFtext.setAttribute("visible", false); 
+      NFtext.style.display = "none";
+      
+      VideoModel.setAttribute("visible", true); 
+      VideoModel.style.display = "inline-block";
+      this.vid.play();
+    });
+  </script>
+</html> 

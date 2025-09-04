@@ -1,0 +1,348 @@
+<html>
+  <head>
+    <title>AR Image Tracking - ARDOCENT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+
+    <script src="/gesture-detector.js"></script>
+    <script src="/gesture-handler.js"></script>
+
+    <script src="/navigate-on-click.js"></script>
+    <script src="/material.js"></script>
+    <script src="/event.js"></script>
+    <script src="/components.js"></script>
+    <script src="/cursor_m.js" defer></script>
+    <script src="/vidhandler.js"></script>
+    <script src="/ioshandler.js"></script>
+    <script src="/mobile-detect.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://raw.githubusercontent.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
+    <script>
+      var mobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(
+        navigator.userAgent.toLowerCase()
+      );
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var Browser = navigator.userAgent.toLowerCase();
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 124) {
+            if (Browser.indexOf("naver") !== -1) {
+              location.href = "ftp://117.52.89.118/pub/milk.html";
+            }
+            if (self.name != "reload") {
+              self.name = "reload";
+              self.location.reload(true);
+            } else self.name = "";
+          } else {
+            location.href = "ftp://117.52.89.118/pub/milk.html";
+          }
+        } else if (Browser.indexOf("chrome") < 90) {
+          if (self.name != "reload") {
+            self.name = "reload";
+            self.location.reload(true);
+          } else self.name = "";
+        } else {
+          location.href =
+            "intent://bit.ly/3mPfmG9#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      } 
+      else window.location.replace("https://www.ardocent.com/ardocent/pad/");
+    </script>
+        <script>
+      AFRAME.registerComponent("foo", {
+        init: function() {
+          this.el.addEventListener("model-loaded", e => {
+            console.log(e);
+            let model = this.el.getObject3D("mesh");
+            model.traverse(function(node) {
+              if (!node.material) return;
+
+              var tmp = node.material
+              node.material = new THREE.MeshStandardMaterial({
+                skinning: true,
+                map: node.material.map
+              });
+              node.material.needsUpdate = true;
+              tmp.dispose()
+            });
+          });
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" type="text/css" href="/button.css" />
+   
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(241, 89, 33, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body onload="check_module()" style="margin : 0px; overflow: hidden;">
+   <form action="https://ardocent-gif.glitch.me/nipa-intro.html">
+    <div class="backward">
+      
+       <input
+        id="back"
+        type="image"
+        alt="Submit"
+        class="backwardImage"
+        style="position: relative; z-index:99999;"     
+        src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fleft-arrow%20(2).png?v=1639157159665"
+      />
+      
+      </div>
+      </form>
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FScanner_mini_white.png?v=1617591526789"
+      />
+    </div>
+
+    <div class="arjs-loader">
+      <div>
+        <p>이미지 인식중입니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #F15921"
+      ar-session-notifier
+      cursor-modifier
+      raycaster="objects: .clickable"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-assets>
+
+        <img id="back1"
+        src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Flog-out.png?v=1639062702102"/>
+        <img
+          id="home"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fhome-blue.png?v=1639062141994"/>
+        <img id="video"
+        src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fplay-blue1.png?v=1639062141801"/>
+             
+        <!--video
+          src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FShake%20Things%20Up%20a%20Little%20%E2%80%93%20Starbucks%20Spring%202021.mp4?v=1617591862591"
+          type="video/mp4"
+          preload="auto"
+          id="vidnew"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video-->
+
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        emitevents="true"
+        type="nft"
+        url="https://raw.githubusercontent.com/toysun/sg/master/imarker/dosanri_1"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        
+        <a-entity
+          id="scene4"
+          scale="50 50 50"
+          position="0 20 -100"
+          rotation="0 0 0"
+          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/hotpepper.glb?v=1645503675079"
+          shadow="receive: true"
+          animation-mixer
+          gesture-handler
+          animation="property: rotation; dur: 10000;
+                       to: 0 360 0; loop: true"
+          animation__2="property: position; dur: 15000;
+                       to: -0.5 0 -10; loop: false"
+                  foo
+        >
+        </a-entity>
+
+        </a-nft>
+      
+        <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        emitevents="true"
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/front_1"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+
+        
+        <a-entity
+          id="scene1"
+          scale="100 100 100"
+          position="0 20 -20"
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/redgan.glb?v=1645498123308"
+          shadow="receive: true"
+          animation-mixer
+          gesture-handler
+          animation="property: rotation; dur: 10000;
+                       to: 0 360 0; loop: true"
+          animation__2="property: position; dur: 15000;
+                       to: -2 0 -10; loop: false"
+                  foo
+        >
+        </a-entity>
+        <!--a-entity
+          id="scene2"
+          scale="200 200 200"
+          position="0 20 -20"
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/bandal.glb?v=1645498215528"
+          shadow="receive: true"
+          animation-mixer
+          gesture-handler
+          animation="property: rotation; dur: 10000;
+                       to: 0 360 0; loop: true"
+          animation__2="property: position; dur: 15000;
+                       to: 0.5 1.5 -10; loop: false"
+                  foo
+        >
+        </a-entity>
+        <a-entity
+          id="scene3"
+          scale="300 300 300"
+          position="0 20 -20"
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/garak.glb?v=1645498249248"
+          shadow="receive: true"
+          animation-mixer
+          gesture-handler
+          animation="property: rotation; dur: 10000;
+                       to: 0 360 0; loop: true"
+          animation__2="property: position; dur: 15000;
+                       to: 1.5 -1.5 -10; loop: false"
+                  foo
+        >
+        </a-entity-->
+ 
+        </a-nft>
+
+        <a-text
+          value="3D 피사체를 터치해서
+                 AR 체험을 해보세요"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+          scale="1.5 1.5 1.5"
+          position="-1.5 -3.5 -12"
+        ></a-text>
+
+
+        <button class="button" id="mybutton"></button>
+        <a-entity camera></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="5 5 1"
+      >
+      </a-light>
+      <a-light type="ambient" intensity="2.9"></a-light>
+    </a-scene>
+  </body>
+</html>
