@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Siheung Premium Outlet Navigation</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!--script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script-->
+    <!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+    
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+     <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <!--script>
+      THREEx.ArToolkitContext.baseURL =
+        "https://raw.githack.com/jeromeetienne/ar.js/master/three.js/";
+    </script-->
+    <!--style>
+      #debug {
+        position: fixed;
+        z-index: 99999;
+        background-color: #fffff;
+        padding: 10px;
+        top: 0;
+        left: 0;
+        display: block;
+      }
+    </style-->
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <div id="debug">
+    <a-scene 
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-camera 
+          id="secondary-cam"
+          gps-camera="simulateLatitude: 37.37949819161374; simulateLongitude: 126.73771847818429; maxDistance: 30; minDistance:10;"
+          active="true" look-controls="enabled: true" arjs-look-controls="smoothingFactor: 0.1"  >        
+      <a-entity 
+            id="pointer" 
+            look-at="#secondary-cam"                
+            gltf-model="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/kneel-pointing-mickey.glb?v=1666255005841" 
+            gps-entity-place="latitude: 37.380098715892245; longitude: 126.73710667814309;"            
+            animation-mixer
+            scale="5 5 5"
+           position = "0 5 -100"
+               
+        >
+        </a-entity>
+      <a-text
+        id="text"
+        value=""
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+        look-at="#secondary-cam"
+        scale="10 10 10"
+        position = "-10 7 -50"        
+      ></a-text>
+       </a-camera>
+      
+    </a-scene>
+    </div>
+    
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true; alpha: true"
+    >
+      
+      
+      
+     
+      <!--a-text
+        id="text"
+        value=""
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+        look-at="#camera"
+        scale="5 5 5"
+        position = "0 10 -100"
+        gps-entity-place="latitude: 37.380098715892245; longitude: 126.73710667814309;"
+      ></a-text-->
+      
+      
+      <!--a-entity id="starbucks" gltf-model="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/kneel-pointing-mickey.glb?v=1666255005841" 
+                 </a-camera>  gps-entity-place="latitude: 37.37965926148; longitude: 126.73721660415409;" 
+                
+                position = "-500 1.5 -600"
+            look-at="#camera" animation-mixer
+            scale="0.01 0.01 0.01">
+        </a-entity-->
+      <a-camera 
+        id="camera"
+        gps-camera="simulateLatitude: 37.37965926148; simulateLongitude: 126.73721660415400; maxDistance: 30; minDistance:10;"
+        rotation-reader
+        active="true"
+        look-controls-enabled="false"
+        arjs-look-controls="smoothingFactor: 0.1"     
+      > 
+        <a-entity id="npoint" 
+             gps-entity-place="latitude: 37.380098715892245; longitude: 126.73710667814309;"      
+            look-at="#camera"
+            scale="30 30 30"
+            color="blue"
+             position = "0 20 -100"
+             visible="false"
+        >
+        </a-entity>
+      <a-box
+        id="starbucks"
+        color="yellow"
+             look-at="#camera"
+        position="0 1.4 100"
+             scale ="0.1 0.1 0.1"
+        gps-entity-place="latitude: 37.37965926148; longitude: 126.73721660415409;"
+        ></a-box>
+      
+      
+      </a-camera>
+
+      
+      <a-entity id="point_light_1" light="type: point; intensity: 7; castShadow: false" ></a-entity>
+    </a-scene>
+    
+    <script> 
+      window.addEventListener("load", () => {
+        const text = document.getElementById("text");
+        const camera = document.getElementById("camera");
+     //   const Pointer = document.getElementById("pointer");
+     //   const distanceMsg = Pointer.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
+        const distanceMsg = document.querySelector('#npoint').getAttribute('distanceMsg');
+        
+          text.setAttribute(
+            "value",
+            "남은 거리: " + distanceMsg
+          );
+        });
+     
+    </script>
+    
+  </body>
+</html>
