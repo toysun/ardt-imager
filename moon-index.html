@@ -1,0 +1,212 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="./css/font-awesome-6.2.0.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>달나라 여행 AR체험</title>
+
+    <script src="./js/mobile-check.js"></script>
+ 
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :colors {
+        color: hsl(228, 12%, 48%);
+        color: hsl(158, 36%, 37%);
+        color: hsl(212, 21%, 14%);
+      }
+      .container {
+        width: 100%;
+        height: 95vh;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .card {
+        width: 95%;
+        height: 1000px;
+        background-color: black;
+        display: flex;
+        border-radius: 10px;
+      }
+      .box-1 {
+        width: 50%;
+        height: 100%;
+        background: url(./image/wonder-main2.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 10px 0 0 10px;
+      }
+
+      .box-2 {
+        width: 50%;
+        height: 100%;
+        margin: 20px;
+      }
+      p {
+        color: white;
+        font-size: 14px;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        margin: 20px 0;
+      }
+      #letter {
+        letter-spacing: 0.5em;
+      }
+      h2 {
+        color: white;
+        font-size: 40px;
+        font-family: "Montserrat", sans-serif;
+      }
+      .Price {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 50px;
+      }
+      h4 {
+        color: hsl(158, 36%, 37%);
+        font-size: 50px;
+      }
+      button {
+        font-size: 20px;
+        background-color: hsl(158, 36%, 37%);
+        color: white;
+        padding: 20px 12px;
+        text-align: center;
+        width: 100%;
+        font-weight: 700;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: hsl(158, 35%, 33%);
+      }
+      i {
+        margin-right: 10px;
+      }
+      @media only screen and (max-width: 700px) {
+        .card {
+          flex-direction: column;
+          margin: 20px;
+          width: 100%;
+          height: 90vh;
+          border-radius: 10px;
+        }
+        .box-1 {
+          width: 100%;
+          height: 25%;
+          background: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/earth-sun-moon.jpg?v=1683162191992);
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          border-radius: 10px 10px 0 0;
+        }
+        .box-2 {
+          width: 100%;
+          padding: 5px;
+          margin: 5;
+          position: relative;
+        }
+        h2 {
+          font-size: 30px;
+        }
+
+        h3 {
+          color: white;
+          font-family: "Montserrat", sans-serif;
+          font-size: 16px;
+        }
+        p {
+          margin: 10px;
+        }
+        .price {
+          margin: 0px;
+        }
+        button-1 {
+          position: absolute;
+          top: 50%;
+          width: 95%;
+        }
+        button-2 {
+          position: absolute;
+          top: 80%;
+          width: 95%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="box-1"></div>
+        <div class="box-2">
+          <p id="letter">Moon Travel</p>
+          <h2>달나라 여행 AR 체험</h2>
+          <p>
+            아래 버튼을 눌러 재미있는 달나라 여행을  떠나 보세요.
+          </p>
+           &nbsp
+          
+          <button type="button" class="button-1" onclick="window.open('./wonder-image.html','_self');">
+            <img
+              src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/moon-image.png?v=1683616189055"
+              alt=""
+            />
+                &nbsp
+           <h3>
+             달이미지 인식하기
+            </h3>
+          </button>
+          &nbsp
+                    <button type="button" class="button-1" onclick="window.open('./wonder-image.html','_self');">
+            <img
+              src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/moon-party.png?v=1683616189866"
+              alt=""
+            />
+                &nbsp
+           <h3>
+             달나라 댄스파티
+            </h3>
+          </button>
+          &nbsp
+          <button type="button" class="button-2" onclick="window.open('./wonder-face.html','_self');">
+            <img
+              src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/astronaut.png?v=1683616190679"
+              alt=""
+            />
+                &nbsp
+           <h3>
+             달나라 우주인 체험
+            </h3>
+          </button>
+           &nbsp
+           &nbsp
+          <p>
+          <img
+              src="./image/user-guide.png"
+              alt=""
+            />&nbsp * 지원기기 : 안드로이드 크롬브라우저, 아이폰 사파리브라우저 (일부 기기의 경우 기기 설정에 따라 작동에 지장이 있을 수 있습니다)
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

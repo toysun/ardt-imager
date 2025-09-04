@@ -1,0 +1,989 @@
+<html>
+  <head>
+    <title>목아박물관 달나라 여행 AR</title>
+    <meta charset="utf-8" />
+    <!--meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    /-->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no," />
+
+    <!--meta name="viewport" content="width=device-width, user-scalable=no" /-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script-->
+     <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script-->
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-ar-nft-3.js"></script>
+    <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script-->
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+     <!--script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script-->
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-template-component.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-gif-shader.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-chromakey.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-orbit-controls-component.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/navigate-on-click.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>
+    
+    <!--script src=" https://unpkg.com/browse/aframe-particle-system-component@1.1.3/dist/aframe-particle-system-component.min.js"></script-->
+    
+   
+    <!--script src="https://ardocent.com/aframe/wonder/js/components.js"></script-->
+    <script
+      src="https://ardocent.com/aframe/wonder/js/cursor_m.js"
+      defer
+    ></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/vidhandler.js"></script-->
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-text-geometry.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-troika-text.js"></script>
+    <!--script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script-->
+    <script src="gesture-detector.js"></script>
+    <script src="gesture-handler.js"></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/mobile-check.js"></script-->
+   <!--script>
+     
+    const nextButtonComponent = () => ({
+    init() {
+    const animationList = ['Idle', 'Mace', 'Sword', 'Cannon']
+    const model = document.getElementById('balloon')
+    const nextButton = document.getElementById('nextbutton')
+    nextButton.style.display = 'block'
+    let idx = 1  // Start with the 2nd animation because the model starts with idle animation
+    const nextAnimation = () => {
+      model.setAttribute('animation-mixer', {
+        clip: animationList[idx],
+        loop: 'repeat',
+        crossFadeDuration: 0.4,
+      })
+      idx = (idx + 1) % animationList.length
+    }
+    nextButton.onclick = nextAnimation  // Switch to the next animation when the button is pressed.
+  }
+})
+    
+export {nextButtonComponent}
+
+    </script-->
+    <script>
+    window.onload = function() {
+        AFRAME.registerComponent('soundhandler', {
+            init: function () {
+                var marker = this.el;
+
+                this.sound = document.querySelector("#aud");
+
+                marker.addEventListener('markerFound', function () {
+                    this.sound.play();
+                }.bind(this));
+    
+        marker.addEventListener('markerLost', function() {
+            this.sound.pause();
+            this.sound.currentTime = 0;
+        }.bind(this));
+            }
+        });
+    };
+</script>
+   
+   
+    <link rel="stylesheet" href="style-gundam.css" />
+    <style>
+      {
+  width: 100vh;
+}
+    	body{
+	  background:#000;
+	}
+	.arjs-loader{
+	  width:10em;
+	  height:10em;
+	  border-radius:100%;
+	  margin:100px auto;
+	  border:1.1em solid rgba(255,255,255,.2);
+	  border-left-color:#fff;
+	  -webkit-animation: load 1.1s infinite linear; /* Chrome, Safari, Opera */ 
+      animation: load 1.1s infinite linear;
+	}
+
+	@-webkit-keyframes load{
+	  0%{
+	    -ms-transform: rotate(7deg); /* IE 9 */
+	    -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+	    transform: rotate(7deg);
+	  }
+	  100%{
+	    -ms-transform: rotate(360deg); /* IE 9 */
+	    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+	    transform: rotate(360deg);
+	  }
+	}
+	@keyframes load{
+	  0%{
+	    -ms-transform: rotate(7deg); /* IE 9 */
+	    -webkit-transform: rotate(7deg); /* Chrome, Safari, Opera */
+	    transform: rotate(7deg);
+	  }
+	  100%{
+	    -ms-transform: rotate(360deg); /* IE 9 */
+	    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+	    transform: rotate(360deg);
+	  }
+	}
+
+    </style>
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+#nextbutton {
+  width: 40vw;
+  height: 7vh;
+  position: absolute;
+  bottom: 6vh;
+  left: 30vw;
+  background-color: #AD50FF;
+  border: 0.2em solid white;
+  text-align: center;
+  color: #FFF;
+  border-radius: 100px;
+  display: none;
+  z-index: 99999;
+}
+#nextbutton:active {
+  background-color: white;
+  color: #AD50FF;
+}
+h2 {
+  font-size: 1.3em;
+  text-align: center;
+  font-family: monospace;
+}
+    </style>
+    
+
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <!--div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://ardocent.com/aframe/wonder/image/wonder-ticket-remover.png"
+      />
+    </div-->
+
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/moon-crescent-w.png?v=1683602778800"
+      />
+    </div>
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+<div class="arjs-loader">
+</div>
+    <!--div class="arjs-loader">
+      <div>
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div-->
+    <div class="image-target" id="markerinfo">
+      
+        <p>카메라를 달에 맞추면<br>
+       달나라로 여행을 다녀올 수 있습니다.</p>
+    
+    </div>
+<!--div id="nextbutton">
+  <h2>Next Animation</h2>
+</div-->
+    <!--button id="nextbutton">Next Animation</button-->
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"    
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+      next-button
+    >
+      <!--a-text
+        id="sc_text"
+        value="    카메라를 상자의
+        건담모형에 맞춰 주세요."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1.5 1.5 1.5"
+        position="-1.5 -1.5 -12"
+        text-align="center"
+      ></a-text-->
+
+      <a-assets>
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/door.glb?v=1683702552112"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/IBY%20-%20Sultans%20Swing.mp3?v=1683164819594"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+        <a-asset-item
+          id="firework"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/firework.glb?v=1663132402330"
+        ></a-asset-item>
+        <a-asset-item
+          id="alien"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/dancing_alien.glb?v=1683123456741"
+        ></a-asset-item>
+                <a-asset-item
+          id="cute-r"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/rabbit_animation_cute%20(2).glb?v=1683236044825"
+        ></a-asset-item>
+        <a-asset-item
+          id="blackhole"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/black_hole.glb?v=1662961968981"
+        ></a-asset-item>
+        <a-asset-item
+          id="ufo"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/flying_saucer.glb?v=1662942417104"
+        ></a-asset-item>
+        <a-asset-item
+          id="lazor-portal"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Flazor-portal.glb?v=1618149396871"
+        ></a-asset-item>
+        <a-asset-item
+          id="astro"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/hip_hop_dancing.glb?v=1683123462670"
+        ></a-asset-item>
+        <a-asset-item
+          id="apollo"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apollo_11_lunar_module.glb?v=1683127133785"
+        ></a-asset-item>
+        <a-asset-item
+          id="w-rabbit"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/rabbit_remesh_retopo_painted.glb?v=1683124190514"
+        ></a-asset-item>
+                <a-asset-item
+          id="confetti"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confettiv2.glb?v=1668304368875"
+        ></a-asset-item>
+        <a-asset-item
+          id="confetti2"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        ioshandler
+        markhandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url=" https://raw.githubusercontent.com/toysun/sg/master/imarker/moka-moon"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+
+      >
+        <a-entity
+          scale="0.01 0.01 0.01"
+          position="0 2.7 -12"
+          rotation="60 0 0"
+          id="PlayBtn"
+          visible="true"
+          gltf-model="#playbtn"
+          gesture-handler
+          animation-mixer
+          class="clickable"
+        >
+        </a-entity>
+<a-entity
+        id="player"
+        position="0 3.6 35"
+        camera
+        wasd-controls="acceleration: 15;"
+        look-controls
+        material="opacity: 0.0; transparent: true;"
+        animation="property: position; from: 0 3.6 35; to: 0 1.6 -20; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: false"
+        animation__1="property: rotation; to: 0 360 0; dur: 25000; delay: 50000; loop: true"    
+      >
+        
+      <a-cursor position="0 1 -0.05" scale=".04 .04 1" material="opacity: 0.0; transparent: true;"></a-cursor>
+        <!--For Collision Detection-->
+        <a-cylinder radius="0.75"></a-cylinder>
+      </a-entity>
+            <!--a-entity
+        geometry="primitive: torus; radius: 5; radiusTubular: 1.2; arc: 180"
+        position="0 -2.8 -2"
+        rotation="0 90 0"
+      ></a-entity-->
+      <a-plane
+        id="plane1"
+        height="20"
+        width="40"
+        position="0 0 -9"
+        transparent="true"
+        opacity="0"
+        visible="false"
+      >
+  
+      <!-- portal 360 with an image -->
+      <!-- <a-portal-door url='images/360_topaz.png' position='0 0 0' scale='1 1 1' rotation='0 90 0'><a-portal-door> -->
+
+      <!-- portal 360 with an video -->
+      <!--<a-portal-door url='videos/pano.webm' position='0 0 0' scale='2 2 2' rotation='0 90 0'><a-portal-door>-->
+      <a-portal-door
+        hit-testing-enabled="true"
+        url="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2F360_topaz.png?v=1617066095563"
+        position="0 -0.5 16.2"
+        scale="3 3 3"
+        rotation="0 0 0"
+      >
+      </a-portal-door>
+      <!--Portal-->
+
+      <a-sky
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/earth%26sun-long.jpg?v=1683163179870"
+      ></a-sky>
+      <a-box
+        scale="20 0.1 40"
+        position="0 -0.5 -4.5"
+        color="#8083A2"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moon-inspired-textures.jpg?v=1683005758161"
+        shadow="receive: true"
+      ></a-box>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#lazor-portal"
+        id="feel1"
+        position="0 -0.5 15.9"
+        rotation="180 90 180"
+        scale=".6 .90 .6"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#astro"
+        id="feel2"
+        position="-3 -0.4 5"
+        rotation="0 15 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#blackhole"
+        id="feel7"
+        position="0 1 -45"
+        rotation="0 180 0"
+        scale=".3 .3 .3"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#firework"
+        id="feel8"
+        position="0 1 -45"
+        rotation="0 180 0"
+        scale=".3 .3 .3"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#ufo"
+        id="feel5"
+        position="1 -0.4 -9"
+        rotation="0 180 0"
+        scale=".8 .8 .8"
+        animation-mixer
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#alien"
+        id="feel6"
+        position="0 -0.4 -22"
+        rotation="0 0 0"
+        scale="1.5 1.5 1.5"
+        animation-mixer
+        shadow="receive: true"
+      >
+      </a-entity>
+              <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#cute-r"
+        id="feel11"
+        position="6 -0.4 -22"
+        rotation="0 0 0"
+        scale="5.5 5.5 5.5"
+        animation-mixer
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#apollo"
+        id="feel3"
+        position="6 3 2"
+        rotation="0 -45 0"
+        scale=".05 .05 .05"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#w-rabbit"
+        id="feel4"
+        position="-4 -0.4 -12.7"
+        rotation="0 0 0"
+        scale="5 5 5"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+              <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#confetti1"
+        id="feel9"
+        position="4 -0.4 -10.7"
+        rotation="0 45 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#confetti2"
+        id="feel10"
+        position="-4 -0.4 -12.7"
+        rotation="0 180 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+
+      <a-entity light="type: ambient; intensity: 0.55;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 4 10"
+      >
+      </a-light>
+                </a-plane>
+        <!--a-text
+          id="NFtext"
+          value="Click Start"
+          color="#FFFFFF"
+          shader="msdf"
+          visible="true"
+          scale="0.75 0.75 0.75"
+          position="-0.4 -0.5 -3.2"
+        ></a-text-->
+        <a-troika-text
+          id="NFtext1"
+          position="0 1.2 -3.2"
+          scale="0.75 0.75 0.75"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/UrbanJungle-yGnq.ttf?v=1660145839686"
+          color="#fff"
+          curve-radius="2"
+          value="Click Door Start"
+        ></a-troika-text>
+        
+ <a-entity
+        id="balloon"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/launch-pad.glb?v=1682994788600"
+        scale="0.06 0.06 0.06"
+        rotation="0 5 0"
+        position="0 1.4 -6"
+        visible="false"
+        animation-mixer
+        shadow="receive: false"
+
+      ></a-entity>
+      <a-entity
+        id="balloon1"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/nasa-rocket-1.glb?v=1682993295812"
+        scale="0.13 0.13 0.13"
+        rotation="0 5 0"
+        position="-0.1 0 -5"
+        visible="false"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: position; from: -0.1 0 -5; to: 0 6 -4; startEvents: rocket; delay: 8000; dur: 20000; loop: false"
+      >
+                       <!--a-entity 
+                id="Particle"
+                position="0.5 0 -5" 
+                rotation="180 0 0"
+                visible="false"
+                particle-system="preset: default;
+                                 texture: https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/smokeparticle.png?v=1682996942280; 
+                                 color: #FACC2E, #BDBDBD; 
+                                 direction: -1;
+                                 duration: 30;
+                                 maxAge: 1;
+                                 particleCount: 10000;
+                                 size: 0.1;
+                                 positionSpread: 0.001 0.001 0.001;"
+                      animation="property: position; from: 0.5 0 -5; to: 0 6 -4; startEvents: smokeparticle; delay: 8000; dur: 20000; loop: false"
+                 ></a-entity--> 
+         <a-entity 
+                position="0.5 0 -5" 
+                rotation="180 0 0"
+                particle-system="preset: default;
+                                 texture: https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/smokeparticle.png?v=1682996942280; 
+                                 color: #FACC2E, #BDBDBD; 
+                                 direction: -1;
+                                 duration: 45;
+                                 maxAge: 1;
+                                 particleCount: 10000;
+                                 size: 0.1;
+                                 positionSpread: 0.001 0.001 0.001;"
+                      animation="property: position; to: 0 6 -4; delay: 8000; dur: 20000; loop: false"
+                 ></a-entity>
+      </a-entity>
+     
+      <a-entity
+        light="type: point; intensity: 0.9; castShadow: false"
+      ></a-entity>
+
+
+                      <a-entity
+          id="balloon2"
+          scale="0 0 0"
+          position="0 4.5 -7.5"
+          rotation="0 0 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.me/84219226-bfa8-4881-9a68-88e43606a2ce/moon-with-astro-alien-rabbit.glb?v=1682922160781"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 25000; delay: 500; loop: true"
+          animation__2="property: scale; to: 0.1 0.1 0.1; delay: 20000; dur: 10000; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+          mixin="orbit"
+                          >
+        <a-entity
+          id="balloon3"
+          scale="0.3 0.3 0.3"
+          position="15 0.5 2"
+          rotation="0 0 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/discovery-with-rabbit.glb?v=1682922484708"
+          shadow="receive: false"
+          animation-mixer
+          event-set__click="_target: a-entity; visible: true;"
+         
+        >
+        </a-entity>
+                               </a-entity>
+                <a-entity
+          id="balloon4"
+          scale="0 0 0"
+          position="-1.11 7.6 -15.35"
+          rotation="0 360 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/earth-real.glb?v=1682957004483"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: scale; to: 0.005 0.005 0.005; delay: 20000; dur: 10000; loop: false"
+          animation__1="property: scale; to: 0.01 0.01 0.01; delay: 30000; dur: 10000; loop: false"
+          animation__2="property: object3D.rotation.y; to: 180; delay: 5500; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: true;"
+                  > 
+
+      </a-entity>
+ 
+       <a-entity
+                 id="Aud"
+        sound="src: #aud"
+        visible ="false"
+        position="0 1.6 35"
+        play-sound-on-event="mode: toggle-stop; event: click"
+        geometry="primitive: sphere"
+      >
+      </a-entity>
+      <!--a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 2048;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: -7;
+                      shadowCameraBottom: 5;
+                      shadowCameraTop: 15;"
+        id="light"
+        target="balloon"
+        position="-1 3.6 10"
+      >
+      </a-light-->
+         <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="whlogo"
+          position="0 0 160"
+        >
+        </a-light>
+     <a-camera id="Camera"
+               animation="property: position; from: 0 1.6 0; to: 0 5 -4; startEvents: CameraStart; delay:8000; dur: 20000; loop: false"
+               rotation-reader
+               look-controls="enabled: false"> </a-camera>
+             <!--a-camera  
+               rotation-reader> </a-camera-->
+        <!--a-entity
+          camera
+          position="0 0 0"
+          look-controls="enabled: false"
+        ></a-entity-->
+        <a-light type="ambient" intensity="0.9"></a-light>
+      </a-nft>
+    </a-scene>
+ 
+  </body>
+
+
+  <script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+    var PlayBtn = document.getElementById("PlayBtn");
+    var Audio = document.querySelector("#aud");
+    var MarkerInfo = document.getElementById("markerinfo");
+    var MarkerFlag = "false";
+
+    /*
+    PlayBtn.addEventListener("click", function () {
+      MarkerInfo.style.display = "none";   
+      this.aud = document.querySelector("#aud");
+      
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      
+      var NFtext = document.getElementById("NFtext");
+      var nextButton = document.getElementById('nextbutton')
+      nextButton.style.display = 'block'
+
+      MarkerFlag = "true";
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+      
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+*/
+   function AudPause() {
+      Audio.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      Audio.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+ /*
+  AFRAME.registerComponent('next-button', {
+      
+    init() {
+    const animationList = ['Idle', 'Mace', 'Sword', 'Cannon']
+    const model = document.getElementById('balloon')
+    const nextButton = document.getElementById('nextbutton')
+  //  nextButton.style.display = 'block'
+    let idx = 1  // Start with the 2nd animation because the model starts with idle animation
+    const nextAnimation = () => {
+      model.setAttribute('animation-mixer', {
+        clip: animationList[idx],
+        loop: 'repeat',
+        crossFadeDuration: 0.4,
+      })
+      idx = (idx + 1) % animationList.length
+    }
+    nextButton.onclick = nextAnimation  // Switch to the next animation when the button is pressed.
+  }
+})
+     */
+AFRAME.registerComponent("markhandler", {
+  init: function() {
+    const marker = document.querySelector("#marker");
+ //   const nextButton = document.getElementById('nextbutton');
+    var Balloon = document.getElementById("balloon");
+    var Balloon1 = document.getElementById("balloon1");
+    var Balloon2 = document.getElementById("balloon2");
+    var Balloon3 = document.getElementById("balloon3");
+    var Balloon4 = document.getElementById("balloon4");
+    marker.addEventListener(
+      "markerFound",
+      function() {
+        MarkerInfo.style.display = "none";      
+        
+      PlayBtn.addEventListener("click", function () {         
+        
+  //    var NFtext = document.getElementById("NFtext");
+      var NFtext1 = document.getElementById("NFtext1");
+//      var nextButton = document.getElementById('nextbutton')
+//      nextButton.style.display = 'block'
+
+      MarkerFlag = "true";
+         
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      Balloon2.setAttribute("visible", true);
+      Balloon2.style.display = "inline-block";
+      Balloon3.setAttribute("visible", true);
+      Balloon3.style.display = "inline-block";
+      Balloon4.setAttribute("visible", true);
+      Balloon4.style.display = "inline-block";
+   //   NFtext.setAttribute("visible", false);
+   //   NFtext.style.display = "none";
+      NFtext1.setAttribute("visible", false);
+      NFtext1.style.display = "none";
+         
+      Audio.play();
+      document.querySelector("#balloon1").emit("rocket");   /* 추가된 부분 */
+   //   document.querySelector("#Particle").emit("smokeparticle");   /* 추가된 부분 */
+      document.querySelector("#Camera").emit("CameraStart");   /* 추가된 부분 */
+
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);  
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);  
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+    
+    if(MarkerFlag == "true") {
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      Balloon2.setAttribute("visible", true);
+      Balloon2.style.display = "inline-block";
+      Balloon3.setAttribute("visible", true);
+      Balloon3.style.display = "inline-block";
+      Balloon4.setAttribute("visible", true);
+      Balloon4.style.display = "inline-block";
+      
+      //nextButton.style.display = 'block';
+      Audio.play();
+
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);  
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);  
+      
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    }
+          
+      }.bind(this)
+    );
+
+    marker.addEventListener(
+      "markerLost",
+      function() {
+        MarkerInfo.style.display = 'inline-block';
+   //     nextButton.style.display = 'none';
+        AudPause();
+      }.bind(this)
+    );
+  }
+});
+
+    
+</script> 
+    
+</html>

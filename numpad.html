@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width"/>
+        <!--meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /-->
+    <!--meta name="viewport" content="width=device-width, initial-scale=1.0" /-->
+    <title>숫자 패드</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+    <!-- Include font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,400i"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Include Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="numpad.css" />
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#irNO").text("");
+        $(".js-tab-content").hide();
+        $(".js-tab-content:first").show();
+        $(".js-tab a").click(function (event) {
+          event.preventDefault(); //주소에 #숨김
+          $(this).parent().addClass("current");
+          $(this).parent().siblings().removeClass("current");
+          var tab = $(this).attr("href");
+          $(".js-tab-content").not(tab).css("display", "none");
+          $(tab).fadeIn();
+        });
+      });
+
+      function setArticleText(articleNum) {
+        var irNo = $("#irNO").text();
+        irNo = irNo + articleNum;
+        $("#irNO").text(irNo);
+      }
+
+      function setRemove() {
+        var irNo = $("#irNO").text();
+        if (irNo.length == 0) {
+          return;
+        }
+
+        irNo = irNo.substring(0, irNo.length - 1);
+        $("#irNO").text(irNo);
+      }
+
+      
+      function setPlay() {
+        var curLangCd = "KR";
+
+        var find = false;
+        var irNo = $("#irNO").text();
+        
+        var data = {
+          success: true,
+          errorCode: 0,
+          resultBody: {
+            articleList: [
+              {
+                displayNo: "1",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/a-1.mp3",
+              },
+              {
+                displayNo: "2",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/a-2.mp3",
+              },
+              {
+                displayNo: "3",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/a-3.mp3",
+              },
+              {
+                displayNo: "4",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/a-4.mp3",
+              },
+              {
+                displayNo: "5",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/B-1.mp3",
+              },
+              {
+                displayNo: "6",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-2.mp3",
+              },
+              {
+                displayNo: "7",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-3.mp3",
+              },
+              {
+                displayNo: "8",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-4.mp3",
+              },
+              {
+                displayNo: "9",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-5.mp3",
+              },
+              {
+                displayNo: "10",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-6.mp3",
+              },
+              {
+                displayNo: "11",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-7.mp3",
+              },
+              {
+                displayNo: "12",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-8.mp3",
+              },
+              {
+                displayNo: "13",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-9.mp3",
+              },
+              {
+                displayNo: "14",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-10.mp3",
+              },
+              {
+                displayNo: "15",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-11.mp3",
+              },
+              {
+                displayNo: "16",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-12.mp3",
+              },
+              {
+                displayNo: "17",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-13.mp3",
+              },
+              {
+                displayNo: "18",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-14.mp3",
+              },
+              {
+                displayNo: "19",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-15.mp3",
+              },
+              {
+                displayNo: "20",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/b-16.mp3",
+              },
+              {
+                displayNo: "21",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/c-1.mp3",
+              },
+              {
+                displayNo: "22",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/c-2.mp3",
+              },
+              {
+                displayNo: "23",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/d-1.mp3",
+              },
+              {
+                displayNo: "24",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/d-2.mp3",
+              },
+              {
+                displayNo: "25",
+                mp3FilePath: "https://guide1.ivyro.net/kofta/wp-content/uploads/2024/05/d-3.mp3",
+              },
+            ],
+          },
+        };
+        
+        var list = data.resultBody.articleList;
+        var count = list.length;
+
+        for (i = 0; i < count; i++) {
+          if (list[i].displayNo == Number(irNo)) {
+            find = true;
+            break;
+          }
+        }
+
+        if (find) {
+          var irNo = Number($("#irNO").text());
+      //    goPlay(findCompanyCd, findProductCd, irNo, findLanguageCd);
+            goPlay(irNo, curLangCd);
+        } else {
+          $("#irNO").text("");
+          var errMsg = "";
+          if (curLangCd == "KR") {
+            errMsg = "입력하신 번호가 없습니다.";
+          } else if (curLangCd == "US") {
+            errMsg = "No Such Number.";
+          } else if (curLangCd == "CN") {
+            errMsg = "您输入的号码不存在。";
+          } else if (curLangCd == "JP") {
+            errMsg = "入力した番号がありません。";
+          } else if (curLangCd == "ID") {
+            errMsg = "No Such Number.";
+          } else if (curLangCd == "RU") {
+            errMsg = "No Such Number.";
+          }
+          alert(errMsg);
+        }
+      }
+      
+      function goPlay(displayNo, languageCd) {
+        switch(displayNo) {
+          case 1:  
+            location.href =
+              "https://guide1.ivyro.net/kofta/a-1"
+            break;  
+          case 2:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/a-2"
+            break;  
+          case 3:  
+            location.href =
+              "https://guide1.ivyro.net/kofta/a-3"
+            break;  
+          case 4:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/a-4"
+            break;  
+          case 5:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-1"
+            break; 
+          case 6:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-2"
+            break; 
+          case 7:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-3"
+            break; 
+          case 8:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-4"
+            break; 
+          case 9:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-5"
+            break; 
+          case 10:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-6"
+            break; 
+          case 11:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-7"
+            break; 
+          case 12:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-8"
+            break; 
+          case 13:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-9"
+            break; 
+          case 14:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-10"
+            break; 
+          case 15:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-11"
+            break; 
+          case 16:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-12"
+            break; 
+          case 17:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-13"
+            break; 
+          case 18:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-14"
+            break; 
+          case 19:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-15"
+            break; 
+          case 20:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/b-16"
+            break; 
+          case 21:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/c-1"
+            break; 
+          case 22:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/c-2"
+            break; 
+          case 23:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/d-1"
+            break; 
+          case 24:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/d-2"
+            break;            
+          case 25:   
+            location.href =
+              "https://guide1.ivyro.net/kofta/d-3"
+            break; 
+          default:
+            break;
+        }
+
+      }
+      
+    </script>
+<!--script>
+    if (window.matchMedia('(orientation: portrait)').matches) {
+	// Portrait 모드일 때 실행할 스크립트
+	// 폭과 높이가 같으면 Portrait 모드로 인식돼요
+} else {
+	// Landscape 모드일 때 실행할 스크립트
+}
+
+
+// 창의 사이즈가 바뀔때마다 검사하여 스크립트 실행
+
+window.addEventListener('resize', function () {
+	if (window.matchMedia('(orientation: portrait)').matches) {
+		// Portrait 모드일 때 실행할 스크립트
+		// 폭과 높이가 같으면 Portrait 모드로 인식돼요
+	} else {
+		// Landscape 모드일 때 실행할 스크립트
+	}
+});
+    </script-->
+
+  </head>
+  <body>
+    <header>
+      <a href="javascript:history.back();" class="back_btn"
+        ><img src="https://www.qraudio.co.kr/smartQrGuide/webqr/img/back.svg"
+      /></a>
+
+      <h2>가이드 번호입력</h2>
+    </header>
+    <section class="content_area">
+      <!--ul class="js-tab tab_menu">
+        <li class="current"><a href="#tab01">리스트모드</a></li>
+
+        <li><a href="#tab02">번호모드</a></li>
+      </ul-->
+      <!--div id="tab01" class="tab_content js-tab-content">
+        <ul class="audio_list">
+          <li>
+            <a
+              href="https://voicemon.com"
+              target="_self"
+              title="오디오 가이드 바로 듣기"
+            >
+              <strong class="tit">
+                <b>보이스몬 홈페이지</b>
+              </strong>
+              <span class="btn">바로 듣기</span>
+            </a>
+          </li>     
+          <li>
+            <a
+              href="https://suzisoft.co.kr"
+              target="_self"
+              title="오디오 가이드 바로 듣기"
+            >
+              <strong class="tit">
+                <b>수지소프트 홈페이지</b>
+              </strong>
+              <span class="btn">바로 듣기</span>
+            </a>
+          </li>        
+        </ul>
+      </div-->
+      <!-- 탭 2 -->
+      <div id="tab02" class="tab_content js-tab-content">
+        <div class="num">
+          <p class="sentence">
+            전시물의 번호를 입력 후<br />헤드폰 버튼을 눌러 주세요.
+          </p>
+          <h3 id="irNO"></h3>
+          <ul class="numbers">
+            <li id="1" onclick="setArticleText(this.id)">1</li>
+            <li id="2" onclick="setArticleText(this.id)">2</li>
+            <li id="3" onclick="setArticleText(this.id)">3</li>
+            <li id="4" onclick="setArticleText(this.id)">4</li>
+            <li id="5" onclick="setArticleText(this.id)">5</li>
+            <li id="6" onclick="setArticleText(this.id)">6</li>
+            <li id="7" onclick="setArticleText(this.id)">7</li>
+            <li id="8" onclick="setArticleText(this.id)">8</li>
+            <li id="9" onclick="setArticleText(this.id)">9</li>
+            <li class="del" onclick="setRemove()"></li>         
+            <li id="0" onclick="setArticleText(this.id)">0</li>
+            <li class="play" onclick="setPlay()"></li>          
+          </ul>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,286 @@
+<pre style="word-wrap: break-word; white-space: pre-wrap;">/*
+  1. Base
+
+*/
+html {width: auto;height:100%;margin:0;padding:0;font-size:62.5%;}
+body {width: auto;height:100%;margin:0;padding:0;font-size:1.3rem;position:relative;line-height:1;font-family: 'Noto Sans KR', sans-serif, lato;color:#333;word-spacing:-1px;-webkit-overflow-scrolling: auto;}
+* {box-sizing: border-box; outline: 0;-webkit-text-size-adjust: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+*:after,
+*:before {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+
+img {display:block;line-height:1;border:none;vertical-align: middle;}
+cite, code, dfn, del, em, ins, label, q, span, strong {display:inline-block;}
+cite, em, dfn {font-style:normal;}
+sub {vertical-align:bottom;font-family:'dotum';}
+sup {vertical-align:top;font-family:'dotum';}
+hr {display:none;}
+h1, h2, h3, h4, h5, h6 {margin:0;font-size:1em;}
+address {font-style:normal;}
+/^ p {margin:0;} ^/
+pre {margin:0;font-size:1em;font-family:verdana;}
+table {border-spacing:0;border-collapse:collapse;width:100%;}
+caption {display:none;}
+th,td {padding:0;text-align:left;font-weight:normal;font-size:inherit;color:inherit;vertical-align:middle;}
+dd, dl, ol, ul {margin:0;padding:0;list-style-type:none;}
+form {margin: 0;padding: 0;}
+fieldset {margin:0;padding:0;border:none;}
+legend {display:none;}
+textarea {font-family:inherit;font-size:inherit;color:inherit;border:0.1rem solid #e2e2e2;border-radius:0;}
+input [type="text"],
+input.text {padding-left:0.5rem;height:3rem;line-height:1.4;font-family:inherit;font-size:inherit;color:#333;background:#fff;vertical-align:middle;border:0.1rem solid #e3e3e3;border-radius:0;-webkit-appearance: none; -moz-appearance: none;}
+input[type=text]::-ms-clear {display: none;}
+select {margin:0;padding:0 1.5rem 0 0.5rem;height:3rem;font-family:inherit;font-size:inherit;line-height:1.4;color:#333;vertical-align:middle;border:0.1rem solid #e3e3e3;border-radius:0;background-color:#fff;background-image:url(../images/common/bg_select.png);background-repeat:no-repeat;background-position: right 0.5rem center;background-size: auto 22%;-webkit-appearance: none; -moz-appearance: none;}
+select::-ms-expand {display: none;}
+input[readonly],
+input[type="text"]:disabled,
+select:disabled {background-color:#ededed;}
+input[readonly].hasDatepicker {background-color: #fff;}
+input.text.c {padding-left:0;}
+
+button {display:inline-block;margin:0;padding:0;font-family:inherit;white-space:nowrap;text-align: center;vertical-align: middle;cursor:pointer;-webkit-appearance: none; -moz-appearance: none;}
+a {color:inherit; text-decoration:none;}
+a.btn:focus, input.btn:focus,button.btn:focus {outline: none;}
+::-webkit-input-placeholder {color: #c1b9b9;}
+:-moz-placeholder {color: #c1b9b9;}
+::-moz-placeholder {color: #c1b9b9;}
+:-ms-input-placeholder {color: #c1b9b9 !important;}
+::-ms-input-placeholder {color: #c1b9b9;}
+::placeholder {color: #c1b9b9;}
+/*
+  2. Components
+*/
+div.control-container {
+  margin-top: 10px;
+  padding-bottom: 10px; }
+  div.control-container div.amplitude-play-pause {
+    width: 74px;
+    height: 74px;
+    cursor: pointer;
+    float: left;
+    margin-left: 10px; }
+  div.control-container div.amplitude-play-pause.amplitude-paused {
+    background: url("../img/play.svg");
+    background-size: cover; }
+  div.control-container div.amplitude-play-pause.amplitude-playing {
+    background: url("../img/pause.svg");
+    background-size: cover; }
+  div.control-container div.meta-container {
+    float: left;
+    width: calc(100% - 84px);
+    text-align: center;
+    color: white;
+    margin-top:0.9rem; }
+    div.control-container div.meta-container span[data-amplitude-song-info="name"] {
+      font-size:2rem;
+      color: #4765e8;
+      display: block; text-align: left; margin-left:5%; font-weight: 600}
+    div.control-container div.meta-container span[data-amplitude-song-info="artist"] {
+      font-weight: 100;
+      font-size: 14px;
+     text-align: left;
+     margin-left: 10px;
+     margin-right: 10px;
+      color: #fff;
+      display: block; }
+  div.control-container:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+/*
+  Small only
+*/
+@media screen and (max-width: 39.9375em) {
+  div.control-container div.amplitude-play-pause {
+    background-size: cover;
+    width:5rem;
+    height:5rem; }
+  div.control-container div.meta-container {
+    width: calc(100% - 74px); } }
+/*
+  Medium only
+*/
+/*
+  Large Only
+*/
+div.time-container {
+  font-weight: 300;
+  font-size: 14px;
+  color: #000;
+  height: 10px; 
+  margin-top: 5px;
+  margin-bottom: 15px;}
+  div.time-container span.current-time {
+    float: left;
+    margin-left: 10px; }
+  div.time-container span.duration {
+    float: right;
+    margin-right: 10px; }
+
+/*
+  Small only
+*/
+/*
+  Medium only
+*/
+/*
+  Large Only
+*/
+progress.amplitude-song-played-progress {
+  background-color: #eee;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  display: block;
+  cursor: pointer;
+  border: none; }
+  progress.amplitude-song-played-progress:not([value]) {
+    background-color: #eee; }
+
+progress[value]::-webkit-progress-bar {
+  background-color: #eee; }
+
+progress[value]::-moz-progress-bar {
+  background-color: #eee; }
+
+progress[value]::-webkit-progress-value {
+  background-color:rgb(71 101 232) }
+
+
+
+
+/*
+  Small only
+*/
+/*
+  Medium only
+*/
+/*
+  Large Only
+*/
+/*
+  3. Layout
+*/
+div.bottom-container {
+    background-color: #fff; height:100%; padding-bottom:1%;}
+
+/*
+  Small only
+*/
+/*
+  Medium only
+*/
+/*
+  Large Only
+*/
+div#single-song-player {
+  padding-top:6rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 460px;
+  -webkit-font-smoothing: antialiased; }
+  div#single-song-player img[data-amplitude-song-info="cover_art_url"] { width: 100%;}
+
+
+/* 異붽  */
+header {width:100%; padding:0 3%;height:6rem; background:linear-gradient(90deg, rgba(167, 47, 46, 1) 0%, rgba(167, 47, 46, 1) 100%);; position:absolute; z-index: 999}
+header &gt; h1 {float:left; max-width: 50%; width:50%; height:3rem; margin:1.2rem 0}
+header &gt; h1 a {display: block; width:100%}
+header &gt; h1 a img {width:100%}
+
+header .qrcode {float:left; margin-left:5%; width:3rem; margin-top:1.7rem}
+header #qrbtn {background:transparent; border:0; position:relative; padding-left:5%; font-size:1.7rem; color:#fff; margin:0 3%}
+
+header .language {float:left; margin-left:8.7rem; margin-top:2rem}
+header .language button {width:2rem; height:2rem; border:0; background:transparent; border-radius: 5px;}
+header .language button img, .menu button img {width:100%; height:100%}
+header .fontsize {float:left; margin-top:1.2em; margin-left:3%; width:3rem;}
+header #incfont {background:transparent; border:0; position:relative; padding-left:5%; font-size:1.7rem; color:#fff; margin:0 3%}
+header #incfont:before {content: '媛 '; font-size:0.6rem; position:absolute; bottom:0; left:0}
+header .menu {float:right; margin-top:1rem;}
+header .menu button {width:2.2rem; height:4rem; border:0; background:transparent}
+
+
+
+
+.song-artist {font-size:1.3rem; color:#A72F2E; text-align:left; margin:1% 0 0 5%; display: block}
+.info {position: relative;width:94%; height:100%; background:#f5f5f5; margin:1% auto 5% auto; padding:5%; color:#333; line-height:160%; font-size:1.4rem; border-radius:20px;}
+
+.sm_container:before {position:absolute;top:-5px;right:21%;width:10px;height:10px;background:#fff;border:1px solid rgba(0,0,0,0.08);-webkit-transform:rotate(45deg);transform:rotate(45deg);border-width:1px 0 0 1px;z-index:2002;content:''}
+
+.language_layer {position: absolute; top:6rem; left:3%; width:94%; background:#fff; box-shadow: 0 3px 12px rgb(0 0 0 / 20%); border:1px solid #D6D7D7; border-radius:10px; display: none}
+.fontsize_layer {position: absolute; top:6rem; right:3rem;; width:20%; padding:2%;  background:#fff; box-shadow: 0 3px 12px rgb(0 0 0 / 20%); border:1px solid #D6D7D7; border-radius:10px; display: none}
+.fontsize_layer:before {position:absolute;top:-5px;right:30%;width:10px;height:10px;background:#fff;border:1px solid rgba(0,0,0,0.08);-webkit-transform:rotate(45deg);transform:rotate(45deg);border-width:1px 0 0 1px;z-index:2002;content:''}
+.language_layer:before {position:absolute;top:-5px;right:21%;width:10px;height:10px;background:#fff;border:1px solid rgba(0,0,0,0.08);-webkit-transform:rotate(45deg);transform:rotate(45deg);border-width:1px 0 0 1px;z-index:2002;content:''}
+.language_layer li {float: left; width: 25%; padding: 3% 0;text-align: center;}
+.fontsize_option, .lnaguage_option {position: relative; width:90%; display: -webkit-box;  display: -ms-flexbox; display: flex; height:6rem; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin:3% auto;}
+.fontsize_option:before {position:absolute;top:9px;height:16px;left:0;right:0;opacity:0.13;border-radius:16.5px;background-color:#b3bacd;content:''}
+.option_detail {width:32px;height:32px;line-height:30px;font-size:14px;text-align:center;color:#333;vertical-align:top;background:#fff;-webkit-box-shadow:0 2px 4px 0 rgba(0,0,0,0.03);box-shadow:0 2px 4px 0 rgba(0,0,0,0.03);border:solid 1px rgba(0,0,0,0.07);border-radius:50%;z-index:1;}
+.option_detail em.blind {display: none}
+.option_detail a.fontsize_option_name {display: block; font-size:1.2rem; line-height:1.2rem; text-align: center; width:100%; margin:10px -8px 0; white-space: nowrap;}
+.option1 a.fontsize_option_name, .option2 a.fontsize_option_name, .option3 a.fontsize_option_name {margin:10px 0 0;}
+.option1 .fontsize_option_text {font-size:1.2rem;}
+.option2 .fontsize_option_text {font-size:1.4rem;}
+.option3 .fontsize_option_text {font-size:1.6rem;}
+.option4 .fontsize_option_text {font-size:1.8rem;}
+.option5 .fontsize_option_text {font-size:2rem;}
+.option_detail.on {border:0; background:#A72F2E; border:1px solid #A72F2E; box-shadow:0 2px 4px 0 rgba(0,0,0,0.5);}
+.option_detail.on .fontsize_option_text {color:#fff}
+.option_detail.on .fontsize_option_name {color:#A72F2E}
+
+.buttons {display:flex; justify-content: center; }
+.buttons &gt; button {padding:0; width:2.5rem; padding:2%; margin:0 5%; text-align: center; background:#f5f5f5; border:1px solid #ddd; color:#A72F2E; font-size:1.5rem; border-radius: 5px}
+.language_option li {position:relative}
+.language_option li:after {width:1px; height:10px; background:#ddd; content:''; position:absolute; top:40%; right:0}
+.language_option li:last-child:after {width:0;}
+
+
+/* 由ъ뒪   */
+header a.back_btn {position:absolute; top:0; left:0; width:5rem; padding:0 2rem; height:6rem; }
+header a.back_btn img {width:100%; height:100%}
+header h2 {position:relative; width:80%; margin:0 auto; font-size:1.8rem; color:#fff; text-align: center; line-height: 6rem;}
+
+.content_area {clear:both; width:100%; padding:5rem 0% 0%; min-height:60rem;}
+.tab_menu {width:100%; height:5rem; margin:0.5rem 0;}
+.tab_menu li {float:left; width:48%; margin:0 1%; height:100%; line-height: 5rem; text-align: center; }
+.tab_menu li.current a {color:#A72F2E; font-weight:600; border-bottom:2px solid #A72F2E;}
+.tab_menu li a {display: block; font-size:1.6rem; }
+
+.audio_list {width:100%;}
+.audio_list li a {position:relative; display: block; width:100%; min-height:5rem; padding:2rem 1rem; border-bottom:1px solid #eee}
+.audio_list li a strong.tit {font-size:1.5rem; width:90%; font-weight:500; color:#444; line-height: 120%}
+.audio_list li a .btn {position:absolute; right:0; top:50%; margin-top:-1.8rem; text-indent:-9999px; width:3.6rem; height:3.6rem; background:url('https://www.qraudio.co.kr/smartQrGuide/webqr/img/headphones.svg') no-repeat center #c1c1c1; background-size:40%; border-radius: 50%;}
+
+/*踰덊샇 낅젰*/
+.num &gt; p {text-align: center; font-size:1.2rem; width:70%; margin:2rem auto 0 auto; color:#888; line-height: 130%}
+.num &gt; h3 {width:80%; text-align: center; font-size:2.5rem; padding:1.5rem 0; margin:0 auto 1rem auto; border-bottom:1px solid #eee;}
+.num .numbers {width:85%; margin:0 auto; display: flex; flex-wrap:wrap; justify-content: center;}
+.num .numbers li {position: relative; min-height:6rem; text-align: center; line-height:6rem; margin:0.2rem 0.2rem; background:#f8f8f8; border-radius: 50%; border:1px solid #ddd; font-size:2rem;  flex: 1 0 calc(33.333% - 30px); }
+.num .numbers li.del {font-size:1.8rem; background:#999; border:0; color:#fff; position:relative}
+.num .numbers li.del:before {position:absolute; top:25%; left:50%; width:3rem; height:3rem; margin-left:-1.5rem; background:url('https://www.qraudio.co.kr/smartQrGuide/webqr/img/delete.svg') no-repeat center / 70%; content:'' }
+.num .numbers li.play {font-size:1.8rem; background:#A72F2E; border:0; color:#fff; position:relative}
+.num .numbers li.play:before {position:absolute; top:25%; left:50%; width:3rem; height:3rem; margin-left:-1.5rem; background:url('https://www.qraudio.co.kr/smartQrGuide/webqr/img/headphones.svg') no-repeat center / 85%; content:'' }
+.num .numbers li.del span, .num .numbers li.play span {position:absolute; bottom:2rem; left:50%; width:4rem; margin-left:-2rem; height:2rem; line-height: 2rem;}
+
+
+@media only screen and (min-width:100px) and (max-width:320px){
+    .num .numbers li {line-height:7.5rem; min-height:7.5rem}
+}
+@media only screen and (min-width:414px) and (max-width:450px){
+    .num .numbers li {line-height:9rem; min-height:9rem}
+}
+#irNO {
+  width: 100%;
+  text-align: center;
+  height: 7vh;
+  font-size: 35px;  
+}
+  .sentence {
+    width: 100%;
+    text-align: center;
+    height: 7vh;
+    font-size: 22px; 
+  }
+
+</pre>
