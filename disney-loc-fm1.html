@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Location-based AR.js demo</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="aframe-troika-text.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+            <a-box
+        material="color: red"
+        gps-entity-place="latitude: 37.489065; longitude: 126.956915;"
+        scale="30 30 30"
+      ></a-box>
+            <a-box
+        material="color: yellow"
+        gps-entity-place="latitude: 37.481150; longitude: 126.952180;"
+        scale="30 30 30"
+      ></a-box>
+      
+      <a-box
+        material="color: red"
+        gps-entity-place="latitude: 37.481150; longitude: 126.952180;"
+        scale="30 30 30"
+      ></a-box>
+            <a-troika-text
+              id="output"
+              position="0 0 -1"
+              color="#fff"
+              max-width="15"
+              curve-radius="0"
+              scale="0.3 0.3 0.3"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/KNPSKkomi.otf?v=1670685355751"
+              value="100년 동안 여러분의 일상을
+디즈니와 함께해 주셔서 감사합니다."
+              align="left"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+              outline-width="5%"
+              outline-color="blue"
+              stroke-width="2%"
+              stroke-color="yellow"
+              gps-entity-place="latitude: 37.489065; longitude: 126.956915;"
+            ></a-troika-text>
+      <a-camera gps-camera rotation-reader> </a-camera>
+    </a-scene>
+    <script>
+      window.addEventListener('load', () => {
+        const el = document.querySelector('[gps-entity-place]');
+        el.addEventListener('gps-entity-place-update-positon', (event) => {
+          if(event.detail.distance < 100) {
+            el.setAttribute('material','color: yellow');
+          } else {
+            el.setAttribute('material','color: red');
+          }
+        });
+      });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){ //equivalent to jQuery $('document').ready(function(){})
+        /* alert("this will show"); */
+        alert = function(){};
+        /* alert("ALL alert after this won't show"); */
+    }, false);
+</script>
+  </body>
+</html>

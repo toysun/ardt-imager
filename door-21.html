@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <!-- A-Frame 0.7.1 -->
+    <!-- <script src="//aframe.io/releases/0.7.1/aframe.min.js"></script> -->
+
+    <!-- A-Frame 0.8.* -->
+    <script src="//aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!--script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script-->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <!--script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script-->
+    <script src="/aframe-troika-text.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>
+    <!--script src="shadowjs"></script-->
+    <!--link rel="stylesheet" href="style-disney.css" /-->
+    <link rel="stylesheet" href="style-gundam.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+    <!-- A-Frame Master -->
+    <!-- <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> -->
+
+    <!-- A-Frame Extras -->
+    <!-- <script src="//unpkg.com/aframe-extras@4.1.2/dist/aframe-extras.min.js"></script> -->
+
+    <!-- A-Frame Physics -->
+    <!-- <script src="//unpkg.com/aframe-physics-system@3.2.0/dist/aframe-physics-system.min.js"></script> -->
+
+    <!-- A-Frame Animation -->
+    <!-- <script src="//unpkg.com/aframe-animation-component@5.1.0/dist/aframe-animation-component.min.js"></script> -->
+
+    <!-- A-Frame Environment -->
+    <!-- <script src="//unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script> -->
+
+    <!-- A-Frame State -->
+    <!-- <script src="//unpkg.com/aframe-state-component@4.7.0/dist/aframe-state-component.min.js"></script> -->
+
+    <!-- Nav Mesh Inspector Plugin -->
+    <!-- Add inspector-plugin-recast component to a-scene -->
+    <!-- <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script> -->
+    <script>
+      AFRAME.registerComponent("scannerhandler", {
+	    init: function () {
+    		const marker = document.querySelector("#marker");
+    		const scanner = document.querySelector("#scanner");
+
+    		marker.addEventListener('markerFound', function () {
+       			scanner.hidden = true;
+    		}.bind(this));
+    
+    		marker.addEventListener('markerLost', function () {
+       			scanner.hidden = false;
+    		}.bind(this));
+  	  }
+    }); 
+    </script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/beer%20(1).png?v=1711421175148"
+      />
+    </div>
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+    <!-- SCENE -->
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      light="defaultLightsEnabled: true"
+    >
+      <!-- ASSETS -->
+      <a-assets> </a-assets>
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        ioshandler
+        markhandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url="https://raw.githubusercontent.com/toysun/sg/master/imarker/beer1"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+        next-button
+      >
+        <!-- CAMERA -->
+        <a-entity id="rig">
+          <a-entity
+            camera
+            wasd-controls
+            look-controls="pointerLockEnabled: true;"
+            position="0 1.6 0"
+          >
+            <a-cursor></a-cursor>
+          </a-entity>
+        </a-entity>
+
+        <!-- STAGE -->
+        <a-entity id="stage">
+          <!-- CARD -->
+          <a-entity id="first-card" position="0.05 1.65 -0.5" rotation="0 0 0">
+            <a-entity
+              id="first-card-left"
+              rotation="0 0 0"
+              animation="property: object3D.rotation.y; to: 140; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+            >
+              <a-entity
+                position="-0.0635 0 0"
+                rotation="0 0 0"
+                geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/door-vice.png?v=1680673049679; color: #fff; side: front;"
+              ></a-entity>
+
+              <a-entity
+                position="-0.0635 0 0"
+                geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/door-vice.png?v=1680673049679; color: #0abab5; side: back;"
+              ></a-entity>
+            </a-entity>
+            <a-entity
+              id="first-card-right' rotation='0 0 0' position='0.12701 0 0"
+              loop="false"
+            >
+              <a-entity
+                position="-0.0635 0 0"
+                geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/UF78.gif?v=1680706509386); opacity: 0.7; alphaTest: 0.5; side: front;"
+              ></a-entity>
+
+              <a-entity
+                position="-0.0635 0 0"
+                geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/galaxy-space.jpg?v=1680673425087; color: #0abab5; side: back;"
+              ></a-entity>
+            </a-entity>
+          </a-entity>
+          <a-troika-text
+            id="output"
+            position="0 1.65 -0.4"
+            color="blue"
+            max-width="13"
+            max-height="50"
+            curve-radius="0"
+            scale="0 0 0"
+            font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%84%A5%EC%8A%A8%20%EC%B9%B4%ED%8A%B8%20%EA%B3%A0%EB%94%95%20Bold.ttf?v=1705050819170"
+            value="        
+                  
+맥주파티에 고객님을 초대 합니다.
+                 
+지금 참여하세요!"
+            align="center"
+            animation="property: scale; to: 0.07 0.07 0.07; delay: 10000; dur: 7000; easing: linear; loop: false"
+          >
+          </a-troika-text>
+          <a-entity
+            scale="0.0005 0.0005 0.0005"
+            position="-0.1 1.5 0"
+            rotation="0 90 0"
+            visible="true"
+            gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/cosmonaut_on_a_rocket.glb?v=1680713222541"
+            shadow="receive: false"
+            animation-mixer
+            animation="property: position; to: 0.5 2 -4.5; dur: 30000; delay: 500; loop: false"
+            event-set__click="_target: a-entity; visible: true;"
+          >
+          </a-entity>
+          <a-entity
+            position="0 2.25 -15"
+            rotation="180 0 0"
+            particle-system="preset: default;
+                                 texture: https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/smokeparticle.png?v=1682996942280; 
+                                 color: #FACC2E; 
+                                 count: 10000;
+                                 direction: -1;"
+          ></a-entity>
+          <!-- /CARD -->
+        </a-entity>
+        <a-entity light="type: ambient; intensity: 1.5;"></a-entity>
+
+        <a-light
+          type="directional"
+          light="castShadow: true; shadowCameraAutomatic:#object;"
+          intensity="1.5"
+          id="real-light"
+          target="selector"
+          position="-5 3.6 10"
+        >
+        </a-light>
+      </a-nft>
+    </a-scene>
+  </body>
+</html>

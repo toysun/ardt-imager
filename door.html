@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+<!-- A-Frame 0.7.1 -->
+<!-- <script src="//aframe.io/releases/0.7.1/aframe.min.js"></script> -->
+
+<!-- A-Frame 0.8.* -->
+<script src="//aframe.io/releases/1.3.0/aframe.min.js"></script>
+      <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script-->
+    <script src="/aframe-troika-text.js"></script>
+    <script src="shadowjs"></script>
+    <link rel="stylesheet" href="style-disney.css" />
+
+<!-- A-Frame Master -->
+<!-- <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> -->
+
+<!-- A-Frame Extras -->
+<!-- <script src="//unpkg.com/aframe-extras@4.1.2/dist/aframe-extras.min.js"></script> -->
+
+<!-- A-Frame Physics -->
+<!-- <script src="//unpkg.com/aframe-physics-system@3.2.0/dist/aframe-physics-system.min.js"></script> -->
+
+<!-- A-Frame Animation -->
+<!-- <script src="//unpkg.com/aframe-animation-component@5.1.0/dist/aframe-animation-component.min.js"></script> -->
+
+<!-- A-Frame Environment -->
+<!-- <script src="//unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script> -->
+
+<!-- A-Frame State -->
+<!-- <script src="//unpkg.com/aframe-state-component@4.7.0/dist/aframe-state-component.min.js"></script> -->
+
+<!-- Nav Mesh Inspector Plugin -->
+<!-- Add inspector-plugin-recast component to a-scene -->
+<!-- <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script> -->
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+
+<!-- SCENE -->
+<a-scene       
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+ >
+  
+  <!-- ASSETS -->
+  <a-assets>
+    
+  </a-assets>
+  
+  <!-- CAMERA -->
+  <a-entity id="rig">
+    <a-entity camera
+              wasd-controls
+              look-controls="pointerLockEnabled: true;"
+              position="0 1.6 0">
+      
+      <a-cursor></a-cursor>
+      
+    </a-entity>
+  </a-entity>
+  
+  <!-- STAGE -->
+  <a-entity id="stage">
+    
+    <!-- CARD -->
+    <a-entity id="first-card" position="0 1.65 -0.5" rotation="0 0 0">
+      <a-entity id="first-card-left" rotation="0 0 0" animation="property: object3D.rotation.y; to: 140; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;">
+        <a-entity position="-0.0635 0 0"
+                  rotation="0 0 0"
+                  geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                  material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/door-vice.png?v=1680673049679; color: #fff; side: front;"></a-entity>
+
+        <a-entity position="-0.0635 0 0"
+                  geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                  material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/door-vice.png?v=1680673049679; color: #0abab5; side: back;"></a-entity>
+      </a-entity>
+      <a-entity id="first-card-right' rotation='0 0 0' position='0.12701 0 0" loop="false">
+        <a-entity position="-0.0635 0 0"
+                  geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                  material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/galaxy-space.jpg?v=1680673425087; color: #ffffff; side: front;"></a-entity>
+
+        <a-entity position="-0.0635 0 0"
+                  geometry="primitive: plane; height: 0.2032; width: 0.127;"
+                  material="src: https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/galaxy-space.jpg?v=1680673425087; color: #0abab5; side: back;"></a-entity>
+      </a-entity>
+    </a-entity>
+            <a-troika-text
+          id="output"
+          position="0 1.65 -0.4"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0 0 0"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+          value="        
+                  
+OOO님을 초대 합니다.
+감사합니다.
+즐거운 시간 보내세요."
+                    
+          align="center"
+          animation="property: scale; to: 0.07 0.07 0.07; dur: 7000; easing: linear; loop: false"
+        >
+        </a-troika-text>
+          <a-entity
+        scale="0.2 0.2 0.2"
+        position="0 1.2 -1.5"
+        rotation="0 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/the_shiny_dog_a_fracture_simulation_loop.glb?v=1680713879113"
+        shadow="receive: false"
+        animation-mixer
+        animation="property: rotation; to: 0 360 0; dur: 40000; delay: 500; loop: true"
+        animation__2="property: scale; to: 1 1 1; dur: 30000; delay: 500000; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity>
+    <!-- /CARD -->
+    
+  </a-entity>
+          <a-entity light="type: ambient; intensity: 1.5;"></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true; shadowCameraAutomatic:#object;"
+        intensity="1.5"
+        id="real-light"
+        target="selector"
+        position="-5 3.6 10"
+      >
+      </a-light>
+  
+</a-scene>
+    </body>
+    </html>

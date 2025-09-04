@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <title>고인돌유적 1코스</title>
+    <meta charset="utf-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+
+    <script src="./js/components.js"></script>
+    <script src="./js/cursor_m.js" defer></script>
+    <script src="./js/vidhandler.js"></script>
+    <script src="./js/navigate-on-click.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+
+    <link rel="stylesheet" href="./css/style-c.css" />
+
+    <script>
+      var cameraView;
+
+      var constraints = {
+        audio: false,
+        video: {
+          facingMode: "environment",
+        },
+      };
+
+      // Access the device camera and stream to cameraView
+      function cameraStart() {
+        cameraView = document.querySelector("#webcam");
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function (stream) {
+            cameraView.srcObject = stream;
+          })
+          .catch(function (error) {
+            console.error("Oops. Something is broken.", error);
+          });
+      }
+
+      // Start the video stream when the window loads
+      window.addEventListener("load", cameraStart, false);
+
+      //    const buttons = document.querySelector(".buttons")
+
+      // buttons.addEventListener('click', cameraStart, false);
+
+      // Component to change to a sequential color on cursor suspension.
+      AFRAME.registerComponent("cursor-listener", {
+        init: function () {
+          var lastIndex = -1;
+          var COLORS = ["red", "green", "blue"];
+          this.el.addEventListener("click", function (evt) {
+            lastIndex = (lastIndex + 1) % COLORS.length;
+            this.setAttribute("material", "color", COLORS[lastIndex]);
+            console.log("I was clicked at: ", evt.detail.intersection.point);
+          });
+        },
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <video id="webcam" autoplay playsinline></video>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      playvideo
+      raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: #webcam; debugUIEnabled: false;"
+      id="scene"
+    >
+      <a-assets>
+        <img id="asset_btn_play" src="./image/play-button-char.png" />
+
+        <video
+          src="./video/AR06.mp4"
+          type="video/mp4"
+          id="vid"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+          style="display: none"
+        ></video>
+      </a-assets>
+
+      <a-entity
+        camera="active: true"
+        look-controls
+        wasd-controls
+        position="0 0 5"
+      >
+        <a-entity
+          id="VPlayBtn"
+          geometry="primitive: plane; height: 0.32; width: 0.3"
+          material="side: double; src:#asset_btn_play"
+          position="0 0 -1"
+          rotation="0 0 0"
+          class="clickable"
+          onclick="vid.play()"
+          event-set__click="_target: a-entity; visible: false;"
+        >
+        </a-entity>
+        <a-entity
+          id="VideoModel"
+          geometry="primitive: plane; height: 1.5; width: 2"
+          material="shader: chromakey; side: double; src: #vid; color: 0 0.1 0.9"
+          vidhandler
+          position="0 0 -2"
+          rotation="0 0 0"
+          event-set__enter="_event: mousedown"
+          visible="false"
+        >
+        </a-entity>
+      </a-entity>
+
+      <a-light type="ambient" intensity="0.9"></a-light>
+    </a-scene>
+  </body>
+</html>

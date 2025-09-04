@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Disney Navigation</title>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <!--script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script-->
+    <!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <!--script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script-->
+    <script>
+      AFRAME.registerComponent('soundhandler', {
+        tick: function () {
+           var entity = document.querySelector("#sound");
+           if (document.querySelector("#Dragon").object3D.visible === true) {
+            entity.play();
+           } else {
+             entity.pause();
+          }
+        }
+     });
+    </script>
+    <!--link rel="stylesheet" href="Disney-style.css" /-->
+    
+    <style>
+     .info {
+       position: absolute;
+       top: 0;
+       left: 0;
+       padding: 5px;
+       background-color: #00ff0000;
+       border: 2px solid #00ff0000;
+       z-index: 9999;
+      }
+      
+     div{
+       text-align:center;
+     }
+    
+     label {
+       color: white;
+     }
+      
+     #message {
+        position: fixed;
+        z-index: 10;
+        left: 10%;
+        bottom: 75%;
+        width: 70%;
+        padding: 5%;
+        color: #fff;
+        font-weight: bold;
+        background-color: rgba(0,0,0,.8);
+        border-radius: 20px;
+        border: 3px solid #fff;
+        display: none;
+      }
+    
+    </style>
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    
+  <div class="info">
+    <section>
+      <img src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/MickeyMoon-100.png?v=1666074236907" width="20%" height="20%"><br>      
+   </section>  
+    <section>
+       <label id="text"> </label> 
+   </section>   
+  </div>
+    
+  <div id="message">
+	  미키를 따라가세요~~~
+  </div>
+    
+    <script src="Disney-geolocation.js"></script>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true; alpha: true"
+    >
+      
+      <a-asset>
+        <a-asset-item
+          id="DisneyBalloon"
+          src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/disney-balloon.glb?v=1666074266154"
+        ></a-asset-item>
+        <a-asset-item
+          id="kneel-pointing-mickey"
+          src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/kneel-pointing-mickey.glb?v=1666255005841"
+        ></a-asset-item>
+        <a-asset-item
+          id="firework"
+          src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/mickey-moon-firework-small-logo-1.glb?v=1666074295092"
+        ></a-asset-item>       
+        
+      </a-asset>
+      
+      
+        <a-entity id="pointer1" gltf-model="#DisneyBalloon" 
+                  gps-entity-place="latitude: 37.4893; longitude: 126.9553;" 
+            look-at="#camera" animation-mixer
+            scale="5 5 5">
+        </a-entity>
+      
+        <a-entity id="pointer2" gltf-model="#kneel-pointing-mickey" 
+                  gps-entity-place="latitude: 37.4892; longitude: 126.9561;" 
+            look-at="#camera" animation-mixer
+            scale="5 5 5">
+        </a-entity>
+        <a-entity id="pointer3" gltf-model="#firework" 
+                  gps-entity-place="latitude: 37.4889; longitude: 126.9571;" 
+            look-at="#camera" animation-mixer
+            scale="5 5 5">
+        </a-entity>
+      
+      <!--a-text
+        id="text"
+        value=""
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+        look-at="#camera"
+        scale="20 20 20"
+        position = "0 0 -10"
+      ></a-text-->
+      <a-camera 
+        id="camera"
+        gps-camera = "minDistance:10; maxDistance: 50; gpsMinDistance=10;"
+        rotation-reader
+        look-controls-enabled="false"     
+        arjs-look-controls="smoothingFactor: 0.1"
+      >          
+      </a-camera>
+      
+      <a-entity id="point_light_1" light="type: point; intensity: 10.1; castShadow: false" ></a-entity>
+    </a-scene>
+    
+  
+  </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Disney Navigation</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!--script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script-->
+    <!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <!--script>
+      THREEx.ArToolkitContext.baseURL =
+        "https://raw.githack.com/jeromeetienne/ar.js/master/three.js/";
+    </script-->
+    <!--style>
+      #debug {
+        position: fixed;
+        z-index: 99999;
+        background-color: #fffff;
+        padding: 10px;
+        top: 0;
+        left: 0;
+        display: block;
+      }
+    </style-->
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <!--div id="debug"></div-->
+    <!--a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    -->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true; alpha: true"
+    >
+      <!--a-box
+        material="color: red"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        scale="15 15 15"
+
+        look-at="#camera"
+             
+      ></a-box-->
+      <a-entity
+        id="pointer"
+        gltf-model="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/kneel-pointing-mickey.glb?v=1666255005841"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        look-at="#camera"
+        animation-mixer
+        scale="25 25 25"
+      >
+      </a-entity>
+      <a-entity
+        id="space"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/space.glb?v=1670771314896"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        look-at="#camera"
+        animation-mixer
+        scale="0.65 0.35 0.65"
+        rotation="90 0 0"
+        animation="property: rotation; to: 180 90 360; dur: 30000; easing: linear; loop: true"
+      >
+      </a-entity>
+      <!--a-text
+        id="text"
+        value=""
+        look-at="[gps-camera]"
+        scale="30 30 30"
+        position="0 55 0"
+        gps-entity-place="latitude: 37.4681; longitude: 126.959;"
+      ></a-text-->
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/FindeMickey5-300.gif?v=1671432150086); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2"
+        
+      ></a-plane>
+      <a-text
+        id="text"
+        value=""
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+        look-at="#camera"
+        scale="20 20 20"
+        position="-150 295 0"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+      ></a-text>
+      <a-image
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/FindMickey7.png?v=1670776726605"
+        position="0 2.5 -2.9"
+        scale="1 0.8 1"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+      ></a-image>
+            <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/mickey.gif?v=1668058488093); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-1.5 -1 -8"
+        color="white"
+        scale="2 2 2"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        animation="property: position; to: -1 -0.5 -6.8; dur: 20000; easing: linear; loop: false"
+      ></a-plane>
+      <a-camera
+        id="camera"
+        gps-camera="simulateLatitude: 37.4894; simulateLongitude: 126.9557; simulateAltitude: 300"
+        rotation-reader
+      >
+      </a-camera>
+      <!--a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="pointer"
+          position="180 180 180"
+        >
+        </a-light-->
+      <!--a-light type="ambient" intensity="0.01"></a-light-->
+      <a-entity
+        id="point_light_1"
+        light="type: point; intensity: 10.1; castShadow: false"
+      ></a-entity>
+    </a-scene>
+
+    <script>
+      window.addEventListener("load", () => {
+        const text = document.getElementById("text");
+        const camera = document.getElementById("camera");
+        const distanceMsg = document
+          .querySelector("[gps-entity-place]")
+          .getAttribute("distanceMsg");
+
+        text.setAttribute("value", text.getAttribute("distanceMsg"));
+      });
+    </script>
+    <!--script> 
+      window.addEventListener("load", () => {
+        const text = document.getElementById("text");
+        const camera = document.getElementById("camera");
+        const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
+        text.addEventListener("gps-entity-place-update-positon", (e) => {
+          document.getElementById(
+            "debug"
+          ).textContent = "남은 거리 ${event.detail.distance}m";
+          text.setAttribute(
+            "value",
+            text.getAttribute("distanceMsg") + " left"
+          );
+        });
+      });
+    </script-->
+  </body>
+</html>

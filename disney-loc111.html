@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Disney Navigation</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!--script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script-->
+    <!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css"
+    />
+    <!-- Style CSS -->
+    <!--link rel="stylesheet" href="css/style.css"-->
+    <!-- Demo CSS (No need to include it into your project) -->
+    <link rel="stylesheet" href="/demo.css" />
+    <!--script>
+      THREEx.ArToolkitContext.baseURL =
+        "https://raw.githack.com/jeromeetienne/ar.js/master/three.js/";
+    </script-->
+    <!--style>
+      #debug {
+        position: fixed;
+        z-index: 99999;
+        background-color: #fffff;
+        padding: 10px;
+        top: 0;
+        left: 0;
+        display: block;
+      }
+    </style-->
+    <style>
+      nav {
+        margin-bottom: 1em !important;
+      }
+
+      .cart {
+        box-shadow: 0 0 5px #ddd;
+        padding: 20px;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <main>
+      <!-- Start DEMO HTML (Use the following code into your project)-->
+      <div class="row">
+        <nav class="top-bar" data-topbar>
+          <ul class="title-area">
+            <li class="name">
+              <h1><a href="#">LocalCart //</a></h1>
+            </li>
+          </ul>
+          <section class="top-bar-section">
+            <ul class="left">
+              <li><a href="#">made for you &hearts;</a></li>
+            </ul>
+          </section>
+        </nav>
+        <div class="medium-4 columns">
+          <div class="cart">
+            <h1>Finding Box</h1>
+            <div class="row">
+              <div class="medium-6 columns">
+                <button class="tiny secondary" id="clear">Clear the Box</button>
+              </div>
+              <div class="medium-6 columns">
+                <button class="tiny disabled" title="Work in progress">
+                  Checkout
+                </button>
+              </div>
+            </div>
+            <div id="cartItems">Loading Box...</div>
+            Total price: <strong id="totalPrice">0 $</strong>
+          </div>
+        </div>
+        <div class="medium-8 columns">
+          <h1>Some products</h1>
+          <div class="products">
+            <div
+              class="product medium-4 columns"
+              data-name="Mickey"
+              data-price="12"
+              data-id="0"
+            >
+              <img
+                src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/mickey.gif?v=1668058488093"
+                alt="Mickey"
+              />
+              <h3>Mickey</h3>
+              <input type="text" class="count" value="1" />
+              <button class="tiny">Find Mickey</button>
+            </div>
+            <div
+              class="product medium-4 columns"
+              data-name="Donald"
+              data-price="10"
+              data-id="1"
+            >
+              <img
+                src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/donald.gif?v=1668058491704"
+                alt="Donald"
+              />
+              <h3>Donald</h3>
+              <input type="text" class="count" value="1" />
+              <button class="tiny">Add to cart</button>
+            </div>
+            <div
+              class="product medium-4 columns"
+              data-name="Guffy"
+              data-price="20"
+              data-id="2"
+            >
+              <img
+                src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/guffy1.gif?v=1668058504877"
+                alt="Guffy"
+              />
+              <h3>Guffy</h3>
+              <input type="text" class="count" value="1" />
+              <button class="tiny">Add to cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="text/template" id="cartT">
+          <% _.each(items, function (item) { %> <div class = "panel"> <h3> <%= item.name %> </h3>  <span class="label">
+        <%= item.count %> piece<% if(item.count > 1)
+        {%>s
+        <%}%> for <%= item.total %>$</span > </div>
+        <% }); %>
+      </script>
+
+      <!-- END EDMO HTML (Happy Coding!)-->
+    </main>
+    <!--div id="debug"></div-->
+    <!--a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    -->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true; alpha: true"
+    >
+      <!--a-box
+        material="color: red"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        scale="15 15 15"
+
+        look-at="#camera"
+             
+      ></a-box-->
+      <a-entity
+        id="pointer"
+        gltf-model="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/kneel-pointing-mickey.glb?v=1666255005841"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+        look-at="#camera"
+        animation-mixer
+        scale="25 25 25"
+      >
+      </a-entity>
+      <!--a-text
+        id="text"
+        value=""
+        look-at="[gps-camera]"
+        scale="30 30 30"
+        position="0 55 0"
+        gps-entity-place="latitude: 37.4681; longitude: 126.959;"
+      ></a-text-->
+
+      <a-text
+        id="text"
+        value=""
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-ExtraBold.json"
+        look-at="#camera"
+        scale="20 20 20"
+        position="-150 295 0"
+        gps-entity-place="latitude: 37.4911; longitude: 126.9556;"
+      ></a-text>
+      <a-camera
+        id="camera"
+        gps-camera="simulateLatitude: 37.4894; simulateLongitude: 126.9557; simulateAltitude: 300"
+        rotation-reader
+      >
+      </a-camera>
+      <!--a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="pointer"
+          position="180 180 180"
+        >
+        </a-light-->
+      <!--a-light type="ambient" intensity="0.01"></a-light-->
+      <a-entity
+        id="point_light_1"
+        light="type: point; intensity: 10.1; castShadow: false"
+      ></a-entity>
+    </a-scene>
+
+    <script>
+      window.addEventListener("load", () => {
+        const text = document.getElementById("text");
+        const camera = document.getElementById("camera");
+        const distanceMsg = document
+          .querySelector("[gps-entity-place]")
+          .getAttribute("distanceMsg");
+
+        text.setAttribute("value", text.getAttribute("distanceMsg"));
+      });
+    </script>
+    <!--script> 
+      window.addEventListener("load", () => {
+        const text = document.getElementById("text");
+        const camera = document.getElementById("camera");
+        const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
+        text.addEventListener("gps-entity-place-update-positon", (e) => {
+          document.getElementById(
+            "debug"
+          ).textContent = "남은 거리 ${event.detail.distance}m";
+          text.setAttribute(
+            "value",
+            text.getAttribute("distanceMsg") + " left"
+          );
+        });
+      });
+    </script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
