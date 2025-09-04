@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+     <!-- settings for favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/favicon-16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/favicon.ico"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://mariamraad.github.io/ar-portfolio/assets/images/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <!--script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script-->
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <!--script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script-->
+    <script src="/material.js"></script>
+    <script src="/event.js"></script>
+    <!--script src="/components.js"></script-->
+    <script src="/cursor_m.js" defer></script>
+    <!--script src="/vidhandler.js"></script-->
+    <script src="/mobile-detect.js"></script>
+     <script src="/ioshandler.js"></script>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" type="text/css" href="/button.css" />
+
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 128, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FScanner_mini_white.png?v=1617591526789"
+      />
+    </div>
+
+    <div class="arjs-loader">
+      <div>
+        <p>이미지 인식중입니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <!--a href="http://www.naver.com"
+          ><img
+            src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fbtn_event.png?v=1609043885788"
+            width="232px"
+            height="65px"
+            style="vertical-align:middle; margin:130% 10%"
+        /></a-->
+      <a href="https://promotion.seoulmilk.co.kr:446/event/20201231_na100ar/"
+          ><img
+            src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fbtn_event.png?v=1609043885788"
+            width="232px"
+            height="65px"
+            style="margin:80% 10%"
+        /></a>
+      </div>
+      <span
+        class="closebtn"
+        onclick="document.getElementById('myModal').style.display='none'"
+        ><img
+          src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2FActions-window-close-icon.png?v=1609053240485"
+          width="50px"
+          height="50px"
+      /></span>
+    </div>
+
+    <!--a-scene 
+      embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      renderer="logarithmicDepthBuffer: true; colorManagement:true"
+      vr-mode-ui="enabled: false"-->
+     <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      raycaster="objects: .clickable"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+    >
+          <a-assets>
+        <img
+          id="asset_btn_play"
+          src="https://cdn.glitch.com/619ee4d8-9bde-4764-bf3f-288a29bdd7a3%2FPlay_white.png?v=1604976401924"
+        />
+        <img
+          id="xing"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2FVR_button.png?v=1606720374165"
+        />
+        <img
+          id="website"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2Faudioguide_button.png?v=1606720374113"
+        />
+        <img
+          id="ok"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2F%EC%98%A4%EC%BC%80%EC%9D%B4.png?v=1606719305509"
+        />
+        <img
+          id="notice"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2F%EC%95%8C%EB%A6%BC.png?v=1606719308593"
+        />
+        <img
+          id="ios"
+          src="https://cdn.glitch.com/0cc78b1e-42e2-4349-b673-734e1c8ddff2%2FPlay_green.png?v=1609109175931"
+        />
+        <video
+          src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FShake%20Things%20Up%20a%20Little%20%E2%80%93%20Starbucks%20Spring%202021.mp4?v=1617591862591"
+          type="video/mp4"
+          preload="auto"
+          id="vid"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+ 
+
+        <!--video id="asset_vid_1" src="https://cors-anywhere.herokuapp.com/https://cdn.glitch.com/6578d377-25ff-42f3-bee7-b9326b505aed%2Fkangaroo.mp4?v=1602679335808" type="video/mp4" preload="auto" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay playsinline play="false"></video-->
+      </a-assets>
+      <a-nft
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        id="marker"
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/retro-starbucks"
+        smooth="true"
+        smoothcount="10"
+        smoothtolerance="0.01"
+        smooththreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        >
+        <a-entity
+          geometry="primitive: plane; height: 0.2; width: 0.2"
+          material="side: double; src:#ios"
+          ioshandler
+          position="0 0 -1"
+          rotation="0 0 0"
+          id="myFooter"
+          class="clickable"
+          visible="true"
+          onclick="vid.play()"
+          event-set__click="_target: a-entity; visible: false;"
+        >
+        </a-entity>
+        <!--a-entity
+          geometry="primitive: plane; height: 1.5; width: 2.5"
+          material="shader: chromakey; color: 0.1 0.9 0.2; transparent:true;opacity: 0.9;src:#vid"
+          animation="property: rotation; dur: 300; delay: 200; loop: false"
+          vidhandler
+          position="0 0.15 -2"
+          rotation="0 360 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+        >
+        </a-entity-->
+         <a-entity
+          geometry="primitive: plane; height: 1.5; width: 2.5"
+          material="shader: chromakey; color: 0 0.1 0.9; transparent:true;opacity: 0.9;src:#vid"
+          animation="property: rotation; dur: 300; delay: 200; loop: false"
+          vidhandler
+          position="0 0.15 -2"
+          rotation="0 360 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+        >
+        </a-entity>
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/4zBQPOVdlvxWjAon5S/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/Mase1luR1Naj2HBlzn/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2" 
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/3oKIPpM6D0t3nIlZn2/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2" 
+      ></a-plane>
+      <button class="button" id="mybutton"></button>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="-1.8 4 1"
+      ></a-light>
+      <!--a-camera  
+    id="retro-starbucks"
+    position="0.5 1.3 2"
+    raycaster="objects: .cantap"
+    cursor="fuse: false; rayOrigin: mouse;"></a-camera-->
+     <a-entity camera></a-entity>   
+         </a-nft>
+    </a-scene>
+    
+  </body>
+</html>

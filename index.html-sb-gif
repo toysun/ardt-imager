@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene 
+      embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      renderer="logarithmicDepthBuffer: true; colorManagement:true"
+      vr-mode-ui="enabled: false">
+      <a-nft
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/benz-logo"
+        smooth="true"
+        smoothcount="10"
+        smoothtolerance=".01"
+        smooththreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/4zBQPOVdlvxWjAon5S/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/Mase1luR1Naj2HBlzn/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2" 
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/3oKIPpM6D0t3nIlZn2/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2" 
+      ></a-plane>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="-1.8 4 1"
+      ></a-light>
+      <a-camera  
+    id="retro-starbucks"
+    position="0.5 1.3 2"
+    raycaster="objects: .cantap"
+    cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+         </a-nft>
+    </a-scene>
+  </body>
+</html>

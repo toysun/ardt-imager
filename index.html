@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8" />
+      <meta name=:format-detection" content="telephone=no" />
+      <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="google" value="notranslate">
+
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene embedded arjs="trackingMethod: best;">
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/FindeMickey5.gif?v=1671431698476); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/FindeMickey5-300.gif?v=1671432150086); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2"
+        
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/FindeMickey5-loop-1000.gif?v=1671512081633); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+
+      ></a-plane>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="-1.8 4 1"
+      ></a-light>
+      <a-camera></a-camera>
+    </a-scene>
+  </body>
+</html>

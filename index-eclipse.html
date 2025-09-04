@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+      @import compass/css3
+
+$star-count: 200
+  
+=circle($radius)
+  width: $radius
+  height: $radius
+  +border-radius($radius)
+    
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+  
+body
+  position: absolute
+  width: 100%
+  height: 100%
+  padding: 0
+  margin: 0
+  +animation(bgcolor 9s ease-in-out infinite)
+    
+#sun
+  position: absolute
+  top: 50%
+  left: 50%
+  +translate(-50%, -50%)
+  +circle(250px)
+  +border-radius(100%)
+  background: #ffad00
+  z-index: 1
+
+#sun::before
+  content: ""
+  display: block
+  position: absolute
+  top: 3px
+  left: 3px
+  +circle(244px)
+  +animation(bgcolor 9s ease-in-out infinite, moon 9s ease-in-out infinite)
+
+.star
+  background: #fff
+  height: 2px
+  width: 2px
+  position: absolute
+  +border-radius(2px)
+  +animation(twinkle 5s infinite)
+  
+  @for $i from 1 to $star-count+1        
+    $delay: random(20)
+    &:nth-of-type(#{$i})
+      animation-delay: -#{$delay}s
+      top: random(99) + vh
+      left: random(99) + vw
+    
++keyframes(bgcolor)
+  10%
+    background-color: #fff
+  43%, 57%
+    background-color: #002038
+  90%
+    background-color: #fff
+
++keyframes(moon)
+  0%, 10%
+    left: -250px
+  45%, 55%
+    left: 3px
+  90%, 100%
+    left: 250px
+ 
++keyframes(twinkle)
+  5%
+    opacity: 1
+  15%
+    opacity: .3
+  68%
+    opacity: .3
+  74%
+    opacity: 1
+  78%
+    opacity: .3
+    </style>
+    <link rel="stylesheet" href="style-disney.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+<div id="sun"></div>
+<div class="star"></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+<div class='star'></div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-assets>
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/haro_gundam_00%20(1).glb?v=1667880181763"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/Bizet_-_Carmen_-_Toreador_Song_(French%2C_Musopen).mp3?v=1668133809612"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+      </a-assets>
+      <a-plane
+        id="balloon"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/art-the-starry-night.gif?v=1668048665997); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        id="PlayBtn"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/14b613e03bb58576a74f85f62776e07c.gif?v=1668049602868); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -10"
+        color="white"
+        scale="3 3 3"
+        visible="true"
+        animation="property: position; to: 0 0 -6; dur: 20000; easing: linear; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      ></a-plane>
+      <a-plane
+        id="balloon1"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/14b613e03bb58576a74f85f62776e07c.gif?v=1668049602868); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+              <a-entity
+          scale="1 1 1"
+          position="0.2 -3 -5"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/birds-flying.glb?v=1668126600614"
+          shadow="receive: true"
+          animation-mixer
+          animation="property: rotation; to: 0 360 90; dur: 9000; delay: 200; loop: true"
+          animation__2="property: position; to: 0 5 -16; dur: 20000; easing: linear; loop: false"
+          animation__3="property: position; to: 0 1 -2; delay: 10000; dur: 20000; easing: linear; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity>
+              <a-entity
+          id="Msg-txt"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/tornado-pop.glb?v=1667810828296"
+          scale="1 1 1"
+          position="0 -0.5 -5"
+          rotation="0 0 0"
+          animation="property: rotation; to: 0 360 0; dur: 9000; delay: 200; loop: true"
+          animation-mixer
+                                    audiohandler
+        ></a-entity>
+      <a-sound src="#aud"></a-sound>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="balloon"
+        position="0 0 160"
+      >
+      </a-light>
+
+      <!--a-entity
+        camera
+        position="0 0 0"
+        look-controls="enabled: true"
+      ></a-entity-->
+      <a-entity
+                          id="camera"
+          camera="fov: 80; zoom: 1;"
+          position="0 0 0"
+          orbit-controls="autoRotate: false; target: #target; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.25; minDistance:3; maxDistance:100;"
+          mouse-cursor=""
+                look-controls="enabled: true"></a-entity>
+      <a-light type="ambient" intensity="0.9"></a-light>
+    </a-scene>
+  </body>
+  <script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+  </script>
+</html>

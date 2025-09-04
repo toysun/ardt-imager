@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene embedded arjs="trackingMethod: best;"
+             vr-mode-ui="enabled: false;">
+                  <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/1pAbyoa0YPtdIx1IXA/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-6 1 -8"
+        color="white"
+        scale="2 2 2"
+ 
+      ></a-plane-->
+            <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/Vzfa4fOLmYv7s6a3ea/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-4 1 -8"
+        color="white"
+        scale="2 2 2"
+ 
+      ></a-plane>
+      <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/tTutsU63rnHC8/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+    
+      ></a-plane-->
+      <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/eKs0Y9Gd4i3PsMk3OD/giphy-downsized.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2" 
+
+      ></a-plane-->
+      <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/tUIKBdljI03Wo1cdsA/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+
+      ></a-plane-->
+            <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/QvYo49UaGzz9ZKjpdW/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="4 1 -8"
+        color="white"
+        scale="2 2 2"
+
+      ></a-plane-->
+                  <a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/Vzfa4fOLmYv7s6a3ea/giphy.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="6 1 -8"
+        color="white"
+        scale="2 2 2"
+
+      ></a-plane>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="-1.8 4 1"
+      ></a-light>
+      <a-camera></a-camera>
+    </a-scene>
+  </body>
+</html>

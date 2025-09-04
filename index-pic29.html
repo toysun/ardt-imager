@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+
+    <!--script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script-->
+
+    <!--script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script-->
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js">-->
+
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.6/dist/aframe-extras.min.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-text-geometry.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-troika-text.js"></script>
+     <script src="https://unpkg.com/aframe-camera-recorder-component@1.3.0/dist/aframe-camera-recorder-component.min.js"></script> 
+</head>
+    <link rel="stylesheet" href="style-disney.css" />
+    <style>
+      .HomeButton {
+        background-color: white;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+    <!--style>
+.mainUI
+{
+	border: 0px solid pink; 
+	position: fixed; 
+	top: 0px;  
+	width:100%; height:100%; 
+	z-index: 1; 
+	pointer-events: none; /* allow click-through in transparent areas */
+	display: flex;
+	align-items: center;
+  	justify-content: center;
+}
+
+.regionUI
+{
+	border: 0px solid yellow;
+	position: absolute; 
+	display: flex;
+	flex-direction: row;
+	pointer-events: none;
+}
+
+.buttonUI
+{
+	border: 0px solid lime;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	pointer-events: auto;	
+	filter: drop-shadow(0px 0px 20px white);
+}
+</style-->
+
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <!--div class="mainUI" id="uiDiv" oncontextmenu="return false;">
+      <!-- centered -->
+      <!--div class="regionUI">
+        <div class="buttonUI">
+          <img
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Mickey_Mouse_head_and_ears-blue.png?v=1672910037710"
+            id="buttonEnter"
+          />
+        </div>
+      </div>
+    </div>
+    <!--button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button-->
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      vr-mode-ui="enabled: false;"
+      embedded
+             renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      start
+    >
+      <a-assets>
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/haro_gundam_00%20(1).glb?v=1667880181763"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/cyber-attack-110475.mp3?v=1670426573425"
+          type="audio/mp3"
+          id="ambient"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+      </a-assets>
+      <!--a-plane
+        id="balloon"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/art-the-starry-night.gif?v=1668048665997); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        id="PlayBtn"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/14b613e03bb58576a74f85f62776e07c.gif?v=1668049602868); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -10"
+        color="white"
+        scale="3 3 3"
+        visible="true"
+        animation="property: position; to: 0 0 -6; dur: 20000; easing: linear; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      ></a-plane>
+      <a-plane
+        id="balloon1"
+        visible="false"
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/14b613e03bb58576a74f85f62776e07c.gif?v=1668049602868); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane-->
+      <a-entity
+        scale="1 1 1"
+        position="0.2 -1 -15"
+        rotation="0 0 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/otodus_megalodon.glb?v=1670425186375"
+        shadow="receive: true"
+        animation-mixer
+        animation="property: position; to: 0 -0.8 -1; dur: 3000; easing: linear; loop: false"
+        animation__2="property: position; to: 0 -1.5 -3.4; dur: 3000; easing: linear; loop: false"
+        animation__3="property: rotation; to: -20 0 0; delay: 5000; dur: 30000; easing: linear; loop: false"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity>
+      <a-entity
+        id="Msg-txt"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/shattered_glass.glb?v=1670425113068"
+        scale="8 8 8"
+        position="0 0.5 1"
+        rotation="0 90 0"
+        animation="property: position; to: 0 -0.5 -3; dur: 3000; delay: 2000; loop: false"
+        animation-mixer
+      ></a-entity>
+      <a-troika-text
+        scale="1 1 1"
+        position="0 0.4 -3"
+        max-width="1"
+        curve-radius="-2"
+        font="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/ChristmasSnow-lLEX.ttf?v=1668898954322"
+        color="#1E2B68"
+        value="Summer Festival"
+        align="center"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: scale; to: 2 2 2; delay: 1000; dur: 20000; easing: linear; loop: false"
+        animation__2="property: position; to: 0 0.4 0; delay: 1000; dur: 20000; easing: linear; loop: false"
+      ></a-troika-text>
+      <a-troika-text
+        scale="0 0 0"
+        position="0 -0.1 -1"
+        max-width="0.5"
+        curve-radius="-2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Ghanachocolate.ttf?v=1658802278705"
+        color="#1E2B68"
+        value="지금 신청하세요"
+        align="center"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: scale; to: 0.5 0.5 0.5; delay: 20000; dur: 200; easing: linear; loop: false"
+      ></a-troika-text>
+      <a-image
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message-thanks-white-r.png?v=1671948199992"
+        position="-0.007 -0.1 -0.9"
+        radius="5.7"
+        material="opacity: 0.3; transparent: true"
+        scale="0 0 0"
+        animation="property: scale; to: 0.5 0.25 1; delay: 20000; dur: 1100; easing: linear; loop: false"
+      ></a-image>
+      <!--a-sound src="#aud"></a-sound-->
+      <!--a-entity camera camera-recorder="positionTo: -1 1.6 -7; lookAt: 0 1.6 0" position="0 1.6 0"></a-entity-->
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="balloon"
+        position="0 0 160"
+      >
+      </a-light>
+      <a-entity id="ambientSound" sound="src: #ambient; loop: true;"></a-entity>
+
+      <!--a-entity
+        camera
+        position="0 0 0"
+        look-controls="enabled: true"
+      ></a-entity-->
+      <a-entity
+        id="camera"
+        camera="fov: 80; zoom: 1;"
+        position="0 0 0"
+        orbit-controls="autoRotate: false; target: #target; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.25; minDistance:3; maxDistance:100;"
+        mouse-cursor=""
+        look-controls="enabled: true"
+      >
+        <a-entity sound="src: #aud; loop: true; volume: 0.2;"></a-entity>
+      </a-entity>
+      <a-light type="ambient" intensity="1.5"></a-light>
+    </a-scene>
+  </body>
+  <!--script>
+    const autoplayMusic = () => {
+      const snd = document.querySelector("[sound]");
+      snd.components.sound.playSound();
+    };
+    window.addEventListener("xrfacescanning", autoplayMusic) <
+      script >
+      // runs when user clicks button
+      AFRAME.registerComponent("start", {
+        init: function () {
+          // block pointer events until buttonEnter is clicked
+          let uiDiv = document.getElementById("uiDiv");
+          uiDiv.style["pointer-events"] = "auto";
+
+          // set up background blocker
+          uiDiv.style["background-color"] = "rgba(0, 0, 0, 0.75)";
+
+          // indicate clickable with hand cursor (desktop)
+          let buttonEnter = document.getElementById("buttonEnter");
+          buttonEnter.style.cursor = "pointer";
+
+          // fade-in functionality
+          let fadeIn = function () {
+            // allow point events again
+            uiDiv.style["pointer-events"] = "none";
+
+            // sounds can only be triggered after a mouse interaction
+            let soundPlayer = document.querySelector("#ambientSound");
+            soundPlayer.components.sound.playSound();
+
+            // remove startButton
+            buttonEnter.parentNode.remove(buttonEnter);
+
+            // fade out uiDiv background
+            uiDiv.style["background-color"] = "rgba(0, 0, 0, 0.0)";
+            uiDiv.style["transition"] = "background-color 1000ms linear";
+          };
+
+          // activate for desktop/touchscreen
+          buttonEnter.addEventListener("touchstart", fadeIn);
+          buttonEnter.addEventListener("mousedown", fadeIn);
+        },
+      });
+  </script-->
+
+  <!--script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PauseBtn.setAttribute("visible", true);
+      PauseBtn.style.display = "inline-block";
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudReplayBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudReplayBtn.addEventListener("click", AudPause);
+      AudPauseBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+  </script-->
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/zcanter/aframe-gradient-sky/master/dist/gradientsky.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>
+
+    <script src="aframe-troika-text.js"></script>
+    <script>
+      "use strict";
+
+      AFRAME.registerComponent("shadow-light", {
+        schema: {
+          type: {
+            type: "string",
+            default: "directional",
+            oneOf: ["directional", "spot"],
+          },
+          intensity: { type: "float", default: 0.5, min: 0 },
+          color: { type: "color", default: "white" },
+          target: { type: "vec3", default: { x: 0, y: 0, z: 0 } },
+          near: { type: "float", default: 1 },
+          far: { type: "float", default: 5 },
+          tlrb: { type: "vec4", default: { x: 5, y: -5, z: 5, w: -5 } },
+          mapsize: { type: "vec2", default: { x: 1024, y: 1024 } },
+          bias: { type: "float", default: -0.000222 },
+          helper: { type: "boolean", default: false },
+        },
+        init() {
+          this.el.sceneEl.renderer.shadowMap.enabled = true;
+          this.el.shadowLight = null;
+        },
+        update(oldData) {
+          const diff = AFRAME.utils.diff(oldData, this.data);
+
+          if (diff.hasOwnProperty("type")) {
+            this.remove();
+            this._createLight();
+            return;
+          }
+
+          for (var key of Object.keys(diff)) {
+            switch (key) {
+              case "intensity":
+              case "color":
+                this.light[key] = this.data[key];
+                break;
+              case "target":
+                const { x, y, z } = this.data.target;
+                this.light.target.position.set(x, y, z);
+                break;
+              case "near":
+              case "far":
+                this.light.shadow.camera[key] = this.data[key];
+                break;
+              case "tlrb":
+                const [t, l, r, b] = Object.values(this.data.tlrb).map(
+                  parseFloat
+                );
+                this.light.shadow.camera.top = t;
+                this.light.shadow.camera.left = l;
+                this.light.shadow.camera.right = r;
+                this.light.shadow.camera.bottom = b;
+                break;
+              case "mapsize":
+                const { x: w, y: h } = this.data.mapsize;
+                this.light.shadow.mapSize.width = w;
+                this.light.shadow.mapSize.height = h;
+                break;
+              case "bias":
+                this.light.shadow.bias = this.data.bias;
+                break;
+              case "helper":
+                const { object3D: scene } = this.el.sceneEl;
+                if (this.data.helper && !this.helper) {
+                  this.helper = new THREE.CameraHelper(
+                    this.light.shadow.camera
+                  );
+                  scene.add(this.helper);
+                } else if (!this.data.helper && this.helper) {
+                  scene.remove(this.helper);
+                  this.helper = null;
+                }
+            }
+          }
+        },
+        remove() {
+          const { object3D: scene } = this.el.sceneEl;
+          if (this.light) {
+            scene.remove(this.light.target);
+            this.el.removeObject3D("light");
+          }
+          if (this.helper) {
+            scene.remove(this.helper);
+            this.helper = null;
+          }
+          this.light = null;
+        },
+        _createLight() {
+          const {
+            type,
+            color,
+            intensity,
+            target,
+            bias,
+            mapsize,
+            near,
+            far,
+            tlrb,
+            helper,
+          } = this.data;
+          const { object3D: scene } = this.el.sceneEl;
+
+          const light =
+            type == "directional"
+              ? new THREE.DirectionalLight(color, intensity)
+              : new THREE.SpotLight(color, intensity);
+
+          scene.add(light.target);
+          light.target.position.set(target.x, target.y, target.z);
+
+          light.shadow.bias = bias;
+          light.shadow.mapSize.width = mapsize.x;
+          light.shadow.mapSize.height = mapsize.y;
+
+          light.shadow.camera.near = near;
+          light.shadow.camera.far = far;
+          const [t, l, r, b] = Object.values(tlrb).map(parseFloat);
+          light.shadow.camera.top = t;
+          light.shadow.camera.left = l;
+          light.shadow.camera.right = r;
+          light.shadow.camera.bottom = b;
+
+          light.castShadow = true;
+          this.el.setObject3D("light", light);
+
+          if (helper) {
+            this.helper = new THREE.CameraHelper(light.shadow.camera);
+            scene.add(this.helper);
+          }
+          this.light = light;
+          this.el.shadowLight = light;
+        },
+      });
+
+      AFRAME.registerComponent("shadow-plane", {
+        schema: {
+          dimensions: { type: "vec2", default: { x: 10, y: 10 } },
+          opacity: { type: "float", default: 0.2, min: 0, max: 1 },
+        },
+        init() {
+          this.el.sceneEl.renderer.shadowMap.enabled = true;
+
+          const { opacity } = this.data;
+          this.material = new THREE.ShadowMaterial({ opacity });
+        },
+        update(oldData) {
+          const diff = AFRAME.utils.diff(oldData, this.data);
+          if (diff.dimensions) {
+            this.remove();
+            this._createPlane();
+          }
+          this.material.opacity = this.data.opacity;
+        },
+        remove() {
+          if (!this.plane) return;
+          this.el.removeObject3D("mesh");
+          this.plane = null;
+        },
+        _createPlane() {
+          const {
+            dimensions: { x: w, y: h },
+          } = this.data;
+
+          const geo = new THREE.PlaneBufferGeometry(w, h);
+          geo.rotateX(-Math.PI / 2);
+
+          this.plane = new THREE.Mesh(geo, this.material);
+          this.plane.receiveShadow = true;
+          this.el.setObject3D("mesh", this.plane);
+        },
+      });
+
+      AFRAME.registerPrimitive("a-shadow-light", {
+        defaultComponents: {
+          "shadow-light": {},
+        },
+        mappings: {
+          type: "shadow-light.type",
+          intensity: "shadow-light.intensity",
+          color: "shadow-light.color",
+          target: "shadow-light.target",
+          near: "shadow-light.near",
+          far: "shadow-light.far",
+          tlrb: "shadow-light.tlrb",
+          mapsize: "shadow-light.mapsize",
+          bias: "shadow-light.bias",
+          helper: "shadow-light.helper",
+        },
+      });
+
+      AFRAME.registerPrimitive("a-shadow-plane", {
+        defaultComponents: {
+          "shadow-plane": {},
+        },
+        mappings: {
+          dimensions: "shadow-plane.dimensions",
+          opacity: "shadow-plane.opacity",
+        },
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      light="defaultLightsEnabled: false"
+    >
+      <a-light type="ambient" intensity="2.1" castshadow="false"></a-light>
+      <a-shadow-light
+        type="spot"
+        far="18"
+        target="0 0 -5"
+        mapsize="4096 4096"
+        position="0 16 -5"
+      >
+      </a-shadow-light>
+      <a-shadow-plane dimensions="10 10 10" position="0 -1 -5"> </a-shadow-plane>
+      <!--a-entity light="type: ambient; intensity: 2.1;"></a-entity>
+              <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="balloon"
+          position="-5 3.6 10"
+        >
+        </a-light>
+            <a-entity
+        light="color: #FFF; intensity: 1.5"
+        postioon="0 0 -1"
+        animation="property: position; from: 0 0 -1; to: 0 0 1; loop: true; dir: alternate; dur: 1000; easing: easeInOutQuad;"
+      ></a-entity-->
+      <!--a-troika-text
+        position="0 1.7 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+        animation__1="property: position; to: 0 1.8 2.55; delay: 500; dur: 3000; loop: false"
+        animation__2="property: position; to: 0 1.7 -2.5; delay: 3500; dur: 3000; loop: false"
+      ></a-troika-text-->
+      <a-entity
+        position="0 5 -1"
+        rotation="180 90 0"
+        particle-system="preset: default;
+                                 texture: https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/sakura.png?v=1684333407894; 
+                                 color: #FFF, #BDBDBD; 
+                                 direction: -1; 
+                                 maxAge: 1;
+                                 particleCount: 1000;
+                                 size: 0.3;
+                                 positionSpread: 10 15 -15;
+                                 velocityValue: -5 10 0;"
+      ></a-entity>
+      <a-troika-text
+        position="-0.6 1.9 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="바"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-troika-text>
+      <a-troika-text
+        position="-0.3 1.9 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="람"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 1.9 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="의"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-troika-text>
+      <a-troika-text
+        position="0.3 1.9 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="검"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-troika-text>
+      <a-troika-text
+        position="0.6 1.9 -3"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-troika-text>
+      <!--a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/APU5.gif?v=1712967647923); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/rurouni_kenshin_6.gif?v=1712841794409); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2"
+        
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/disgaea-samurai.gif?v=1712841974030); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+
+      ></a-plane-->
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/kenshin-wash.gif?v=1712841895278); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+        shadow="receive: false"
+        animation__2="property: rotation; to: 0 360 0; delay: 1000; dur: 3000; loop: true"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/kenshin-blow.gif?v=1712841875478); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -8"
+        color="white"
+        scale="2 2 2"
+        shadow="receive: false"
+        animation__2="property: rotation; to: 0 360 0; delay: 1500; dur: 3000; loop: true"
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/kenshin-back.gif?v=1712841879990); opacity: 1; alphaTest: 0.5; side: double;"
+        position="2 1 -8"
+        color="white"
+        scale="2 2 2"
+        shadow="receive: false"
+        animation__2="property: rotation; to: 0 360 0; delay: 500; dur: 3000; loop: true"
+      ></a-plane>
+      <!--a-entity
+        id="selector2"
+        scale="0.15 0.15 0.15"
+        position="0 3 -3"
+        rotation="0 0 0"
+        gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+        animation__2="property: position; to: 0 1.6 -0.55; delay: 500; dur: 3000; loop: false"
+      >
+      </a-entity-->
+                  <a-entity
+        id="selector1"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/hand_painted_sakura_tree.glb?v=1684332943855"
+        scale="0.014 0.014 0.014"
+        rotation="0 45 0"
+        position="-1.2 -3.5 -18"
+        visible="true"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: scale; from: 0 0 0; to: 0.012 0.012 0.012; delay: 200; dur: 15000; loop: false"
+      ></a-entity>
+      <a-entity
+        id="selector"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/butterflies.glb?v=1684354950473"
+        scale="0.2 0.2 0.2"
+        rotation="0 10 0"
+        position="0 1 -5"
+        visible="true"
+        animation-mixer
+        shadow="receive: false"
+
+        animation__2="property: rotation; from: 0 10 0; to: 0 -360 0; delay: 200; dur: 15000; loop: true"
+      ></a-entity>
+      <a-entity
+        id="selector3"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/cruiser_butterfly.glb?v=1684334737312"
+        scale="0.3 0.3 0.3"
+        rotation="0 60 0"
+        position="1 4 -10"
+        visible="true"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: position; to: -1 3 -4; delay: 1500; dur: 10000; loop: false"
+        animation__1="property: position; from: -1 3 -7; to: -1 0 -9; delay: 11500; dur: 10000; loop: false"
+        animation__2="property: position; from: -1 0 -9; to: -2 3 -8; delay: 21500; dur: 10000; loop: false"
+      ></a-entity>
+      <a-entity
+        id="selector4"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/danaid_butterfly.glb?v=1684335249865"
+        scale="0.3 0.3 0.3"
+        rotation="0 -60 0"
+        position="-3 -1 -10"
+        visible="true"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: position; to: 1 3 -7; delay: 1500; dur: 10000; loop: false"
+        animation__1="property: position; from: 1 3 -7; to: 1.5 5 -9; delay: 11500; dur: 10000; loop: false"
+        animation__2="property: position; from: -1 5 -9; to: 2 3 -8; delay: 21500; dur: 10000; loop: false"
+      ></a-entity>
+      <a-entity
+        light="type: point; intensity: 0.9; castShadow: false"
+      ></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 2048;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: -7;
+                      shadowCameraBottom: 5;
+                      shadowCameraTop: 15;"
+        id="light"
+        target="balloon"
+        position="-1 3.6 10"
+      >
+      </a-light>
+      <!--a-sky color="#fff"></a-sky-->
+      <a-entity camera position="0 1.6 0"></a-entity>
+    </a-scene>
+    <script>
+      window.addEventListener("load", function () {
+        // you can access the THREE.Light object from the shadow-light element
+        var lightEl = document.querySelector("a-shadow-light");
+        console.log(lightEl.shadowLight);
+      });
+    </script>
+  </body>
+</html>
