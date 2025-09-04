@@ -1,0 +1,531 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="mindar-face-aframe.prod.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>      
+    <script src="https://rawgit.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-click-events/events.js"></script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "angel",
+          "devil"
+        ];
+        const visibles = [false, false];
+        var DisplayingIndex = "999";
+
+        
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        
+
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          
+          setVisible(button, entities, visibles[index]);
+          
+          button.addEventListener("click", () => {
+            if(DisplayingIndex != "999") {
+              list.forEach((item, DisplayingIndex) => {
+                const Oldbutton = document.querySelector("#" + item);
+                const Oldentities = document.querySelectorAll("." + item + "-entity");
+                  
+                Oldbutton.classList.remove("selected");
+                Oldentities.forEach((entity) => {
+                  entity.setAttribute("visible", false);
+                });
+     
+              });
+              visibles[DisplayingIndex] = !visibles[DisplayingIndex]; 
+            } 
+            
+            DisplayingIndex = index;
+            
+           
+            visibles[index] = !visibles[index];            
+            setVisible(button, entities, visibles[index]);
+          });  
+  
+        });
+        
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sceneEl = document.querySelector("a-scene");
+        const arSystem = sceneEl.systems["mindar-face-system"];
+
+
+        const switchCameraButton = document.querySelector(
+          "#flip-btn"
+        );
+
+        // arReady event triggered when ready
+        sceneEl.addEventListener("arReady", (event) => {
+          console.log("ar ready");
+        });
+
+        // detect target found
+        sceneEl.addEventListener("targetFound", (event) => {
+          console.log("target found");
+        });
+
+        // detect target lost
+        sceneEl.addEventListener("targetLost", (event) => {
+          console.log("target lost");
+        });
+
+        // arError event triggered when something went wrong. Mostly browser compatbility issue
+        sceneEl.addEventListener("arError", (event) => {
+          console.log("ar error");
+        });
+
+
+        switchCameraButton.addEventListener("click", function () {
+          arSystem.switchCamera();
+        });
+      });
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+    
+    <link rel="stylesheet" href="style-capture.css" />
+    
+    
+    <style>
+      body {
+        margin: 0;
+      }
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(120, 120, 120, 0.9);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+                border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      
+      #angel {
+        display: none;
+      }
+      #devil {
+        display: none;
+      }
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 90%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+
+    </style>
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <div id="start_area" class="tab-start" align="center">     
+      <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/%EC%97%85%EA%B2%BD%EB%8C%80-start.png?v=1694704702353"
+        style="positon: relative; z-index: 999999; display: flex; top: 0; left: 0;
+        justify-content: center; align-items: center; height: 450px; width: 50%"/>
+   
+    </div>  
+        <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/good_evil_fight.gif?v=1694391337435"
+      />
+    </div>
+    
+    <button class="ChangeButton" id="flip-btn"></button>
+    
+    <div id="wrapper">
+    
+    <div class="example-container">
+       
+        <div class="options-panel">
+           <button type="button" id="angel">
+              <img src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/future-helmet-800.png?v=1684129768789" />
+           </button>
+           <button type="button" id="devil">
+              <img src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/buddha-mask.png?v=1684129770659" />
+           </button>
+        </div>
+    
+         <button
+           class="HomeButton"
+           id="home-btn"
+           onclick="window.open('https://imager-ardocent.glitch.me/moon-index1.html','_self');"
+         ></button>
+      
+        <button
+           class="ReloadButton"
+           id="reload-btn"
+           onclick="location.reload(true);"
+        ></button>
+         
+      <a-scene
+        mindar-face
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        raycaster="objects: [clickhandler];"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+
+        <a-assets>
+          <audio
+             src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/SpaceLaserShot%20PE1095407.mp3?v=1684294410059"
+             type="audio/mp3"
+             id="aud"
+             response-type="arraybuffer"
+             crossorigin="anonymous"
+             webkit-playsinline
+             playsinline
+          ></audio>
+          <a-asset-item
+            id="headModel"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/occluder.glb?v=1692251271564"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="angelModel"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/angel-ring-white.glb?v=1692659403721"
+          ></a-asset-item>
+          <a-asset-item
+            id="angelModel1"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/white_glasses_from_poly_by_google.glb?v=1692658969636"
+          ></a-asset-item>
+          <a-asset-item
+            id="angelModel2"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/angle-wing-white-no-ring.glb?v=1692271522376"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="devilModel"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/devil_horns.glb?v=1685599866221"
+          ></a-asset-item>
+          <a-asset-item
+            id="devilModel1"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/thuglife_glasses.glb?v=1685583268171"
+          ></a-asset-item>
+          <a-asset-item
+            id="devilModel2"
+            src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/devil-wings.glb?v=1692657331037"
+          ></a-asset-item>
+          
+        </a-assets>
+
+        <a-camera active="false" position="0 0 0"></a-camera>
+        <a-entity
+          sound="src: #aud"
+          visible ="false"
+          position="0 1.6 35"
+          play-sound-on-event="mode: toggle-stop; event: click"
+          geometry="primitive: sphere"
+        >
+        </a-entity>
+        <a-plane
+          id="plane1"
+          height="20"
+          width="40"
+          position="0 0 -9"
+          transparent="true"
+          opacity="0"
+          visible="false"
+        >
+        <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            mindar-face-occluder
+            position="0 -0.5 0.15"
+            rotation="0 0 0"
+            scale="8.9 8.9 8.9"
+            src="#headModel"
+          ></a-gltf-model>
+        </a-entity>
+
+       
+        <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0.2 1.5 0.1"
+            scale="0.005 0.005 0.005"
+            src="#devilModel"
+            class="devil-entity"
+            visible="false"
+            animation-mixer
+
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0.2 0.6 0.3"
+            scale="0.6 0.6 0.6"
+            src="#devilModel1"
+            class="devil-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+ 
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -2.9 -2"
+            scale="10 10 10"
+            src="#devilModel2"
+            class="devil-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 90 0"
+            position="-0.2 1.5 -1.5"
+            scale="7 7 7"
+            src="#angelModel"
+            class="angel-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+       </a-entity>
+       <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+              rotation="0 0 0"
+            position="0.2 0.7 0.32"
+            scale="0.008 0.008 0.008"
+            src="#angelModel1"
+            class="angel-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -7.5 -5"
+            scale="10 10 10"
+            src="#angelModel2"
+            class="angel-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="whlogo"
+          position="0 0 160"
+        >
+        </a-light>
+          
+        </a-plane>
+        <button class="button" id="mybutton"></button> 
+      </a-scene>
+    
+      <button class="capturebtn" id="capture" style="vertical-align:middle"></button>
+      <button class="savebtn" id="save" style="vertical-align:middle"></button>
+       <!-- The Modal -->
+      <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span
+          class="closebtn">
+          <img
+            src="https://cdn.glitch.global/be340911-435f-4b68-b71f-00337c3212ac/close-white.png?v=1661493491151"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+        
+    </div>
+    </div>
+
+    </div>  
+    </div>
+    
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+    <script>
+     document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+        var pln = document.querySelector("#plane1");
+        this.aud = document.querySelector("#aud");
+       
+       
+        pln.setAttribute("visible", true);
+         // pln.setAttribute("position",{x:0,y:5,z:-9});
+        pln.setAttribute(
+            "animation",
+            "property: scale; dur: 1000; from: 0 0 0; to: 1 1 1"
+        );
+        this.aud.play();        
+          
+        Start_Area.parentNode.removeChild(Start_Area);
+        
+        const rand = Math.floor(Math.random() * 2);
+        const randlist = ["angel", "devil"];
+        const rand_btn = randlist[rand];
+     
+        document.getElementById(rand_btn).click();       
+        
+      });
+  </script>
+  </body>
+</html>

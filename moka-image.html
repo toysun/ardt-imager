@@ -1,0 +1,527 @@
+<html>
+  <head>
+    <title>목아박물관 AR</title>
+    <meta charset="utf-8" />
+    <!--meta name="viewport" content="width=device-width, user-scalable=no" /-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no," />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script-->
+    <script src="https://ardocent.com/aframe/gc-ar/js/aframe-ar-nft-3.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <!--script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script-->
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+    <!--script src="./js/navigate-on-click.js"></script-->
+
+    <!--script src="./js/components.js"></script-->
+    <script
+      src="https://ardocent.com/aframe/gc-ar/js/cursor_m.js"
+      defer
+    ></script>
+    <!--script src="./js/vidhandler.js"></script-->
+
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+
+    <script src="https://ardocent.com/aframe/gc-ar/js/aframe-troika-text.js"></script>
+
+    <!--link
+      rel="stylesheet"
+      href="https://ardocent.com/aframe/gc-ar/css/style-wt.css"
+    /-->
+     <link rel="stylesheet" href="style-gundam.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/home.png?v=1662167093415");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+          
+    
+    <!--div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/wonder-ticket-remover.png?v=1662167986687"
+      />
+    </div-->
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/buddha-w.png?v=1681547569915"
+      />
+    </div>
+    <button class="HomeButton" id="home-btn"></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+    <!--div class="arjs-loader">
+      <div >
+        
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div-->
+    <div class="arjs-loader">
+</div>
+    <div class="image-target" id="markerinfo">
+      
+        <p>카메라를 그림에 맞춰서<br>
+        목아박물관 AR 콘텐츠를 즐겨주세요.</p>
+    
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <!--a-text
+        id="sc_text"
+        value="카메라를 그림에 
+               맞춰 주세요."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1.5 1.5 1.5"
+        position="-1.5 -1.5 -12"
+        text-align="center"
+      ></a-text-->
+
+      <a-assets>
+        <!--img id="playbtn"
+          src="./image/play-button-white-hollow.png"/-->
+
+        <a-asset-item id="playbtn" src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/stylized_lotus_flower.glb?v=1681654833655"></a-asset-item>
+        <audio
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/Lord%20Buddha%20Flute%20Music.m4r?v=1681653288720"
+          type="audio/mp3"
+          id="aud"
+          loop="true"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+        <video
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/4-heaven-king-1.mp4?v=1681778517512"
+          type="video/mp4"
+          id="vid"
+          loop="true"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></video>
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        markhandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url="https://raw.githubusercontent.com/toysun/sg/master/imarker/4-kings"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-entity
+          geometry="primitive: circle; radius: 200"
+          material="side: double; color: #FFFFFF; transparent: true; opacity: 0.5"
+          ioshandler
+          position="-0.5 0 0"
+          rotation="180 0 0"
+          id="VPlayBtn"
+          class="clickable"
+          visible="false"
+          animation-mixer
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity>
+
+        <!--a-entity
+          scale="0.008 0.008 0.008"
+          position="0 -1 -20"
+          rotation="20 20 0"
+          id="whlogo"
+          visible="true"
+          gltf-model="#playbtn" 
+          shadow="receive: true"
+          gesture-handler
+          animation-mixer
+        >
+        </a-entity-->
+        <a-entity
+          scale="0.2 0.2 0.2"
+          position="0 -1 -20"
+          rotation="0 -90 0"
+          id="whlogo"
+          visible="true"
+          gltf-model="#playbtn"
+          gesture-handler
+          animation-mixer
+        >
+        </a-entity>
+
+        <a-entity
+          id="VideoModel"
+          geometry="primitive: plane; height: 3.5; width: 3.5"
+          material="shader: chromakey; color: 0 0 0.6; transparent:true;opacity: 0.1;src:#vid"
+          vidhandler
+          
+          position="-0.03 0 -4.2"
+          rotation="0 360 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          visible="false"
+        >
+        </a-entity>
+             
+        <a-entity
+          id="thunder"
+          scale="10 10 10"
+          position="-0.2 -1 -20"
+          rotation="0 0 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/thunder.glb?v=1667137480995"
+          shadow="receive: true"
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 9000; delay: 200; loop: true"
+
+        >
+        </a-entity>
+
+        <a-text
+          id="NFtext"
+          value="Click Start"
+          color="#FFFFFF"
+          shader="msdf"
+          scale="0.75 0.75 0.75"
+          position="-0.5 -0.5 -3.2"
+        ></a-text>
+
+        <a-entity
+          light="color: #FFF; intensity: 0.5"
+          animation="property: position; from: -1 0 1; to: 1 0 1; loop: true; dir: alternate; dur: 200; easing: easeInOutQuad;"
+        ></a-entity>
+        <!--a-troika-text
+          position="0 -0.5 -2"
+          scale="0.5 0.5 0.5"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/WandohopeB.ttf?v=1658800510222"
+          color="#FFFFFF"
+          value="
+화면을 클릭하면 
+계속 움직입니다."
+          textalign="center"
+        ></a-troika-text-->
+
+        <!--a-entity
+        id="scene2"
+        scale="3 3 3"
+        position="0 -0.8 -2.5"
+        rotation="20 10 0"
+        gltf-model="./image/wonder-ticket.glb"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+        animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000"
+      >
+      </a-entity-->
+        <!--a-entity
+        id="scene1"
+        scale="1 1 1"
+        position="0 0.5 -4.1"
+        rotation="180 0 0"
+        gltf-model="./image/water_waves.glb"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+      >
+      </a-entity-->
+         <a-sound src="#aud"></a-sound>
+
+        <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="whlogo"
+          position="0 0 160"
+        >
+        </a-light>
+
+        <a-entity
+          camera
+          position="0 0 0"
+          look-controls="enabled: false"
+        ></a-entity>
+        
+        <a-light type="ambient" intensity="0.9"></a-light>
+      </a-nft>
+    </a-scene>
+
+  </body>
+  <script>
+    var MarkerInfo = document.getElementById("markerinfo");
+    var MarkerFlag = "false";
+
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");    
+    var Audio = document.querySelector("#aud");
+     
+    document.getElementById("VPlayBtn").addEventListener("click", function () {
+      var VideoPlayBtn = document.getElementById("VPlayBtn");
+      var VideoModel = document.getElementById("VideoModel");
+      var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+      this.vid = document.querySelector("#vid");
+      this.aud = document.querySelector("#aud");
+    
+      MarkerFlag = "true";
+      
+      VideoPlayBtn.setAttribute("visible", false);
+      VideoPlayBtn.style.display = "none";
+      whlogo.setAttribute("visible", false);
+      whlogo.style.display = "none";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      VideoModel.setAttribute("visible", true);
+      VideoModel.style.display = "inline-block";
+      this.vid.play();
+      this.aud.play();
+      
+      AudReplayBtn.style.display = "none";
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+     function AudPause() {
+      Audio.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      Audio.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+    
+  AFRAME.registerComponent("markhandler", {
+  init: function() {
+    const marker = document.querySelector("#marker");
+    const PlayBtn = document.getElementById("VPlayBtn");
+ //   const nextButton = document.getElementById('nextbutton');
+      
+    marker.addEventListener(
+      "markerFound",
+      function() {
+        MarkerInfo.style.display = "none";      
+        
+      PlayBtn.addEventListener("click", function () {         
+        
+      var NFtext = document.getElementById("NFtext");
+   //   var nextButton = document.getElementById('nextbutton')
+    //  nextButton.style.display = 'block'
+
+      MarkerFlag = "true";
+         
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+    
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+         
+      Audio.play();
+
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);  
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);  
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+        
+    
+    if(MarkerFlag === "true") {
+            
+     // nextButton.style.display = 'block';
+      AudReplay();
+ //     Audio.play();
+
+   //   AudReplayBtn.style.display = "none";
+   //   AudReplayBtn.setAttribute("visible", false);  
+   //   AudPauseBtn.style.display = "inline-block";
+   //   AudPauseBtn.setAttribute("visible", true);  
+      
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    }
+          
+      }.bind(this)
+    );
+
+    marker.addEventListener(
+      "markerLost",
+      function() {
+        MarkerInfo.style.display = "inline-block";
+    //    nextButton.style.display = 'none';
+        AudPause();
+      }.bind(this)
+    );
+  }
+});
+  </script>
+</html>

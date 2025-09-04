@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>고인돌박물관 3D Map</title>
+    <!--meta
+      name="description"
+      content="Basic example for Cursor Teleport component."
+    />
+    <meta /-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script-->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!--script src="aframe-cursor-teleport-component.min.js"></script-->
+    <!--script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://unpkg.com/aframe-orbit-controls@1.2.0/dist/aframe-orbit-controls.min.js"></script>
+
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://rawgit.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-click-events/events.js"></script>
+    <script src="https://raw.githubusercontent.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
+    <!--script>
+      var mobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(
+        navigator.userAgent.toLowerCase()
+      );
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var Browser = navigator.userAgent.toLowerCase();
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 124) {
+            if (Browser.indexOf("naver") !== -1) {
+              location.href = "https://www.ardocent.com/ardocent/not-allowed-nipa/";
+            }
+            if (self.name != "reload") {
+              self.name = "reload";
+              self.location.reload(true);
+            } else self.name = "";
+          } else {
+            location.href = "https://www.ardocent.com/ardocent/not-allowed-nipa/";
+          }
+        } else if (Browser.indexOf("chrome") < 90) {
+          if (self.name != "reload") {
+            self.name = "reload";
+            self.location.reload(true);
+          } else self.name = "";
+        } else {
+          location.href =
+            "intent://ardocent.com/aframe/nipa/ns.html#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      } 
+      else window.location.replace("https://www.ardocent.com/ardocent/not-allowed-nipa/");
+    </script-->
+
+    <script
+      src="https://ardocent.com/aframe/gc-ar/js/cursor_m.js"
+      defer
+    ></script>
+    <script>
+      window.onload = function () {
+        const scene = AFRAME.scenes[0];
+        if (!scene) {
+          return;
+        }
+        const mouseCursor = document.createElement("a-entity");
+        mouseCursor.setAttribute("cursor", "rayOrigin", "mouse");
+        scene.appendChild(mouseCursor);
+      };
+    </script>
+    <script>
+      AFRAME.registerComponent("clickhandler", {
+        init: function () {
+          this.el.addEventListener("click", function () {
+            var elVideoBtn = document.getElementById("MyHomeBtn");
+            var elVideoCloseBtn = document.getElementById("MyHomeCloseBtn");
+            var elVideoModel = document.getElementById("VideoModel");
+
+            const video = document.getElementsByTagName("video")[0];
+
+            if (
+              elVideoCloseBtn.style.display == "" ||
+              elVideoBtn.style.display == "inline-block"
+            ) {
+              elVideoModel.setAttribute("visible", true);
+              video.play();
+              elVideoBtn.setAttribute("visible", false);
+              elVideoCloseBtn.setAttribute("visible", true);
+              elVideoBtn.style.display = "";
+              elVideoCloseBtn.style.display = "inline-block";
+            } else {
+              video.pause();
+              VideoModel.setAttribute("visible", false);
+              elVideoBtn.style.display = "inline-block";
+              elVideoCloseBtn.style.display = "";
+              elVideoBtn.setAttribute("visible", true);
+              elVideoCloseBtn.setAttribute("visible", false);
+            }
+          });
+        },
+      });
+    </script>
+
+    <script>
+      AFRAME.registerComponent("foo", {
+        init: function () {
+          this.el.addEventListener("model-loaded", (e) => {
+            console.log(e);
+            let model = this.el.getObject3D("mesh");
+            model.traverse(function (node) {
+              if (!node.material) return;
+
+              var tmp = node.material;
+              node.material = new THREE.MeshStandardMaterial({
+                skinning: true,
+                map: node.material.map,
+              });
+              node.material.needsUpdate = true;
+              tmp.dispose();
+            });
+          });
+        },
+      });
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://arjs-cors-proxy.herokuapp.com/https://ardocent.com/aframe/gc-ar/css/style2s.css"
+    />
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      id="scene"
+      loading-screen="dotsColor: white; backgroundColor: #002F68"
+      cursor="fuse: false; rayOrigin: mouse"
+      raycaster="objects: [clickhandler];"
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+    >
+      <a-assets>
+        <a-asset-item
+          id="environment"
+          src="https://arjs-cors-proxy.herokuapp.com/https://ardocent.com/aframe/gc-ar/image/3D-Map.glb"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-entity
+        camera
+        look-controls
+        orbit-controls="target: 0 0 0; minDistance: 5; maxDistance: 600; initialPosition: 5 -50 65"
+      ></a-entity>
+
+      <a-entity
+        id="map"
+        class="collision"
+        gltf-model="#environment"
+        position="-30 -15 -300"
+        scale="3 3 3"
+        rotation="-10 180 0"
+        animation-mixer
+        gesture-handler
+        animation="property: position; dur: 10000;
+                       to: -30 -15 0; loop: false"
+        animation__3="property: rotation; dur: 30000;
+                       to: 0 -90 0; loop: false"
+        foo
+      ></a-entity>
+              <a-text
+          value="터치&드레그로 돌려보거나
+                 두손가락으로 확대 축소하여
+                 고인돌박물관과 유적의 위치를
+                 확인 하실 수 있습니다"
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+          scale="15 15 15"
+          position="-30 25 0"
+                      foo
+        ></a-text>
+
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="map"
+        position="5 5 1"
+      >
+      </a-light>
+      <a-light type="ambient" intensity="6.5"></a-light>
+    </a-scene>
+  </body>
+</html>
