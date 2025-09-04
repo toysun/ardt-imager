@@ -1,0 +1,24 @@
+<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+<script>
+  function pause() {
+    document.querySelector("a-entity").setAttribute('animation-mixer', {
+      timeScale: 0
+    });
+  }
+
+  function play() {
+    document.querySelector("a-entity").setAttribute('animation-mixer', {
+      timeScale: 1
+    });
+  }
+</script>
+<button onclick="pause()" style="z-index: 10000000; position: fixed; margin-top: 0px; cursor: pointer;">
+Pause
+</button>
+<button onclick="play()" style="z-index: 10000000; position: fixed; margin-top: 0px; cursor: pointer; margin-left: 50px;">
+play
+</button>
+<a-scene>
+  <a-entity gltf-model="https://cdn.glitch.global/815f53ca-b7db-40aa-8843-e718abdfbf6d/scene%20-%202022-01-16T183239.246.glb?v=1642386788500" position="20 0 -35" rotation="0 90 0" scale="0.1 0.1 0.1" animation-mixer="clip:Take 001; loop:true; timeScale: 1; crossFadeDuration: 1"></a-entity>
+</a-scene>

@@ -1,0 +1,214 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+.logoWrapper {
+    position: absolute; 
+    top: 5px; 
+    left: 5px; 
+    width: 100%; 
+    z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+    width: 29%;   /* 104px */
+    height: 29%;  /*  40px */
+    visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+$scan-mask-border: 10px;
+$primary-color: white;
+
+.mindar-ui-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 2;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.mindar-ui-loading {
+  .loader {
+    border: 16px solid #222; // background color
+    border-top: 16px solid $primary-color; // foreground color
+    opacity: 0.8;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}
+
+.mindar-ui-compatibility {
+  .content {
+    background: black;
+    color: white;
+    opacity: 0.8;
+    text-align: center;
+
+    margin: 20px;
+    padding: 20px;
+    min-height: 50vh;
+  }
+}
+
+.mindar-ui-scanning {
+  .scanning {
+    @media (min-aspect-ratio: "1/1") {
+      width: 50vh;
+      height: 50vh;
+    }
+    @media (max-aspect-ratio: "1/1") {
+      width: 80vw;
+      height: 80vw;
+    }
+    .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+
+      background:
+	linear-gradient(to right, $primary-color $scan-mask-border, transparent $scan-mask-border) 0 0,
+	linear-gradient(to right, $primary-color $scan-mask-border, transparent $scan-mask-border) 0 100%,
+	linear-gradient(to left, $primary-color $scan-mask-border, transparent $scan-mask-border) 100% 0,
+	linear-gradient(to left, $primary-color $scan-mask-border, transparent $scan-mask-border) 100% 100%,
+	linear-gradient(to bottom, $primary-color $scan-mask-border, transparent $scan-mask-border) 0 0,
+	linear-gradient(to bottom, $primary-color $scan-mask-border, transparent $scan-mask-border) 100% 0,
+	linear-gradient(to top, $primary-color $scan-mask-border, transparent $scan-mask-border) 0 100%,
+	linear-gradient(to top, $primary-color $scan-mask-border, transparent $scan-mask-border) 100% 100%;
+
+      background-repeat: no-repeat;
+      background-size: 40px 40px;
+
+      .scanline {
+	position: absolute;
+	width: 100%;
+	height: 10px;
+	background: $primary-color;
+	animation: move 2s linear infinite;
+
+	@keyframes move {
+	  0%, 100% { top: 0% }
+	  50% { top: calc(100% - 10px) }
+	}
+      }
+    }
+  }
+}
+.scannerWrapper {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    margin: 0 auto;
+}
+
+.scannerImage {
+    width: 95%;
+}
+
+/* Darker background on mouse-over */
+
+   .button {
+      background-color: Silver;
+      border: none;
+      color: white;
+      padding: 12px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 36px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 5px;
+      left: 40%;
+      width: 70px;
+      height: 70px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+
+.button:hover {
+  background-color: Gold;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  width: 73vw;
+  background-image: url("https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fending_popup_50.png?v=1609049344617");
+  min-height: 40%;
+  background-position: center;
+  background-size: cover; 
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 15%;
+  top: 10%;
+  border-radius: 10%;
+ /* width: 70%; 
+  height: 70%; */
+  overflow: auto; /* Enable scroll if needed */
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed; 
+  border: none;
+  margin: auto;
+  padding: 1px;
+/*  border: 1px solid #888; */
+  /*width: 50%; /* Full width */
+/*  justify-content: center;
+/*  align-items: center;  */
+  align: center;
+  width: 40%;
+  top: 33%;
+  left: 20%;
+  z-index: 99999; 
+}
+
+/* The Close Button */
+.closebtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closebtn:hover,
+.closebtn:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

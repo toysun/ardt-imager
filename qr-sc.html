@@ -1,0 +1,97 @@
+
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
+<style>
+.mianBlock{
+ margin: 10% 0 0 10%;
+}
+.resq{
+  max-width:500px;
+}
+.wa{
+  width: auto;
+}
+
+#border{
+  display:block;
+  width:100%;
+  border:1px solid red;
+  position:absolute;
+  margin-left: -16px;
+  -webkit-animation: mover ease-out 1s infinite  alternate;
+    animation: mover ease-out 1s infinite  alternate;
+}
+@-webkit-keyframes mover {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+@keyframes mover {
+      0% { top: 0; }
+  100% { top: 100%;} 
+ }
+
+</style>
+<div class="mianBlock">
+  <div class="input-group mb-3 resq">
+    <input type="text" class="form-control" id="qrcode" >
+    <div class="input-group-append">
+    <span class="input-group-text btn bg-primary text-white" onclick="scanQR()">Сканировать QR код</span>
+  </div>
+</div>
+</div>
+  
+<!-- ============================================= -->
+<!-- preview/change image -->
+<div class="modal fade" id="dlg_scanerQR" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" >
+        <div class="modal-content wa">
+            <div class="modal-header header_dialog">
+                <div class="modal-title">Сканер QR кода</div>
+                <button type="button" class="close cl_white" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body text-center">
+
+              <video id="camera"></video>
+              <span id="border"></span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- preview/change image -->
+<!-- ============================================= -->
+
+<script>
+function scanQR(){
+  $('#dlg_scanerQR').modal();
+  
+  
+let scanner = new Instascan.Scanner({
+  video: document.getElementById("camera")
+});
+
+let resultado = document.getElementById("qrcode");
+scanner.addListener("scan", function(content) {
+  //resultado.innerText = content;
+  resultado.value=content;
+  
+  scanner.stop();
+  
+  $('#dlg_scanerQR').modal('hide');
+  
+});
+Instascan.Camera.getCameras()
+  .then(function(cameras) {
+    if (cameras.length > 0) {
+      scanner.start(cameras[0]);
+    } else {
+      resultado.innerText = "No cameras found.";
+    }
+  })
+  .catch(function(e) {
+    resultado.innerText = e;
+  });
+}
+</script>
