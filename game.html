@@ -1,0 +1,260 @@
+<html>
+  <head>
+    <title>월트디즈니 100주년</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--meta name="viewport" content="width=device-width, user-scalable=no" /-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+<!-- A-Frame 0.7.1 -->
+<!-- <script src="//aframe.io/releases/0.7.1/aframe.min.js"></script> -->
+
+<!-- A-Frame 0.8.* -->
+<!--script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script-->
+<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+
+<!-- A-Frame Master -->
+<!-- <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> -->
+
+<!-- A-Frame Extras -->
+<script src="https://unpkg.com/aframe-extras@5.0.0/dist/aframe-extras.min.js"></script>
+
+<!-- A-Frame Physics -->
+<script src="https://unpkg.com/aframe-physics-system@3.3.0/dist/aframe-physics-system.min.js"></script>
+
+<!-- A-Frame Animation -->
+<script src="https://unpkg.com/aframe-animation-component@5.1.2/dist/aframe-animation-component.min.js"></script>
+ 
+<script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+
+<script src="https://unpkg.com/aframe-gif-shader@0.2.0/dist/aframe-gif-shader.js"></script>
+
+<!-- A-Frame Environment -->
+<!-- <script src="//unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script> -->
+
+<!-- A-Frame State -->
+<!-- <script src="//unpkg.com/aframe-state-component@4.7.0/dist/aframe-state-component.min.js"></script> -->
+
+<!-- Nav Mesh Inspector Plugin -->
+<!-- Add inspector-plugin-recast component to a-scene -->
+<!-- <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script> -->
+
+<script>
+  
+  AFRAME.registerComponent('coin-box', {
+    init: function () {
+      
+      var coin = this.el.querySelector('.coin');
+      var el = this.el;
+      
+      this.el.addEventListener('collide', function () {
+        // el.emit('click');
+        coin.emit('collect');
+      });
+      
+      this.el.addEventListener('click', function () {
+        coin.emit('collect');
+      })
+    }
+  });
+  
+  AFRAME.registerComponent('tracker', {
+    init: function () {
+      this.theme = this.el.components.sound__theme;
+      this.gameover = this.el.components.sound__gameover;
+      this.checkPos = AFRAME.utils.throttle(this.checkPos, 500, this);
+    },
+    
+    tick: function () {
+      this.checkPos();
+    },
+    
+    checkPos: function () {
+      if (this.el.is('gameover')) { return; }
+      
+      if (this.el.object3D.position.y < -1) {
+        this.el.addState('gameover');
+        this.theme.stopSound();
+        this.gameover.playSound();
+      }
+    }
+  });
+</script>
+<style>
+body {
+  background: black;
+}
+</style>
+  </head>
+<body style="margin: 0px; overflow: hidden">
+<!-- SCENE -->
+<a-scene background="color: lightblue;"
+         renderer="antialias: true; gammaOutput: false;"
+         light="defaultLightsEnabled: true;"
+         physics="debug: false; restitution: 10;">
+  
+  <!-- ASSETS -->
+  <a-assets>
+    <audio id="overworld-theme" src="https://ucarecdn.com/ab67961c-9024-45b5-8cd5-ed60b071ebb0/" crossorigin="anonymous"></audio>
+    <audio id="jump-super" src="https://ucarecdn.com/873ac1a9-f382-4552-8e0f-c50106f671dd/" crossorigin="anonymous"></audio>
+    <audio id="coin-sound" src="https://ucarecdn.com/f3f04404-11aa-4b77-95cf-ca13bba33c39/" crossorigin="anonymous"></audio>
+    <audio id="bump-sound" src="https://ucarecdn.com/a21f5aa6-6ff8-46b5-a162-04f78227d4e3/" crossorigin="anonymous"></audio>
+    <audio id="brick-sound" src="https://ucarecdn.com/82b3ac02-7dab-4f57-b672-0f13c742e80d/" crossorigin="anonymous"></audio>
+    <audio id="game-over" src="https://ucarecdn.com/e72c4eee-e504-4be1-ac7d-62c54209f7fd/" crossorigin="anonymous"></audio>
+    <img id="title" src="https://ucarecdn.com/0e496d83-fef7-463b-9568-2a3e63a18641/" alt="" crossorigin="anonymous">
+    <img id="block" src="https://ucarecdn.com/e23351a0-1435-4dd3-a305-9b416258967d/" alt="" crossorigin="anonymous">
+    <img id="bedrock" src="https://ucarecdn.com/1a7b23d6-4a06-47e5-8859-edad85ccf03a/" alt="" crossorigin="anonymous">
+    <img id="brick" src="https://ucarecdn.com/2636e421-abad-4f2e-9e85-3dec0a7cb1a5/" alt="" crossorigin="anonymous">
+    <a-mixin id="box-bump" animation__bump="property: object3D.position.y; from: 0; to: 0.2; dur: 200; dir: alternate; loop: 1; startEvents: click, collide;"></a-mixin>
+    <script id="pipe" type="text/html">
+      <a-entity geometry="primitive: cylinder; segmentsHeight: 1;"
+                material="color: green; roughness: 0.2;"
+                position="0 0.5 0"
+                shadow="receive: true; cast: false;">
+        <a-entity geometry="primitive: cylinder; radius: 1.1; height: 1; segmentsHeight: 1;"
+                  material="color: green; roughness: 0.2;"
+                  position="0 1 0"
+                  shadow="cast: true; receive: false;"
+                  static-body>
+          <a-entity geometry="primitive: circle; radius: 1;"
+                    material="color: #010; shader: flat;"
+                    position="0 0.502 0"
+                    rotation="-90 0 0"></a-entity>
+        </a-entity>
+      </a-entity>
+    </script>
+  </a-assets>
+  
+  <!-- CAMERA -->
+  <a-entity id="rig"
+            position="0 0 5"
+            movement-controls="speed: 0.2;"
+            kinematic-body="enableJumps: true;"
+            jump-ability="distance: 3;"
+            sound__bump="src: #bump-sound; on: click; poolSize: 10; positional: false;"
+            sound__jump="src: #jump-super; on: jumpstart; poolSize: 10; positional: false;"
+            sound__theme="src: #overworld-theme; positional: false; autoplay: true; loop: true;"
+            sound__gameover="src: #game-over; positional: false;"
+            tracker>
+    <a-entity camera="far: 1000;"
+              wasd-controls="enabled: false;"
+              look-controls="pointerLockEnabled: true;"
+              position="0 1.6 0">
+      
+      <a-cursor fuse="false" raycaster="objects: [data-interactive]; far: 4;"></a-cursor>
+      
+    </a-entity>
+  </a-entity>
+  
+  <!-- STAGE -->
+  <a-entity id="stage">
+    
+    <a-image src="#title" npot="true" width="52.8" height="26.4" position="0 34 -50"></a-image>
+    
+    <a-entity position="0 3.5 -4">
+      
+      <a-box material="shader: standard; roughness: 1; npot: true; src: #brick;"
+             position="-1 0 0"
+             data-interactive
+             sound="on: click; src: #brick-sound; poolSize: 10;"
+             static-body></a-box>
+      
+      <a-entity coin-box geometry="primitive: box;" material="src: #block; transparent: false; color: white; shader: gif; npot: true;" position="0 0 0"
+             data-interactive
+             mixin="box-bump"
+             static-body>
+        
+        <!-- Coin -->
+        <a-entity class="coin" geometry="primitive: torus; radius: 0.4; radiusTubular: 0.05; segmentsRadial: 4; segmentsTubular: 8;"
+                  material="color: gold; wireframe: false;"
+                  position="0 0 0"
+                  scale="0.8 1 0.5"
+                  animation__rotate="property: rotation.y; to: 360; dur: 3000; loop: true; easing: linear;"
+                  animation__rise="property: object3D.position.y; dur: 200; from: 0; to: 3; startEvents: collect;"
+                  animation__reset="property: object3D.position.y; to: 0; dur: 10; delay: 400; startEvents: collect;"
+                  sound__coin="src: #coin-sound; on: collect; poolSize: 10;">
+           <a-entity geometry="primitive: circle; radius: 0.4;"
+                  material="color: gold; side: double;"></a-entity>
+        </a-entity>
+       
+      </a-entity>
+      
+      <a-box material="shader: standard; roughness: 1; npot: true; src: #brick;"
+             position="1 0 0"
+             data-interactive
+             static-body></a-box>
+      
+    </a-entity>
+    
+    <!-- Pipes -->
+    <a-entity template="src: #pipe" position="-5 0 -10"></a-entity>
+    <a-entity template="src: #pipe" position="0 0 -10"></a-entity>
+    <a-entity template="src: #pipe" position="5 0 -10"></a-entity>
+    
+    
+    
+    <!-- Power Mushroom -->
+<!--     <a-entity geometry="primitive: dodecahedron; radius: 0.5;"
+              material="color: #FF9935; shader: flat;"
+              position="0 2 -3"
+              scale="1 0.7 1">
+      <a-entity geometry="primitive: cone; radiusBottom: 0.35; height: 0.25"
+                material="color: #FEFFFA;"
+                position="0 -0.4 0"></a-entity>
+    </a-entity> -->
+    
+<!--     <a-plane position="0 2 -3"
+             material="npot: true; src: #block; offset: 0 0;"
+             animate-offset
+            ></a-plane> -->
+    
+    
+    <a-entity geometry="primitive: box; width: 50; depth: 50; height: 1;"
+              material="shader: standard; roughness: 1; src: #bedrock; repeat: 25 25; npot: true;"
+              position="0 -0.5 0"
+              static-body></a-entity>
+    
+  </a-entity>
+  
+</a-scene>
+  </body>
+</html>

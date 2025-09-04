@@ -1,0 +1,269 @@
+<html>
+  <head>
+    <title>계산리 고인돌 포토존</title>
+    <meta charset="utf-8" />
+    
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link 
+     rel="manifest" 
+     href="https://ardocent.com/aframe/expo/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link 
+      rel="shortcut icon" 
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta 
+      name="msapplication-config" 
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  
+    <script src="https://ardocent.com/aframe/gc-ar/js/components.js"></script>
+    <script src="https://ardocent.com/aframe/gc-ar/js/cursor_m.js" defer></script>
+    <script src="https://ardocent.com/aframe/gc-ar/js/vidhandler.js"></script>  
+    <script src="https://ardocent.com/aframe/gc-ar/js/navigate-on-click.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+
+    <link rel="stylesheet" href="https://ardocent-gif.glitch.me/style-c.css" />
+
+    <!--script>
+      var mobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(
+        navigator.userAgent.toLowerCase()
+      );
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var footer_flag = document.getElementById("myFooter");
+
+      var Browser = navigator.userAgent.toLowerCase();
+
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 90) {
+            //                  alert(Browser.indexOf("safari"));
+            //                    footer_flag.style.display = 'block';
+          } else {
+            //                  alert(Browser.indexOf("safari"));
+            location.href = "ftp://117.52.89.118/pub/bridge_navy.html";
+          }
+
+          //	           footer_flag.style.display = 'block';
+        } else if (Browser.indexOf("chrome") < 90) {
+          //                          alert(Browser.indexOf("chrome"));
+        } else {
+          //                         alert(Browser.indexOf("chrome"));
+          location.href =
+            "intent://ardocent.com/aframe/hmsbusan/navy.html#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      }
+           else
+              window.location.replace("./navy-pc.html");
+    </script-->
+
+    <script>
+      var cameraView;
+
+      var constraints = {
+        audio: false,
+        video: {
+          facingMode: "environment"
+        }
+      };
+
+      // Access the device camera and stream to cameraView
+      function cameraStart() {
+        cameraView = document.querySelector("#webcam");
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function(stream) {
+            cameraView.srcObject = stream;
+          })
+          .catch(function(error) {
+            console.error("Oops. Something is broken.", error);
+          });
+      }
+
+      // Start the video stream when the window loads
+      window.addEventListener("load", cameraStart, false);
+
+      //    const buttons = document.querySelector(".buttons")
+
+      // buttons.addEventListener('click', cameraStart, false);
+
+      // Component to change to a sequential color on cursor suspension.
+      AFRAME.registerComponent("cursor-listener", {
+        init: function() {
+          var lastIndex = -1;
+          var COLORS = ["red", "green", "blue"];
+          this.el.addEventListener("click", function(evt) {
+            lastIndex = (lastIndex + 1) % COLORS.length;
+            this.setAttribute("material", "color", COLORS[lastIndex]);
+            console.log("I was clicked at: ", evt.detail.intersection.point);
+          });
+        }
+      });
+    </script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <video id="webcam" autoplay playsinline></video>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      playvideo
+      raycaster="objects: .clickable"
+      emitevents="true"
+      cursor="fuse: false; rayOrigin: mouse;"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: #webcam; debugUIEnabled: false;"
+      id="scene"
+    >
+      <a-assets>
+        <img
+          id="asset_btn_play"
+          src="https://ardocent.com/aframe/gc-ar/image/play-button-white-hollow.png"
+        />
+
+        <video
+          src="https://ardocent.com/aframe/gc-ar/video/AR_Capture.mp4"
+          type="video/mp4"
+          id="vid"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+          style="display: none"
+        ></video>
+        <a-asset-item
+          id="baby"
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moromoro-baby.glb?v=1643875812789"
+        ></a-asset-item>
+        <a-asset-item
+          id="adult"
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moromoro-adult.glb?v=1643875813773"
+        ></a-asset-item>
+        <a-asset-item
+          id="together"
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moromoro-two.glb?v=1643875812848"
+        ></a-asset-item>
+        <a-asset-item
+          id="baby-melon"
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moromor-b-melon.glb?v=1643875812701"
+        ></a-asset-item>
+        <a-asset-item
+          id="adult-melon"
+          src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moromor-a-melon.glb?v=1643875812311"
+        ></a-asset-item>
+      </a-assets>
+      <a-entity
+        camera
+        look-controls
+        orbit-controls="target: 0 0 0; minDistance: 5; maxDistance: 600; initialPosition: 5 -50 65"
+      ></a-entity>
+ 
+      <a-entity id="mm01" class="collision" gltf-model="#baby" position="-30 -20 -150" scale="5 5 5" rotation="0 0 0"></a-entity>
+      <a-entity id="mm02" class="collision" gltf-model="#adult" position="-20 -20 -100" scale="5 5 5" rotation="0 0 0"></a-entity>
+      <a-entity id="mm03" class="collision" gltf-model="#together" position="-10 -20 -50" scale="5 5 5" rotation="0 0 0"></a-entity>
+      <a-entity id="mm04" class="collision" gltf-model="#baby-melon" position="0 -20 50" scale="5 5 5" rotation="0 0 0"></a-entity>
+      <a-entity id="mm05" class="collision" gltf-model="#adult-melon" position="10 -20 100" scale="5 5 5" rotation="0 0 0"></a-entity>
+      
+      <a-entity
+        camera="active: true"
+        look-controls
+        wasd-controls
+        position="0 0 5"
+      >
+        <a-entity
+          id="VPlayBtn"
+          geometry="primitive: plane; height: 0.2; width: 0.2"
+          material="side: double; src:#asset_btn_play"
+          position="0 0 -1"
+          rotation="0 0 0"
+          class="clickable"
+          onclick="vid.play()"
+          event-set__click="_target: a-entity; visible: false;"
+        >
+        </a-entity>
+        <a-entity
+          id="VideoModel"
+          geometry="primitive: plane; height: 1.5; width: 2"
+          material="shader: chromakey; side: double; src: #vid; color: 0 0.1 0.9"
+          vidhandler
+          position="0 0 -2"
+          rotation="0 0 0"
+          
+          event-set__enter="_event: mousedown"
+          visible="false"
+        >
+        </a-entity>
+      </a-entity>
+
+      <button class="button" id="mybutton"></button>
+    </a-scene>
+
+    <button class="capturebtn" id="capture" style="vertical-align:middle"></button>
+    <button class="savebtn" id="save" style="vertical-align:middle"></button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span
+          class="closebtn">
+          <img
+            src="https://ardocent.com/aframe/gc-ar/image/close-white.png"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+      </div>
+    </div>
+  
+    <script type="text/javascript" src="https://ardocent.com/aframe/gc-ar/js/hmodal_button.js"></script>
+    <script type="text/javascript" src="https://ardocent.com/aframe/gc-ar/js/hmodal_active.js"></script>
+    <script type="text/javascript" src="https://ardocent.com/aframe/gc-ar/js/capture.js"></script>
+       
+  </body>
+</html>

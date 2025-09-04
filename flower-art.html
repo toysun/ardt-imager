@@ -1,0 +1,417 @@
+<html>
+  <head>
+    <title>월트디즈니 100주년</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <!--meta name="viewport" content="width=device-width, user-scalable=no" /-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-ar-nft-3.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-template-component.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-gif-shader.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-chromakey.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-orbit-controls-component.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/navigate-on-click.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/components.js"></script>
+    <script
+      src="https://ardocent.com/aframe/wonder/js/cursor_m.js"
+      defer
+    ></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/vidhandler.js"></script-->
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-text-geometry.js"></script>
+
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-troika-text.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/mobile-check.js"></script-->
+
+    <link rel="stylesheet" href="style-disney.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <!--div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://ardocent.com/aframe/wonder/image/wonder-ticket-remover.png"
+      />
+    </div-->
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/watering-can%20(3).png?v=1669181421333"
+      />
+    </div>
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+
+    <div class="arjs-loader">
+      <div>
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-text
+        id="sc_text"
+        value="    카메라를 벤치 벽면에 
+               맞춰 주세요."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1.5 1.5 1.5"
+        position="-1.5 -1.5 -12"
+        text-align="center"
+      ></a-text>
+
+      <a-assets>
+        <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/simple_flower_loop%20(2).glb?v=1669191542310"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/light-and-reflective-piano-orchestra-1-22211.mp3?v=1669216215349"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+      </a-assets>
+
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        ioshandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url=" https://raw.githubusercontent.com/toysun/sg/master/imarker/love-forever"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-entity
+          scale="0.5 0.5 0.5"
+          position="0 0 -4"
+          rotation="0 0 0"
+          id="PlayBtn"
+          visible="true"
+          gltf-model="#playbtn"
+          gesture-handler
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 9000; delay: 200; loop: true"
+        >
+        </a-entity>
+
+        <!--a-text
+          id="NFtext"
+          value="Click Start"
+          color="#FFFFFF"
+          shader="msdf"
+          visible="true"
+          scale="0.75 0.75 0.75"
+          position="-0.4 -0.5 -3.2"
+        ></a-text-->
+        <a-troika-text
+          id="NFtext"
+          position="0 0.5 -3.2"
+          scale="0.75 0.75 0.75"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/UrbanJungle-yGnq.ttf?v=1660145839686"
+          color="#fff"
+          curve-radius="2"
+          value="Click Folower Start"
+        ></a-troika-text>
+        <!--a-entity scale="1 1 1"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/00-TEXTURES-N.png?v=1667981907370" position="0.2 -1 -35"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/00-TEXTURES.png?v=1667981908252" position="0.2 -1 -35"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/00-TEXTURES-E.png?v=1667981909075" position="0.2 -1 -35"></a-entity-->
+        <!--a-entity
+          id="balloon"
+          scale="1 1 1"
+          position="0.2 -1 -35"
+          rotation="0 0 0"
+          visible="false"
+          fbx-model="src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/ImageToStl.com_4asw-g-08-gundam-barbatos-4th-form.fbx?v=1667982978467)" 
+          shadow="receive: true"
+          animation-mixer
+          animation="property: position; to: 0.2 -1 -5; dur: 20000; easing: linear; loop: false"        
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity-->
+
+        <a-entity
+          id="balloon"
+          scale="0 0 0"
+          position="0 -1 -13"
+          rotation="0 0 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/purple-flowers-ani.glb?v=1669241435836"
+          shadow="receive: true"
+          animation-mixer
+          animation="property: scale; to: 10 10 10; dur: 30000; delay: 5000; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity>
+        <a-entity
+          id="balloon1"
+          scale="0 0 0"
+          position="0 -0.3 -10"
+          rotation="0 90 0"
+          visible="false"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/butterflies-ani.glb?v=1669216281449"
+          shadow="receive: true"
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 9000; delay: 500; loop: true"
+          animation__2="property: scale; to: 5 5 5; dur: 30000; delay: 5000; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+        >
+        </a-entity>
+
+        <a-sound src="#aud"></a-sound>
+
+        <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="balloon"
+          position="0 0 160"
+        >
+        </a-light>
+
+        <a-entity
+          camera
+          position="0 0 0"
+          look-controls="enabled: false"
+        ></a-entity>
+        <a-light type="ambient" intensity="0.9"></a-light>
+      </a-nft>
+    </a-scene>
+  </body>
+  <!--script>
+    window.onload = function() {
+        AFRAME.registerComponent('soundhandler', {
+            init: function () {
+                var marker = this.el;
+
+                this.sound = document.querySelector("#aud");
+
+                marker.addEventListener('markerFound', function () {
+                    this.sound.play();
+                }.bind(this));
+    
+        marker.addEventListener('markerLost', function() {
+            this.sound.pause();
+            this.sound.currentTime = 0;
+        }.bind(this));
+            }
+        });
+    };
+</script-->
+  <script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+  </script>
+</html>

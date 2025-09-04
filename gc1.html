@@ -1,0 +1,409 @@
+<html>
+  <head>
+    <title>AR Image Tracking - ARDOCENT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/ngokevin/kframe/master/components/template/dist/aframe-template-component.min.js"></script>
+
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+
+    <script src="/gesture-detector.js"></script>
+    <script src="/gesture-handler.js"></script>
+    
+    
+    <script src="/material.js"></script>
+    <script src="/event.js"></script>
+    <script src="/components.js"></script>
+    <script src="/cursor_m.js" defer></script>
+    <script src="/vidhandler.js"></script>
+    <script src="/ioshandler.js"></script>
+    <script src="/mobile-detect.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+    <!--script>
+      var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var Browser = navigator.userAgent.toLowerCase();
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 124) {
+                      if(Browser.indexOf("naver") !== -1) {
+                        location.href='ftp://117.52.89.118/pub/milk.html';	 
+                      }
+                      if (self.name != 'reload') {
+                           self.name = 'reload';
+                           self.location.reload(true);
+                      }
+                          else self.name = '';  
+          } else {
+            location.href = "ftp://117.52.89.118/pub/milk.html";
+          }
+        } else if (Browser.indexOf("chrome") < 90) {
+                         if (self.name != 'reload') {
+                             self.name = 'reload';
+                             self.location.reload(true);
+                          }
+                          else self.name = '';  
+        } else {
+          location.href =
+            "intent://bit.ly/3mPfmG9#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      } else window.location.replace("./smilk-ar_redirect.html");
+    </script-->
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" type="text/css" href="/button.css" />
+
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(71, 95, 215, 1);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body onload="check_module()" style="margin : 0px; overflow: hidden;">
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FScanner_mini_white.png?v=1617591526789"
+      />
+    </div>
+
+    <div class="arjs-loader">
+      <div>
+        <p>이미지 인식중입니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <!--a href="http://www.naver.com"
+          ><img
+            src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fbtn_event.png?v=1609043885788"
+            width="232px"
+            height="65px"
+            style="vertical-align:middle; margin:130% 10%"
+        /></a-->
+      <a href="https://promotion.seoulmilk.co.kr:446/event/20201231_na100ar/"
+          ><img
+            src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fbtn_event.png?v=1609043885788"
+            width="232px"
+            height="65px"
+            style="margin:80% 10%"
+        /></a>
+      </div>
+      <span
+        class="closebtn"
+        onclick="document.getElementById('myModal').style.display='none'"
+        ><img
+          src="https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2FActions-window-close-icon.png?v=1609053240485"
+          width="50px"
+          height="50px"
+      /></span>
+    </div>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      raycaster="objects: .clickable"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-assets>
+        <img
+          id="asset_btn_play"
+          src="https://cdn.glitch.com/619ee4d8-9bde-4764-bf3f-288a29bdd7a3%2FPlay_white.png?v=1604976401924"
+        />
+        <img
+          id="xing"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2FVR_button.png?v=1606720374165"
+        />
+        <img
+          id="website"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2Faudioguide_button.png?v=1606720374113"
+        />
+        <img
+          id="ok"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2F%EC%98%A4%EC%BC%80%EC%9D%B4.png?v=1606719305509"
+        />
+        <img
+          id="notice"
+          src="https://cdn.glitch.com/280a3c5f-e7bb-4bd7-b0e0-ce56423406fe%2F%EC%95%8C%EB%A6%BC.png?v=1606719308593"
+        />
+        <img
+          id="ios"
+          src="https://cdn.glitch.com/0cc78b1e-42e2-4349-b673-734e1c8ddff2%2FPlay_green.png?v=1609109175931"
+        />
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2FKakaoTalk_20211125_214337106.mp4?v=1637981518469"
+          type="video/mp4"
+          preload="auto"
+          id="vidnew"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2FKakaoTalk_20211125_214337106.mp4?v=1637981518469"
+          type="video/mp4"
+          preload="auto"
+          id="vid"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+
+        <!--video id="asset_vid_1" src="https://cors-anywhere.herokuapp.com/https://cdn.glitch.com/6578d377-25ff-42f3-bee7-b9326b505aed%2Fkangaroo.mp4?v=1602679335808" type="video/mp4" preload="auto" response-type="arraybuffer" loop crossorigin webkit-playsinline autoplay playsinline play="false"></video-->
+      </a-assets>
+      <a-text
+        value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        scale="1 1 1"
+        position="-2.5 3.8 -12"
+        audiohandler
+      ></a-text>
+      <a-entity
+        position="0 -7 -15"
+        particle-system="preset: star; accelerationValue:0 -20 0; texture: https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Ftwice-logo-remove.png?v=1619581794090; size: 5; particleCount:100; color: #FFFFFF; direction:-2; rotationAxis:z; rotation: -90 0 0"
+      ></a-entity>
+      <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        vidhandler
+        ioshandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/wh-logo-4"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+      <a-text
+        value="고창고인돌 박물관 
+               유네스코 세계문화유산 등재"
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        scale="2 2 2"
+        position="-2.5 3.8 -12"
+        audiohandler
+      ></a-text>
+        <a-entity
+          geometry="primitive: plane; height: 0.2; width: 0.2"
+          material="side: double; src:#ios"
+          ioshandler
+          position="0 0 0"
+          rotation="0 0 0"
+          id="myFooter"
+          class="clickable"
+          visible="true"
+          onclick="vid.play()"
+          event-set__click="_target: a-entity; visible: false;"
+                  gesture-handler
+        >
+        </a-entity>
+        <a-entity
+          geometry="primitive: plane; height: 0.6; width: 1"
+          material="shader: chromakey; color: 0 0.008 0.855; transparent:true;opacity: 0.9;src:#vid"
+          animation="property: rotation; dur: 300; delay: 200; loop: false"
+          vidhandler
+          position="0 0.1 -2"
+          rotation="0 360 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          gesture-handler
+        >
+        </a-entity>
+             <!--a-video
+                  material="shader: chromakey; src: #vid; color: 0.1 0.9 0.2"
+                  scale="1 1 1" position="0 0 0" rotation="-90 0 0" class="clickable" gesture-handler
+              ></a-video-->
+        <!--a-plane
+        material="shader:gif; src: url(https://media.giphy.com/media/NSz5OoH7YF8snYSYSL/source.gif); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-1 2 -8"
+        color="white"
+        scale="2 2 2"
+                 gesture-handler
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Flogo-benz.gif?v=1617671608057); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 2 -8"
+        color="white"
+        scale="2 2 2" 
+               gesture-handler
+      ></a-plane>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FMWM-motor-geradores-sticker.gif?v=1617671652965); opacity: 1; alphaTest: 0.5; side: double;"
+        position="1 2 -8"
+        color="white"
+        scale="2 2 2" 
+               gesture-handler
+      ></a-plane-->
+        
+
+      <!--a-entity
+        id="scene1"
+        scale="0.2 0.2 0.2"
+        position="0 -2.2 -9"
+        rotation="180 0 0"
+        gltf-model="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fearth-round.glb?v=1619591354139"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+      >
+      </a-entity>
+              <a-entity
+        id="scene2"
+        scale="0.08 0.08 0.08"
+        position="0 -1.6 -9"
+        rotation="0 0 0"
+        gltf-model="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fexplosion.glb?v=1623310020296"
+        shadow="receive: true"
+        animation-mixer
+        gesture-handler
+      >
+      </a-entity-->
+
+        <button class="button" id="mybutton"></button>
+        <a-entity camera></a-entity>
+      </a-nft>
+      <!--a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="5 5 1"
+      >
+      </a-light-->
+      <!--a-light type="ambient" intensity="1.3"></a-light-->
+      <!--a-plane
+        static-body
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="30"
+        height="30"
+        color="black"
+        material="transparent: true; opacity: 0.2"
+      ></a-plane>
+      <a-entity id="container"></a-entity>
+      <!--a-entity
+          id="box"
+          geometry="primitive: plane"
+          material="color: yellow; side: double; src:#notice"
+          position="-0.6 0 -3">
+      </a-entity-->
+      <!--a-entity
+          id="box1"
+          geometry="primitive: plane"
+          material="color: yellow; side: double; src:#ok"
+          position="0.6 0 -3">
+      </a-entity-->
+    </a-scene>
+
+    <!--script type="text/javascript" src="./modal_button.js"></script>
+    <script type="text/javascript" src="./modal_active.js"></script-->
+
+    <!--script src="./script-sunsa.js"></script-->
+    <!--div class="footer">
+      <div class="row" id="myFooter">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left">
+          <div class="onebleft">
+            <button onclick="vid.play()" class="btn btnskips">Play</button>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right">
+          <div class="onebright">
+            <button onclick="vid.pause()" class="btn btnskips">Pause</button>
+          </div>
+        </div>
+      </div>
+    </div-->
+  </body>
+</html>
