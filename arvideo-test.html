@@ -1,0 +1,476 @@
+<html>
+  <head>
+    <title>AR Image Tracking - ARDOCENT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="https://ardocent.com/aframe/expo/favicon/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="https://ardocent.com/aframe/expo/favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://ardocent.com/aframe/expo/favicon/ardocent_32x32.png"
+    />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta
+      name="msapplication-config"
+      content="https://ardocent.com/aframe/expo/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <!--script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.1.3/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+    <script>
+      AFRAME.registerComponent("videohandler", {
+        init: function() {
+          var marker = this.el;
+
+          this.vid = document.querySelector("#vid");
+          this.vid1 = document.querySelector("#vid1");
+          this.vid2 = document.querySelector("#vid2");
+          this.vid3 = document.querySelector("#vid3");
+          this.vid4 = document.querySelector("#vid4");
+
+          marker.addEventListener(
+            "markerFound",
+            function() {
+              this.vid.play();
+              this.vid1.play();
+              this.vid2.play();
+              this.vid3.play();
+              this.vid4.play();
+            }.bind(this)
+          );
+
+          marker.addEventListener(
+            "markerLost",
+            function() {
+              this.vid.pause();
+              this.vid.currentTime = 0;
+              this.vid1.pause();
+              this.vid1.currentTime = 0;
+              this.vid2.pause();
+              this.vid2.currentTime = 0;
+              this.vid3.pause();
+              this.vid3.currentTime = 0;
+              this.vid4.pause();
+              this.vid4.currentTime = 0;
+            }.bind(this)
+          );
+        }
+      });
+    </script>
+    <script src="/cursor_m.js" defer></script>
+
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      #example-scanning-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 2;
+      }
+      @media (min-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+      @media (max-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+
+      #example-scanning-overlay .inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        background: linear-gradient(to right, white 10px, transparent 10px) 0 0,
+          linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+            linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+              linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+                linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+                  linear-gradient(to bottom, white 10px, transparent 10px) 100%
+                      0,
+                    linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+                      linear-gradient(to top, white 10px, transparent 10px) 100%
+                        100%;
+        background-repeat: no-repeat;
+        background-size: 40px 40px;
+      }
+
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+
+      #example-scanning-overlay img {
+        opacity: 0.6;
+        width: 90%;
+        align-self: center;
+      }
+
+      #example-scanning-overlay .inner .scanline {
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background: white;
+        animation: move 2s linear infinite;
+      }
+      @keyframes move {
+        0%,
+        100% {
+          top: 0%;
+        }
+        50% {
+          top: calc(100% - 10px);
+        }
+      }
+    </style>
+  </head>
+  <body style="margin : 0px; overflow: hidden;">
+    <div class="arjs-loader">
+      <div>
+        <p>이미지 인식중입니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+    <a-scene
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      gesture-detector
+    >
+      <a-assets>
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Farvideo-mutied.mp4?v=1638363512351"
+          preload="auto"
+          id="vid"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Farvideo1-mutied.mp4?v=1638363541498"
+          preload="auto"
+          id="vid1"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+                                 
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Farvideo2-mutied.mp4?v=1638363827497"
+          preload="auto"
+          id="vid2"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+                                 
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Farvideo3-mutied.mp4?v=1638363823391"
+          preload="auto"
+          id="vid3"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+        <video
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f%2Farvideo4-muted.mp4?v=1638363824402"
+          preload="auto"
+          id="vid4"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video>
+                                 
+        <!--video src="https://cdn.glitch.com/6578d377-25ff-42f3-bee7-b9326b505aed%2Fgiraffe.mp4?v=1602679332016"
+                preload="auto" id="vidnew" response-type="arraybuffer" loop
+                crossorigin="anonymous" webkit-playsinline autoplay playsinline>
+            </video-->
+        <!--video
+          src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fraptor-walk-sq-sound.mp4?v=1619501291551"
+          preload="auto"
+          id="vvid"
+          response-type="arraybuffer"
+          loop
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay
+          playsinline
+        ></video-->
+      </a-assets>
+      <a-text
+        value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        scale="1 1 1"
+        position="-2.5 3.8 -12"
+        audiohandler
+      ></a-text>
+      <!--a-entity
+        position="0 -7 -15"
+        particle-system="preset: star; accelerationValue:0 -20 0; texture: https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2Fseagull%20(1).png?v=1624584781157; size: 5; particleCount:100; color: #FFFFFF; direction:-2; rotationAxis:z; rotation: -90 0 0"
+      ></a-entity-->
+      <a-nft
+        videohandler
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/arvideo"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+          scale="1 1 1"
+          position="-2.5 3.8 -12"
+          audiohandler
+        ></a-text>
+
+        <a-video
+          material="shader: chromakey; src: #vid; color: 0 0 0"
+          width="430"
+          height="310"
+          position="90 0 -200"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+          animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeInOutQuad; to: 1.2 1 1.2"
+        ></a-video>
+
+      </a-nft>
+            <a-nft
+        videohandler
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/arvideo1"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+          scale="1 1 1"
+          position="-2.5 3.8 -12"
+          audiohandler
+        ></a-text>
+
+        <a-video
+          material="shader: chromakey; src: #vid1; color: 0 0 0"
+          width="430"
+          height="310"
+          position="90 0 -200"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+          animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeInOutQuad; to: 1.2 1 1.2"
+        ></a-video>
+
+      </a-nft>
+      <a-nft
+        videohandler
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/arvideo2"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+          scale="1 1 1"
+          position="-2.5 3.8 -12"
+          audiohandler
+        ></a-text>
+
+        <a-video
+          material="shader: chromakey; src: #vid2; color: 0 0 0"
+          width="430"
+          height="310"
+          position="90 10 -50"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+          animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeInOutQuad; to: 1.2 1 1.2"
+        ></a-video>
+
+      </a-nft>
+      <a-nft
+        videohandler
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/arvideo3"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+          scale="1 1 1"
+          position="-2.5 3.8 -12"
+          audiohandler
+        ></a-text>
+        <!--a-video
+                src="#vid"
+                position="50 150 -100"
+                width="300"
+                height="175"               
+                >
+            </a-video-->
+        <a-video
+          material="shader: chromakey; src: #vid3; color: 0 0 0"
+          width="430"
+          height="310"
+          position="90 10 -50"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+          animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeInOutQuad; to: 1.2 1 1.2"
+        ></a-video>
+
+      </a-nft>
+      <a-nft
+        videohandler
+        type="nft"
+        url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/toysun/sg/master/imarker/woori"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+        <a-text
+          value="AR-Docent는 다양한 공간에 
+               제약없는 증강현실 서비스를 제공합니다."
+          color="#FFFFFF"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+          scale="1 1 1"
+          position="-2.5 3.8 -12"
+          audiohandler
+        ></a-text>
+        <a-video
+          material="shader: chromakey; src: #vid4; color: 0.1 0.9 0.2"
+          width="430"
+          height="310"
+          position="90 0 -200"
+          rotation="-90 0 0"
+          class="clickable"
+          gesture-handler
+          animation__scale="property: scale; dur: 5000; loop: true; dir: alternate;
+                           easing: easeInOutQuad; to: 1.2 1 1.2"
+        ></a-video>
+
+      </a-nft>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>

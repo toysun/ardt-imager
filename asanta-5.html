@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Gesture Interactions - A-Frame AR.js</title>
+    <meta charset="utf-8" />
+        <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--link rel="stylesheet" href="styles.css" /-->
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://ardocent.com/aframe/wonder/js/aframe-extras-3.13.1.js"></script>
+    <script src="gesture-detector.js"></script>
+    <script src="gesture-handler.js"></script>
+    <script src="cursor_m1.js"></script>
+        <!--script
+      src="https://ardocent.com/aframe/wonder/js/cursor_m.js"
+      defer
+    ></script>
+     <script src="./components.js"></script-->
+    <style>
+    body {
+  margin: 0px;
+  overflow: hidden;
+}</style>
+        <link rel="stylesheet" href="style-disney.css" />
+    <style>
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <div class="scannerWrapper">
+      <input
+        id="scanner"
+        type="image"
+        class="scannerImage"
+        src="https://cdn.glitch.com/cb8cb838-9f19-470f-9aca-6e773483a84f%2FScanner_mini_white.png?v=1617591526789"
+      />
+    </div>
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://ardocent.com','_self');"
+    ></button>
+    <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+
+    <div class="arjs-loader">
+      <div>
+        <p>카메라를 불러오고 있습니다.</p>
+        <p>잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      embedded
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      vr-mode-ui="enabled: false"
+      gesture-detector
+      id="scene"
+    >
+            <a-text
+        id="sc_text"
+        value="카메라를 카탈로그에 
+               맞춰 주세요."
+        color="#FFFFFF"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumgothic/NanumGothic-Bold.json"
+        scale="1.5 1.5 1.5"
+        position="-1.5 1 -12"
+        text-align="center"
+      ></a-text>
+      <a-assets>
+              <a-asset-item
+          id="playbtn"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/christmas_tree_2%20(1).glb?v=1669887498870"
+        ></a-asset-item>
+
+        <audio
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/jingle-bells-indie-rock-122771.mp3?v=1668387553902"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+      </a-assets>
+      <a-nft
+        id="marker"
+        logohandler
+        scannerhandler
+        type="nft"
+        url="https://raw.githubusercontent.com/toysun/sg/master/imarker/photowall"
+        smooth="true"
+        smoothcount="10"
+        smoothtolerance=".01"
+        smooththreshold="5"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+      >
+                <!--a-entity
+          scale="0 0 0"
+          position="0 -2.4 -10"
+          rotation="0 10 0"
+          id="PlayBtn"
+          visible="true"
+          gltf-model="#playbtn"
+          animation-mixer
+          animation="property: scale; to: 0.4 0.4 0.4; dur: 10000; delay: 5000; loop: false"
+          animation__2="property: rotation; to: 0 360 0; delay: 10000; dur: 20000; easing: linear; loop: false"
+        >
+        </a-entity-->
+        <a-entity
+          id="ballon"
+          gltf-model="https://cdn.glitch.me/84219226-bfa8-4881-9a68-88e43606a2ce/create_coffee_machine.glb?v=1681224842368"
+          scale="1000 1000 1000"
+          position="100 100 -300"
+          rotation="0 180 0"
+          class="clickable"
+          animation-mixer
+          gesture-handler
+        >
+        </a-entity>
+                <a-entity
+          id="ballon1"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/cup_of_coffee.glb?v=1681225084684"
+          scale="1500 1500 1500"
+          position="300 100 -300"
+          rotation="0 180 0"
+          class="clickable"
+          animation-mixer
+          gesture-handler
+        >
+        </a-entity>
+
+      </a-nft>
+              <a-sound src="#aud"></a-sound>
+                      <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="balloon"
+          position="0 0 160"
+        >
+        </a-light>
+
+        <a-light type="ambient" intensity="0.9"></a-light>
+      <a-entity camera></a-entity>
+
+    </a-scene>
+
+  </body>
+        <!--script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+  </script-->
+</html>
